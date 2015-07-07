@@ -248,6 +248,23 @@ class Install extends CI_Controller
 				show_error("Error creating database table ".$this->db->dbprefix('users'));
 
 
+			// create table 'query'
+			$fields = array(
+				'assignment' 	=> array('type' => 'INT','constraint' => 11),
+				'problem' 	    => array('type' => 'SMALLINT', 'constraint' => 4, 'unsigned' => TRUE),
+				'source' 		=> array('type' => 'INT','constraint' => 11),
+				'id'            => array('type' => 'INT', 'constraint' => 11, 'unsigned' => TRUE, 'auto_increment' => TRUE),
+				'title'         => array('type' => 'VARCHAR', 'constraint' => 200, 'default' => ''),
+				'message'	    => array('type' => 'TEXT', 'default' => ''),
+				'time'          => array('type' => $DATETIME),
+				'reply' 		=> array('type' => 'INT','constraint' => 11),
+				'private'    => array('type' => 'TINYINT', 'constraint' => 1, 'default' => '0'),
+			);
+			$this->dbforge->add_field($fields);
+			$this->dbforge->add_key('id', TRUE); // PRIMARY KEY
+			if ( ! $this->dbforge->create_table('query', TRUE))
+				show_error("Error creating database table ".$this->db->dbprefix('query'));
+
 
 			// add admin user
 			$this->user_model->add_user(
