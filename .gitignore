@@ -21,3 +21,6 @@ assignments/*
 
 #ignore configuration files
 application/config/*
+
+#ignore index file configurations
+judge/index.php
