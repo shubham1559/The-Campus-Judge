@@ -198,7 +198,7 @@ class Queue_model extends CI_Model
 			'pre_score' => $submission['pre_score'],
 		);
 
-		/*if ($type === 'judge')
+	/*	if ($type === 'judge')
 		{
 			$this->db->where(array(
 				'is_final' => 1,
@@ -208,14 +208,12 @@ class Queue_model extends CI_Model
 			))->update('submissions', array('is_final'=>0));
 			$arr['is_final'] = 1;
 		}*/
-		$arr['is_final'] = 1;
 		$this->db->where(array(
 			'submit_id' => $submission['submit_id'],
 			'username' => $submission['username'],
 			'assignment' => $submission['assignment'],
 			'problem' => $submission['problem']
 		))->update('submissions', $arr);
-		if($arr['status']=="SCORE")
 		$this->checkbetter($submission['username'],$submission['assignment'],$submission['problem']);
 		// update scoreboard:
 		$this->load->model('scoreboard_model');
@@ -236,7 +234,7 @@ class Queue_model extends CI_Model
 				->get('submissions')
 				->row()
 				->submit_id;
-				 $this->db->where($arr)
+		$this->db->where($arr)
 						->update('submissions',array('is_final'=>0));
 		$arr['submit_id']=$id;
 		$this->db->where($arr)
