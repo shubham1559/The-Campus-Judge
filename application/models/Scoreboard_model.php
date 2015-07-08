@@ -59,7 +59,7 @@ class Scoreboard_model extends CI_Model
 				'problem' => $submission['problem'],
 				'username' => $submission['username'],
 			))->count_all_results('submissions');
-
+			if($submission['status']=="SCORE")
 			$penalty[$submission['username']] += $delay + $number_of_submissions*$submit_penalty;
 			$users[] = $submission['username'];
 		}
