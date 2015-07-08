@@ -56,6 +56,27 @@ $(document).ready(function(){
 {% block main_content %}
 <div class="problem_description">
 	{{ problem.description|raw }}
+
+<div class="queries">
+<h3>Comments:-</h3>
+{% for query in comments %}
+	 <div class="querynotif">
+		<div class="querynotif_title" dir="auto">
+			<span class="anchor queryttl_n">{{ query.username }}</span>
+		</div>
+		<div class="querynotif_text" dir="auto">{{query.message|raw}}</div>
+	</div>
+{% endfor %}
+{{ form_open('') }}
+<p class="input_p">
+	<label for="query_text" class="tiny">Comment:</label><br><br>
+	<textarea maxlength="500" id="comment_text" class="commentbox" name="text"></textarea>
+</p>
+<p class="input_p">
+	<input type="button" id="{{problem.id}}" name="{{all_problems[problem.id].name}}"class="submitcmnt" value="Save" class="sharif_input"/>
+</p><br/>
+</form>
+</div>
 </div>
 
 <div id="right_sidebar">

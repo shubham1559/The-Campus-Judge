@@ -44,14 +44,16 @@ class Problems extends CI_Controller
 			$assignment_id = $this->user->selected_assignment['id'];
 		if ($assignment_id == 0)
 			show_error('No assignment selected.');
+		$this->load->model("query_model");
 
 		$assignment = $this->assignment_model->assignment_info($assignment_id);
-
+		$comments=$this->query_model->get_public_queries($assignment_id,$problem_id);
 		$data = array(
 			'all_assignments' => $this->all_assignments,
 			'all_problems' => $this->assignment_model->all_problems($assignment_id),
 			'description_assignment' => $assignment,
 			'can_submit' => TRUE,
+			'comments'	=>$comments,
 		);
 
 		if ( ! is_numeric($problem_id) || $problem_id < 1 || $problem_id > $data['description_assignment']['problems'])

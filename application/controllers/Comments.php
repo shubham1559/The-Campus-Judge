@@ -160,6 +160,8 @@ class Comments extends CI_Controller
 				$values['problem']=$this->input->post('problem');
 				$values['source']=$this->user_model->username_to_user_id($this->user->username);
 				$values['private']=1;
+				$values['time']=shj_now_str();
+				$values['reply']=0;
 				$this->query_model->add_query($values);
 				$json_result = array('done' => 1);
 			}
