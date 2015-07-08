@@ -1,0 +1,65 @@
+{#
+ # Sharif Judge
+ # file: submissions.twig
+ # author: Mohammad Javad Naderi <mjnaderi@gmail.com>
+ #}
+{% set selected='problems' %}
+{% extends 'templates/base.twig' %}
+{% block icon %}{{ 'fa-puzzle-piece' }}{% endblock %}
+{% block title %}{{ view|title }} Problems{% endblock %}
+{% block head_title %}{{ view|title }} Problems{% endblock %}
+
+
+
+{% block other_assets %}
+	<link rel='stylesheet' type='text/css' href='{{ base_url("assets/snippet/jquery.snippet.css") }}'/>
+	<link rel='stylesheet' type='text/css' href='{{ base_url("assets/snippet/themes/github.css") }}'/>
+	<link rel='stylesheet' type='text/css' href='{{ base_url("assets/styles/jquery.dataTables.min.css") }}'/>
+	<script type='text/javascript' src="{{ base_url("assets/snippet/jquery.snippet.js") }}"></script>
+
+	<link rel='stylesheet' type='text/css' href='{{ base_url("assets/reveal/reveal.css") }}'/>
+	<script type='text/javascript' src="{{ base_url("assets/reveal/jquery.reveal.js") }}"></script>
+	<script type='text/javascript' src="{{ base_url("assets/js/shj_submissions.js") }}"></script>
+	<script type='text/javascript' src="{{ base_url("assets/js/jquery.dataTables.min.js") }}"></script>
+{% endblock %}
+
+{% block main_content %}
+
+<p>{{ view|title }} Problems of <span dir="auto">{{ user.selected_assignment.name }}</span></p>
+<table class="sharif_table" id="myTable">
+	<thead>
+	<tr>
+				<th width="30%" >Problem</th>
+				<th width="20%" >Points</th>
+				<th width="20%" >Accuracy</th>
+				<th width="30%">Successfully Solved</th>
+			</tr>
+	</thead>
+	{% for problem in problems %}
+		<tr class="{{problem.col}}">
+		<td><a href="{{site_url("problems")}}/{{problem.assignment}}/{{problem.id}}">{{problem.name}}</a></td>
+		<td>{{problem.score}}</td>
+		<td>{{problem.avg}}</td>
+		<td>{{problem.cnt}}</td>
+		</tr>
+	{% endfor %}
+</table>
+
+<p>
+{{ pagination|raw }}
+</p>
+
+{% endblock %}  {# main_content #}
+{% block body_end %}
+<script>
+$(document).ready(function(){
+ 
+    $('#myTable').dataTable({
+    	"bFilter": false,
+    	"bPaginate":false,
+    	"info": false,
+    	 "order": [[ 3, "desc" ]]
+    });
+});
+</script>
+{% endblock %}

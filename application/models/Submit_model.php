@@ -167,6 +167,47 @@ class Submit_model extends CI_Model {
 		$this->db->insert('submissions', $submit_info);
 
 	}
+	//-------------------------------------------------------
+	//summary of the assignment
+	public function count_all_solved($assignment_id,$username)
+	{
+		$cor= $this->db
+				->select("COUNT(DISTINCT(username)) as cnt,problem",FALSE)
+				->where(array(
+				'assignment' =>$assignment_id,
+				'status'=>"SCORE",
+			))->group_by("problem")
+			->get('submissions')
+			->result_array();
 
+			$avg =$this->db
+					->select("AVG(pre_score*coefficient)as avg,problem")
+					->where(array(
+					'assignment' =>$assignment_id,
+					))->group_by("problem")
+					//->get_compiled_select("submissions");
+					->get('submissions')
+					->result_array();
+			$col=$this->db
+					->select("problem,status")
+					->where(array(
+						'assignment' =>$assignment_id,
+						'is_final' =>1,
+						'username' =>$username,
+						))
+					->get('submissions')
+					->result_array();
+			$val=[];
+			foreach($cor as $prob){
+				$val[$prob['problem']]['cnt']=$prob['cnt'];
+			}
+			foreach($avg as $prob){
+				$val[$prob['problem']]['avg']=$prob['avg'];
+			}
+			foreach($col as $prob){
+				$val[$prob['problem']]['col']=$prob['status'];
+			}
+			return $val;	
+	}
 
 }

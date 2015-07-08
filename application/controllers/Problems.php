@@ -34,10 +34,12 @@ class Problems extends CI_Controller
 	 * @param int $assignment_id
 	 * @param int $problem_id
 	 */
-	public function index($assignment_id = NULL, $problem_id = 1)
+	public function index($assignment_id = NULL, $problem_id = NULL)
 	{
 
 		// If no assignment is given, use selected assignment
+		if($problem_id==NULL)
+			redirect("problems/summary");
 		if ($assignment_id === NULL)
 			$assignment_id = $this->user->selected_assignment['id'];
 		if ($assignment_id == 0)
@@ -80,7 +82,38 @@ class Problems extends CI_Controller
 
 		$this->twig->display('pages/problems.twig', $data);
 	}
-
+	//---------------------------------------------------------------------------
+	public function summary($assignment_id = NULL)
+	{
+		// If no assignment is given, use selected assignment
+		$this->load->model('submit_model');
+		if ($assignment_id === NULL)
+			$assignment_id = $this->user->selected_assignment['id'];
+		if ($assignment_id == 0)
+			show_error('No assignment selected.');
+		$assignment = $this->assignment_model->assignment_info($assignment_id);
+		$problems=$this->assignment_model->all_problems($assignment_id);
+		$summ=$this->submit_model->count_all_solved($assignment_id,$this->user->username);
+		//print_r($summ);
+		foreach($problems as $problem)
+		{
+					if(isset($summ[$problem['id']]['avg']))
+					$problems[$problem['id']]['avg']=$summ[$problem['id']]['avg']/10000;
+				else $problems[$problem['id']]['avg']=0;
+				if(isset($summ[$problem['id']]['cnt']))
+					$problems[$problem['id']]['cnt']=$summ[$problem['id']]['cnt'];
+				else $problems[$problem['id']]['cnt']=0;
+				if(isset($summ[$problem['id']]['col']))
+					$problems[$problem['id']]['col']=$summ[$problem['id']]['col']=="SCORE"?"solved":"wrong";
+				else $problems[$problem['id']]['col']='';
+			$problems[$problem['id']]['avg']= sprintf('%0.2f', $problems[$problem['id']]['avg']);
+		}
+		$data = array(
+			'all_assignments' => $this->all_assignments,
+			'problems' => $problems,
+		);
+		$this->twig->display('pages/allproblems.twig', $data);
+	}
 
 	// ------------------------------------------------------------------------
 
