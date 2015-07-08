@@ -1,0 +1,64 @@
+{#
+ # Shubham Vishwakarma
+ # file: add_chat.twig
+ # author: Shubham vishwakarma <shubhamvishwakarma987@gmail.com>
+ #}
+
+{% set selected = 'comments' %}
+{% extends 'templates/base.twig' %}
+{% block icon %}{{ query_edit ? 'fa-edit' : 'fa-plus' }}{% endblock %}
+{% block title %}{{ query_edit ? 'Edit' : 'New' }} Query{% endblock %}
+{% block head_title %}{{ query_edit ? 'Edit' : 'New' }} Query{% endblock %}
+
+{% block other_assets %}
+<script type='text/javascript' src="{{ base_url('assets/tinymce/tinymce.min.js') }}"></script>
+<script>
+$(document).ready(function(){
+	tinymce.init({
+		selector: 'textarea#query_text',
+		toolbar_items_size: 'small',
+		relative_urls: false,
+		width: 700,
+		height: 300,
+		resize: false,
+		plugins: 'directionality emoticons textcolor link code',
+		toolbar1: "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | ltr rtl",
+		toolbar2: "forecolor backcolor | emoticons | link unlink anchor image media code | removeformat"
+	});
+});
+</script>
+{% endblock %}
+
+
+
+{% block main_content %}
+{{ form_open('comments/'~( query_edit.id ? 'edit/'~query_edit.id : (query_edit?'reply/'~query_edit.reply:'add') )) }}
+{% if query_edit.id %}
+	<input type="hidden" name="id" value="{{ query_edit.id }}"/>
+{% endif %}
+<p class="input_p">
+	<label for="form_title" class="tiny">Title:</label>
+	<input id="form_title" name="title" type="text" class="sharif_input" value="{{ query_edit.title }}"/>
+</p>
+<p class="input_p">
+	<label for="form_title" class="tiny">Problem Id:</label>
+	<input id="form_title" name="problem" type="number" class="sharif_input" value="{{ query_edit.problem }}"/>
+</p>
+<p class="input_p">
+	<label for="form_title" class="tiny">Reply To:</label>
+	<input id="form_title" name="reply" type="number" class="sharif_input" value="{{ query_edit.reply }}"/>
+</p>
+<p class="input_p">
+	<label for="form_title" class="tiny">Private:</label>
+	<input id="form_title" name="private" type="checkbox" class="sharif_input" {{ query_edit.private ? "checked":"" }}/>
+</p>
+
+<p class="input_p">
+	<label for="query_text" class="tiny">Message:</label><br><br>
+	<textarea id="query_text" name="text">{{ query_edit.message }}</textarea>
+</p>
+<p class="input_p">
+	<input type="submit" value="{{ query_edit ? 'Save' : 'Add' }}" class="sharif_input"/>
+</p>
+</form>
+{% endblock %}  {# main_content #}

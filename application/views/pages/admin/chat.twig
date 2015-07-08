@@ -1,0 +1,47 @@
+{#
+ # Shubham Vishwakarma
+ # file: chat.twig
+ # author: Shubham vishwakarma <shubhamvishwakarma987@gmail.com>
+ #}
+{% set selected = 'comments' %}
+{% extends 'templates/base.twig' %}
+{% block icon %}fa-bell{% endblock %} 
+{% block title %}Chat{% endblock %}
+{% block head_title %}Chat{% endblock %}
+
+
+
+{% block title_menu %}
+	{% if user.level >= 1 %}
+	<span class="title_menu_item"><a href="{{ site_url('comments/add') }}"><i class="fa fa-plus color10"></i> New</a></span>
+	{% endif %}
+{% endblock %}
+
+
+
+{% block main_content %}
+{% if queries|length == 0 %}
+<p style="text-align: center;">Nothing yet...</p>
+{% endif %}
+{% for query in queries %}
+	<div class="querynotif" id="number{{ query.id }}"  data-id="{{ query.id }}">
+		<div class="querynotif_title" dir="auto">
+			<span class="anchor queryttl_n">{{ query.title }}</span>
+			<div class="querynotif_mea">
+				From: <a href="profile/{{query.source}}"> {{ query.username}} </a>&nbsp;
+				Problem: <a href="problems/{{query.assignment}}/{{query.problem}}">{{query.problem}}</a> 
+			</div>
+			<div class="querynotif_meta">
+				{{ query.time }}
+				{% if user.level >= 1 %}
+					<span class="anchor queryedt_n">Edit</span>
+					<span class="anchor querydel_n">Delete</span>
+					<span class="anchor queryrep_n">Reply</span>
+					<span class="anchor querytog_n" dat="{{ query.private }}">{{ query.private?'Private':'Public'}}</span>
+				{% endif %}
+			</div>
+		</div>
+		<div class="querynotif_text" dir="auto">{{query.message|raw}}</div>
+	</div>
+{% endfor %}
+{% endblock %}  {# main_content #}
