@@ -1,0 +1,73 @@
+{#
+ # Shubham vishwakarma
+ # file: submit.twig
+ # author: shubham vishwakarma <shubhamvishwakarma987@gmail.com>
+ #}
+{% set selected = 'submit' %}
+{% extends 'templates/base.twig' %}
+{% block icon %}fa-location-arrow{% endblock %}
+{% block title %}Submit{% endblock %}
+{% block head_title %}Submit{% endblock %}
+
+
+
+{% block other_assets %}
+<style type="text/css">
+	#centerbox{
+		margin-left: 400px;
+		margin-top: 50px;
+	}
+	#response{
+		font-size:30px;
+	}
+	.green{
+		color:green;
+	}
+	.red{
+		color:red;
+	}
+</style>
+<script type="text/javascript">
+	var resp={"SCORE":["Accepted","ac.gif"],"RE":["Runtime Error","re.jpg"],"CE":["Compiler Error","ce.png"],"TLE":["Time Limit Exceeded","tle.png"],"WA":["Wrong Answer","wa.jpg"],"JE":["System Error","se.jpg"]};
+var timerd;
+var mnurl="{{base_url("assets/images")}}/";
+shj.check_result = function () {
+	$.ajax({
+		type: 'POST',
+		url: shj.site_url+'submit/check',
+		data: {
+			shj_csrf_token: shj.csrf_token,
+			'id':{{submission}}
+		},
+		success: function (data) {
+			if(data!="PENDING")
+			{
+				clearInterval(timerd);
+				if(data!="ERROR")
+				{
+					document.getElementById("imgr").src=mnurl+resp[data][1];
+					document.getElementById("response").innerHTML=resp[data][0];
+				}
+
+			}
+			}
+	});
+}
+$(document).ready(function () {
+timerd=window.setInterval(shj.check_result,5000);
+});
+</script>
+{% endblock %}
+{% block main_content %}
+Your submission for {{name}}
+{{assignment}}
+<div id="centerbox">
+
+<img src="{{base_url("assets/images")}}/pending.gif" id="imgr" />
+<div id="response">
+Pending<br>
+<div id="score">
+</div>
+</div>
+</div>
+{% endblock %}  {# main_content #}

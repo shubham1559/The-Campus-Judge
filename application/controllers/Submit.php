@@ -103,8 +103,18 @@ class Submit extends CI_Controller
 
 		if ($this->form_validation->run())
 		{
-			if ($this->_upload())
-				redirect('submissions/all');
+			$val=$this->_upload();
+			if ($val!==FALSE)
+				{
+					$data = array(
+					'name'=> $this->problem['name'],
+					'submission'=>$val['submit_id'],
+				);
+				$this->twig->display('pages/checksubmit.twig', $data);
+				//print_r($data);
+				return;
+			}
+				//redirect('submissions/all');
 			else
 				show_error('Error Uploading File: '.$this->upload->display_errors());
 		}
@@ -229,12 +239,24 @@ class Submit extends CI_Controller
 				$this->submit_model->add_upload_only($submit_info);
 			}
 
-			return TRUE;
+			$val=$submit_info;
+			return $val;
 		}
 
 		return FALSE;
 	}
-
-
-
+	public function check()
+	{
+		if ( ! $this->input->is_ajax_request() )
+			show_404();
+		$this->load->model('submit_model');
+		$submission_id=$this->input->post('id');
+		$assignment_id=$this->user->selected_assignment['id'];
+		$status=$this->submit_model->get_status($assignment_id,$submission_id,$this->user->username)[0]['status'];
+		//exit($status);
+		if(in_array($status,array("SCORE","WA","TLE","RE","CE","PENDING")))
+		exit(("$status"));
+		else
+		exit("JE");
+	}
 }

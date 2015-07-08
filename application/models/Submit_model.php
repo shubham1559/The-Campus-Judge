@@ -209,5 +209,19 @@ class Submit_model extends CI_Model {
 			}
 			return $val;	
 	}
-
+		/**
+	 * this function checks status of a submission 
+	 * @param [number] $[submission_id] [<id of submission>]
+	 */
+	public function get_status($assignment_id,$submission_id,$username)
+	{
+		return $this->db->select("status")
+						->where(array(
+							'submit_id'=>$submission_id,
+							'assignment'=>$assignment_id,
+							'username'=>$username
+							))
+						->get('submissions')
+						->result_array();
+	}
 }

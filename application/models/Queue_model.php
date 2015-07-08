@@ -208,13 +208,14 @@ class Queue_model extends CI_Model
 			))->update('submissions', array('is_final'=>0));
 			$arr['is_final'] = 1;
 		}*/
-
+		$arr['is_final'] = 1;
 		$this->db->where(array(
 			'submit_id' => $submission['submit_id'],
 			'username' => $submission['username'],
 			'assignment' => $submission['assignment'],
 			'problem' => $submission['problem']
 		))->update('submissions', $arr);
+		if($arr['status']=="SCORE")
 		$this->checkbetter($submission['username'],$submission['assignment'],$submission['problem']);
 		// update scoreboard:
 		$this->load->model('scoreboard_model');
