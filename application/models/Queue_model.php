@@ -198,7 +198,7 @@ class Queue_model extends CI_Model
 			'pre_score' => $submission['pre_score'],
 		);
 
-		if ($type === 'judge')
+		/*if ($type === 'judge')
 		{
 			$this->db->where(array(
 				'is_final' => 1,
@@ -207,7 +207,7 @@ class Queue_model extends CI_Model
 				'problem' => $submission['problem'],
 			))->update('submissions', array('is_final'=>0));
 			$arr['is_final'] = 1;
-		}
+		}*/
 
 		$this->db->where(array(
 			'submit_id' => $submission['submit_id'],
@@ -215,10 +215,32 @@ class Queue_model extends CI_Model
 			'assignment' => $submission['assignment'],
 			'problem' => $submission['problem']
 		))->update('submissions', $arr);
-
+		$this->checkbetter($submission['username'],$submission['assignment'],$submission['problem']);
 		// update scoreboard:
 		$this->load->model('scoreboard_model');
 		$this->scoreboard_model->update_scoreboard($submission['assignment']);
+	}
+	public function checkbetter($username,$assignment,$problem)
+	{
+		$arr=array(
+			'username'=>$username,
+			'assignment' =>$assignment,
+			'problem' =>$problem
+			);
+		$id= $this->db->select('submit_id,pre_score*coefficient as score',false)
+				->where($arr)
+				->limit(1)
+				->order_by('score','DESC')
+				->order_by('time','ASC')
+				->get('submissions')
+				->row()
+				->submit_id;
+				 $this->db->where($arr)
+						->update('submissions',array('is_final'=>0));
+		$arr['submit_id']=$id;
+		$this->db->where($arr)
+				->update('submissions',array('is_final' => 1));
+
 	}
 
 }

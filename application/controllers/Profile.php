@@ -110,6 +110,11 @@ class Profile extends CI_Controller
 		$roles = array('admin', 'head_instructor', 'instructor', 'student');
 		return in_array($role, $roles);
 	}
+	/*public function chk()
+	{
+		$this->load->model("queue_model");
+		print_r($this->queue_model->checkbetter("shu987",2,1));
+	}*/
 
 
 }
