@@ -4,7 +4,6 @@
 	font-weight:400;
 	src: url('../font/DroidNaskh-Regular.woff') format('woff');
 }
-
 @font-face {
 	font-family: 'Open Sans';
 	src: url('../font/OpenSans/OpenSans-Regular-webfont.eot');
@@ -416,6 +415,7 @@ div#extra_time i {
 .color-final_submissions {border-color: #22478A!important;}
 .color-all_submissions {border-color: #543680!important;}
 .color-scoreboard {border-color: #991B4A!important;}
+.color-comments {border-color: blue!important;}
 
 .color-dashboard.selected i {background-color: #C52E26!important;border-color: #C52E26!important;}
 .color-settings.selected i {background-color: #EE3A23!important;border-color: #EE3A23!important;}
@@ -427,7 +427,7 @@ div#extra_time i {
 .color-final_submissions.selected i {background-color: #22478A!important;border-color: #22478A!important;}
 .color-all_submissions.selected i {background-color: #543680!important;border-color: #543680!important;}
 .color-scoreboard.selected i {background-color: #991B4A!important;border-color: #991B4A!important;}
-
+.color-comments.selected i {background-color: blue!important;border-color: #blue!important;}
 div#side_bar {
 	color:#595959;
 	position: fixed;
@@ -1264,6 +1264,72 @@ div.notif_text {
 }
 
 div.notif_text.latest {
+	max-height: 34px;
+}
+
+/******* Queries ************/
+
+/* div.querynotif {
+	padding: 7px;
+	border-bottom: 1px solid #CCC;
+}
+ */
+div.querynotif,.commentbox {
+	padding: 10px;
+	border: 1px solid #CCC;
+	border-radius: 3px;
+	margin: 20px 0;
+	box-shadow: rgba(0, 0, 0, 0.5) 0 0 6px -2px;
+	-moz-box-shadow: rgba(0, 0, 0, 0.5) 0 0 6px -2px;
+	-webkit-box-shadow: rgba(0, 0, 0, 0.5) 0 0 6px -2px;
+	background-color: white;
+}
+.commentbox{
+	width:100%;
+}
+div#main_content > div.querynotif > div.querynotif_title {
+	border-bottom: 1px solid #bbb;
+}
+
+div.querynotif_title {
+	font-size: 12px;
+	padding: 0 5px 0 5px;
+	font-weight: bold;
+	margin-bottom: 5px;
+	//float:left;
+}
+
+div.querynotif_title a {
+	text-decoration: none;
+}
+.querynotif_text p{
+	margin:0px;
+
+}
+.queryttl_n{
+	float:left;
+}
+.querynotif_meta {
+	margin-top: 5px;
+	font-size: 10px;
+	color: #b4b4b4;
+}
+.querynotif_mea{
+	float:left;
+	padding-left: 100px;
+	padding-right: 100px;
+}
+span.querynotif_meta {
+	padding: 0 5px;
+}
+
+div.querynotif_text {
+	padding:0 5px;
+	overflow: hidden;
+	clear:both;
+}
+
+div.querynotif_text.latest {
 	max-height: 34px;
 }
 

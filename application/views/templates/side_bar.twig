@@ -25,6 +25,14 @@
 			</a>
 		</li>
 		{% endif %}
+			{% if user.level >=1 %}
+		<li class="color-comments{{ selected=='comments' ? ' selected' }}">
+			<a href="{{ site_url('comments') }}">
+				<i class="fa fa-pencil fa-lg"></i>
+				<span class="sidebar_text">Comments</span>
+			</a>
+		</li>
+		{% endif %}
 		<li class="color-notifications{{ selected=='notifications' ? ' selected' }}">
 			<a href="{{ site_url('notifications') }}">
 				<i class="fa fa-bell fa-lg"></i>

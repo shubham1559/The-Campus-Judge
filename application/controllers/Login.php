@@ -1,6 +1,6 @@
 <?php
 /**
- * Shubham
+ * Sharif Judge online judge
  * @file Login.php
  * @author Mohammad Javad Naderi <mjnaderi@gmail.com>
  */

@@ -278,11 +278,207 @@ $(document).ready(function () {
 	});
 
 	if ( shj.check_for_notifications )
+		window.setInterval(shj.check_queries,(shj.notif_check_delay*1000));
+	if ( shj.check_for_notifications )
 		window.setInterval(shj.check_notifs,(shj.notif_check_delay*1000));
 
 });
 
 
+
+
+/**
+ * queries
+ */
+shj.notif_check_time = null;
+shj.check_queries = function () {
+	if (shj.notif_check_time == null)
+		shj.notif_check_time = moment().add('milliseconds', shj.offset - (shj.notif_check_delay * 1000));
+	$.ajax({
+		type: 'POST',
+		url: shj.site_url+'comments/check',
+		data: {
+			time: shj.notif_check_time.format('YYYY-MM-DD HH:mm:ss'),
+			shj_csrf_token: shj.csrf_token
+		},
+		success: function (data) {
+			if (data == "new_comment") {
+				noty({
+					text: 'New Comment',
+					layout: 'bottomRight',
+					type: 'information',
+					closeWith: ['click', 'button'],
+					animation: {
+						open: {height: 'toggle'},
+						close: {height: 'toggle'},
+						easing: 'swing',
+						speed: 300
+					}
+				});
+				alert("New Comment");
+			}
+		}
+	});
+	//shj.notif_check_time = moment().add('milliseconds', shj.offset);
+}
+$(document).ready(function () {
+	
+	$('.queryttl_n').click(function(){
+		var id = $(this).parents('.querynotif').data('id');
+		window.location = shj.site_url+'comments#number'+id;
+	});
+	$('.queryedt_n').click(function () {
+		var id = $(this).parents('.querynotif').data('id');
+		window.location = shj.site_url+'comments/edit/'+id;
+	});
+	$('.queryrep_n').click(function () {
+		var id = $(this).parents('.querynotif').data('id');
+		window.location = shj.site_url+'comments/reply/'+id;
+	});
+	$('.querydel_n').click(function () {
+		var notif = $(this).parents('.querynotif');
+		var id = $(notif).data('id');
+		noty({
+			text: 'Are you sure you want to delete this Query?',
+			layout: 'center',
+			type: 'confirm',
+			animation: {
+				open: {height: 'toggle'},
+				close: {height: 'toggle'},
+				easing: 'swing',
+				speed: 300
+			},
+			buttons: [
+				{addClass: 'btn shj-red', text: 'Yes, Delete', onClick: function ($noty) {
+					$noty.close();
+					$.ajax({
+						type: 'POST',
+						url: shj.site_url + 'comments/delete',
+						data: {
+							id: id,
+							shj_csrf_token: shj.csrf_token
+						},
+						beforeSend: shj.loading_start,
+						complete: shj.loading_finish,
+						error: shj.loading_error,
+						success: function (response) {
+							if (response.done) {
+								notif.animate({backgroundColor: '#FF7676'}, 1000, function () {
+									notif.remove();
+								});
+								noty({text: 'query deleted', layout: 'bottomRight', type: 'success', timeout: 5000});
+							}
+							else
+								shj.loading_failed(response.message);
+						}
+					});
+				}
+				},
+				{addClass: 'btn shj-blue', text: 'No, Don\'t Delete', onClick: function ($noty) {
+					$noty.close();
+				}}
+			]
+		});
+	});
+
+	$('.querytog_n').click(function () {
+		var pp=["Public","Private"];
+		var notif = $(this).parents('.querynotif');
+		var id = $(notif).data('id');
+		var cur = this.getAttribute('dat');
+		var th=this;
+		cur=1-cur;
+		noty({
+			text: 'Are you sure you want change it to '+pp[cur],
+			layout: 'center',
+			type: 'confirm',
+			animation: {
+				open: {height: 'toggle'},
+				close: {height: 'toggle'},
+				easing: 'swing',
+				speed: 300
+			},
+			buttons: [
+				{addClass: 'btn shj-red', text: 'Yes, Change', onClick: function ($noty) {
+					$noty.close();
+					$.ajax({
+						type: 'POST',
+						url: shj.site_url + 'comments/toggle',
+						data: {
+							id: id,
+							ch: cur,
+							shj_csrf_token: shj.csrf_token
+						},
+						beforeSend: shj.loading_start,
+						complete: shj.loading_finish,
+						error: shj.loading_error,
+						success: function (response) {
+							if (response.done) {
+								th.innerHTML=pp[cur];
+								th.setAttribute("dat",cur);
+								noty({text: 'Permission changed', layout: 'bottomRight', type: 'success', timeout: 5000});
+							}
+							else
+								shj.loading_failed(response.message);
+						}
+					});
+				}
+				},
+				{addClass: 'btn shj-blue', text: 'No, Don\'t Change', onClick: function ($noty) {
+					$noty.close();
+				}}
+			]
+		});
+	});
+$('.submitcmnt').click(function () {
+		var txt =document.getElementById('comment_text').value;
+		if(txt=='')
+			{noty({text: 'Please write some comment', layout: 'bottomRight', type: 'success', timeout: 5000});
+		return;}
+		var problemid=this.getAttribute('id');
+		var name=this.getAttribute('name');
+		noty({
+			text: "Are you sure you want to post your comment",
+			layout: 'center',
+			type: 'confirm',
+			animation: {
+				open: {height: 'toggle'},
+				close: {height: 'toggle'},
+				easing: 'swing',
+				speed: 300
+			},
+			buttons: [
+				{addClass: 'btn shj-red', text: 'Yes, Submit', onClick: function ($noty) {
+					$noty.close();
+					$.ajax({
+						type: 'POST',
+						url: shj.site_url + 'comments/submitcmnt',
+						data: {
+							problem: problemid,
+							title: name,
+							text:txt,
+							shj_csrf_token: shj.csrf_token
+						},
+						beforeSend: shj.loading_start,
+						complete: shj.loading_finish,
+						error: shj.loading_error,
+						success: function (response) {
+							if (response.done) {
+								noty({text: 'Your comment has been sent to admin', layout: 'bottomRight', type: 'success', timeout: 5000});
+							}
+							else
+								shj.loading_failed(response.message);
+						}
+					});
+				}
+				},
+				{addClass: 'btn shj-blue', text: 'No, Don\'t submit', onClick: function ($noty) {
+					$noty.close();
+				}}
+			]
+		});
+	});
+});
 
 
 /**
