@@ -164,7 +164,7 @@ TST="$(ls $PROBLEMPATH/in | wc -l)"  # Number of Test Cases
 JAIL=jail-$RANDOM
 if ! mkdir $JAIL; then
 	shj_log "Error: Folder 'tester' is not writable! Exiting..."
-	shj_finish "Judge Error"
+	shj_finish "JE"
 fi
 cd $JAIL
 cp ../timeout ./timeout
@@ -215,7 +215,7 @@ if [ "$EXT" = "java" ]; then
 		echo "</span>" >> $PROBLEMPATH/$UN/result.html
 		cd ..
 		rm -r $JAIL >/dev/null 2>/dev/null
-		shj_finish "Compilation Error"
+		shj_finish "CE"
 	fi
 fi
 
@@ -241,7 +241,7 @@ if [ "$EXT" = "py2" ]; then
 		echo "</span>" >> $PROBLEMPATH/$UN/result.html
 		cd ..
 		rm -r $JAIL >/dev/null 2>/dev/null
-		shj_finish "Syntax Error"
+		shj_finish "CE"
 	fi
 	if $PY_SHIELD_ON; then
 		shj_log "Enabling Shield For Python 2"
@@ -272,7 +272,7 @@ if [ "$EXT" = "py3" ]; then
 		echo "</span>" >> $PROBLEMPATH/$UN/result.html
 		cd ..
 		rm -r $JAIL >/dev/null 2>/dev/null
-		shj_finish "Syntax Error"
+		shj_finish "CE"
 	fi
 	if $PY_SHIELD_ON; then
 		shj_log "Enabling Shield For Python 3"
@@ -362,7 +362,7 @@ if [ "$EXT" = "c" ] || [ "$EXT" = "cpp" ]; then
 		echo "</span>" >> $PROBLEMPATH/$UN/result.html
 		cd ..
 		rm -r $JAIL >/dev/null 2>/dev/null
-		shj_finish "Compilation Error"
+		shj_finish "CE"
 	fi
 fi
 
@@ -402,7 +402,7 @@ fi
 
 
 PASSEDTESTS=0
-
+VERDICT="AC"
 for((i=1;i<=TST;i++)); do
 	shj_log "\n=== TEST $i ==="
 	echo "<span class=\"shj_b\">Test $i</span>" >>$PROBLEMPATH/$UN/result.html
@@ -419,7 +419,8 @@ for((i=1;i<=TST;i++)); do
 		if grep -iq -m 1 "Too small initial heap" out || grep -q -m 1 "java.lang.OutOfMemoryError" err; then
 			shj_log "Memory Limit Exceeded"
 			echo "<span class=\"shj_o\">Memory Limit Exceeded</span>" >>$PROBLEMPATH/$UN/result.html
-			continue
+			VERDICT="RE"
+			break
 		fi
 		if grep -q -m 1 "Exception in" err; then # show Exception
 			javaexceptionname=`grep -m 1 "Exception in" err | grep -m 1 -oE 'java\.[a-zA-Z\.]*' | head -1 | head -c 80`
@@ -431,7 +432,8 @@ for((i=1;i<=TST;i++)); do
 			else
 				echo "<span class=\"shj_o\">Runtime Error</span>" >>$PROBLEMPATH/$UN/result.html
 			fi
-			continue
+			VERDICT="RE"
+			break
 		fi
 	elif [ "$EXT" = "c" ] || [ "$EXT" = "cpp" ]; then
 		#$TIMEOUT ./$FILENAME <$PROBLEMPATH/in/input$i.txt >out 2>/dev/null
@@ -475,7 +477,7 @@ for((i=1;i<=TST;i++)); do
 		shj_log "File Format Not Supported"
 		cd ..
 		rm -r $JAIL >/dev/null 2>/dev/null
-		shj_finish "File Format Not Supported"
+		shj_finish "JE"
 	fi
 
 	shj_log "Exit Code = $EXITCODE"
@@ -485,23 +487,28 @@ for((i=1;i<=TST;i++)); do
 			t=`grep "SHJ_TIME" err|cut -d" " -f3`
 			shj_log "Time Limit Exceeded ($t s)"
 			echo "<span class=\"shj_o\">Time Limit Exceeded</span>" >>$PROBLEMPATH/$UN/result.html
-			continue
+			VERDICT="TLE"
+			break
 		elif grep -q "SHJ_MEM" err; then
 			shj_log "Memory Limit Exceeded"
 			echo "<span class=\"shj_o\">Memory Limit Exceeded</span>" >>$PROBLEMPATH/$UN/result.html
-			continue
+			VERDICT="RE"
+			break
 		elif grep -q "SHJ_HANGUP" err; then
 			shj_log "Hang Up"
 			echo "<span class=\"shj_o\">Process hanged up</span>" >>$PROBLEMPATH/$UN/result.html
-			continue
+			VERDICT="RE"
+			break
 		elif grep -q "SHJ_SIGNAL" err; then
 			shj_log "Killed by a signal"
 			echo "<span class=\"shj_o\">Killed by a signal</span>" >>$PROBLEMPATH/$UN/result.html
-			continue
+			VERDICT="RE"
+			break
 		elif grep -q "SHJ_OUTSIZE" err; then
 			shj_log "Output Size Limit Exceeded"
 			echo "<span class=\"shj_o\">Output Size Limit Exceeded</span>" >>$PROBLEMPATH/$UN/result.html
-			continue
+			VERDICT="RE"
+			break
 		fi
 	else
 		t=`grep "FINISHED" err|cut -d" " -f3`
@@ -513,14 +520,16 @@ for((i=1;i<=TST;i++)); do
 		#echo "<span style='color: orange;'>Time Limit Exceeded</span>" >>$PROBLEMPATH/$UN/result.html
 		shj_log "Killed"
 		echo "<span class=\"shj_o\">Killed</span>" >>$PROBLEMPATH/$UN/result.html
-		continue
+		VERDICT="TLE"
+		break
 	fi
 
 
 	if [ $EXITCODE -ne 0 ]; then
 		shj_log "Runtime Error"
 		echo "<span class=\"shj_o\">Runtime Error</span>" >>$PROBLEMPATH/$UN/result.html
-		continue
+		VERDICT="RE"
+		break
 	fi
 	
 	# checking correctness of output
@@ -557,6 +566,8 @@ for((i=1;i<=TST;i++)); do
 		((PASSEDTESTS=PASSEDTESTS+1))
 	else
 		shj_log "WRONG"
+		VERDICT="WA"
+			break
 		echo "<span class=\"shj_r\">WRONG</span>" >>$PROBLEMPATH/$UN/result.html
 	fi
 done
@@ -580,4 +591,9 @@ rm -r $JAIL >/dev/null 2>/dev/null # removing files
 ((SCORE=PASSEDTESTS*10000/TST)) # give score from 10,000
 shj_log "\nScore from 10000: $SCORE"
 
-shj_finish $SCORE
+#shj_finish $SCORE
+if [ "$VERDICT" == "AC" ];then
+	shj_finish "$SCORE"
+else
+	shj_finish "$VERDICT"
+fi

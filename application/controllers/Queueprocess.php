@@ -116,7 +116,7 @@ class Queueprocess extends CI_Controller
 			shell_exec("cd $tester_path; rm -rf jail*");
 
 			// Saving judge result
-			if ( is_numeric($output) || $output === 'Compilation Error' || $output === 'Syntax Error' )
+			if ( true||is_numeric($output) || $output === 'Compilation Error' || $output === 'Syntax Error' )
 			{
 				shell_exec("mv $userdir/result.html $userdir/result-{$submit_id}.html");
 				shell_exec("mv $userdir/log $userdir/log-{$submit_id}");
