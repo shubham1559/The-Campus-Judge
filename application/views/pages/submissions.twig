@@ -142,7 +142,7 @@
 					{% elseif submission.status|lower == 'score' %}
 						{% set submission_class = (submission.fullmark ? 'btn shj-green' : 'btn shj-red') %}
 					{% else %}
-						{% set submission_class = 'btn shj-blue' %}
+						{% set submission_class = 'btn shj-red' %}
 					{% endif %}
 					<div class="{{ submission_class }}" data-type="result" >
 						{% if submission.status == 'SCORE' %}
