@@ -1,0 +1,39 @@
+<h1 dir="auto">Security</h1>
+<h2 dir="auto">Step 1. Use Sandbox</h2>
+<p dir="auto">Make sure that you are using Sandbox for C/C++ and you have enabled Java Security Manager (Java Policy) for Java. You can read more about sandboxing <a href="sandboxing.md">here</a>.</p>
+<h2 dir="auto">Step 2. Use Shield</h2>
+<p dir="auto">Shield is not a real protection, but is more than nothing! Make sure that you have enabled Shield for C, C++ and Python. You can read more about Shield <a href="shield.md">here</a>.</p>
+<h2 dir="auto">Step 3. Run as Non-Privileged User</h2>
+<p dir="auto">It is very important to run submitted codes as a non-privileged user - a user who does not have access to the network, is not able to write any files, and is not able to create lots of processes.</p>
+<p dir="auto">I assume that PHP is running as user <code>www-data</code> on your server.
+Create a new user <code>restricted_user</code> and set a password for it.
+Run <code>sudo visudo</code> and add this line at the end of <code>sudoers</code> file:</p>
+<pre><code>www-data ALL=(restricted_user) NOPASSWD: ALL</code></pre>
+<p dir="auto">In <code>tester/runcode.sh</code> change</p>
+<pre><code class="language-bash">if $TIMEOUT_EXISTS; then
+    timeout -s9 $((TIMELIMITINT*2)) $CMD &lt;$IN &gt;out 2&gt;err
+else
+    $CMD &lt;$IN &gt;out 2&gt;err        
+fi</code></pre>
+<p dir="auto">to</p>
+<pre><code class="language-bash">if $TIMEOUT_EXISTS; then
+    sudo -u restricted_user timeout -s9 $((TIMELIMITINT*2)) $CMD &lt;$IN &gt;out 2&gt;err
+else
+    sudo -u restricted_user $CMD &lt;$IN &gt;out 2&gt;err        
+fi</code></pre>
+<p dir="auto">And uncomment this line:</p>
+<pre><code class="language-bash">sudo -u restricted_user pkill -9 -u restricted_user</code></pre>
+<h3 dir="auto">Disable Networking for restricted_user</h3>
+<p dir="auto"><code>restricted_user</code> should not be able to access network. You can disable networking for a user in Linux using <code>iptables</code>.
+Read more about this <a href="http://www.cyberciti.biz/tips/block-outgoing-network-access-for-a-single-user-from-my-server-using-iptables.html">here</a> and <a href="http://askubuntu.com/questions/102005/disable-networking-for-specific-users">here</a>.
+After disabling networking, test it by running <code>ping</code> as <code>restricted_user</code>.</p>
+<h3 dir="auto">Deny Write Permissions</h3>
+<p dir="auto">Just make sure that no file or directory is writable by <code>restricted_user</code>. Check your file and directory permissions.</p>
+<h3 dir="auto">Limit Number of Processes</h3>
+<p dir="auto">Limit number of processes of <code>restricted_user</code>.
+Open <code>/etc/security/limits.conf</code> and add these lines:</p>
+<pre><code>restricted_user     soft    nproc   3
+restricted_user     hard    nproc   5</code></pre>
+<p dir="auto">I use 3, 5. You can use different soft and hard limits.</p>
+<h2 dir="auto">Step 4. Use Two Servers</h2>
+<p dir="auto">Use a server for web interface and handling web requests and use another server for running submitted codes. This decreases the risk of running submitted codes. You need to change Sharif Judge's source code to achieve this. Maybe I add this feature in future.</p>

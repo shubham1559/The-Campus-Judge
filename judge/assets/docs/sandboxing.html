@@ -1,0 +1,15 @@
+<h1 dir="auto">Sandbox</h1>
+<p dir="auto">Sharif Judge runs lots of user-submitted arbitrary codes. It should run codes in a restricted environment. So we need tools to sandbox submitted codes in Sharif Judge.</p>
+<p dir="auto">You can improve security by enabling <a href="shield.md">shield</a> alongside Sandbox.</p>
+<h2 dir="auto">C/C++ Sabdboxing</h2>
+<p dir="auto">Sharif Judge uses <a href="https://github.com/daveho/EasySandbox">EasySandbox</a> for sandboxing C/C++ codes. EasySandbox limits the running code using <strong><a href="http://lwn.net/Articles/332974/">seccomp</a></strong>, a sandboxing mechanism in Linux kernel.</p>
+<p dir="auto">By default, EasySandbox is disabled in Sharif Judge. You can enable it from <code>Settings</code> page. But you must "build EasySandbox" before enabling it.</p>
+<h3 dir="auto">Build EasySandbox</h3>
+<p dir="auto">EasySandbox files are located in <code>tester/easysandbox</code>. For building EasySandbox run:</p>
+<pre><code class="language-bash">$ cd tester/easysandbox
+$ chmod +x runalltests.sh
+$ chmod +x runtest.sh
+$ make runtests</code></pre>
+<p dir="auto">If it printed the message <code>All tests passed!</code>, EasySandbox is built successfully and can be enabled on your system. You can enable EasySandbox in <code>Settings</code> page.</p>
+<h2 dir="auto">Java Sandboxing</h2>
+<p dir="auto">Java sandbox is enabled by default using Java Security Manager. You can enable/disable it in <code>Settings</code> page.</p>

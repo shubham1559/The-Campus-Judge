@@ -24,17 +24,34 @@ class Docs extends CI_Controller
 
 	public function index($doc_id=NULL)
 	{
-		$docs=array(
-			'sample' => "index.html");
+		$docss[0]=array();
+		$docss[1]=array();
+
+		$docss[2]=array('Add Assignment'=>"add_assignment.html",
+				"Sample Assignment"=>"sample_assignment.html",
+				"Detect similar codes"=>"moss.html",
+				"Tests Structure" =>"tests_structure.html",
+				);
+
+		$docss[3]=array('Users'=>"users.html",
+			'Clean urls'=>"clean_urls.html",
+			'Installation'=>"installation.html",
+			'Settings'=>"settings.html",
+			'Sandboxing'=>"sandboxing.html",
+			'Security'=>"security.html",
+			'Shield'=>"shield.html");
 		$baseaddr="assets/docs/";
 		$filename="index.html";
+		$level= $this->user->level;
+		$docs=[];
+		for($i=0;$i<=$level;$i++)
+			$docs=array_merge($docs,$docss[$i]);
 		if($doc_id===NULL)
 		{		
 			$data = array(
 					'all_assignments' => $this->assignment_model->all_assignments(),
 					'docs' =>array_keys($docs),
 				);
-				//echo file_get_contents($baseaddr.$filename);
 				$this->twig->display('pages/docslist.twig', $data);
 			}
 		else{
@@ -50,7 +67,6 @@ class Docs extends CI_Controller
 			else
 			show_404();
 		}
-		//print_r($docs);
 	}
 
 
