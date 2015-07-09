@@ -97,9 +97,10 @@ class Assignments extends CI_Controller
 	/**
 	 * Download pdf file of an assignment (or problem) to browser
 	 */
-	public function pdf($assignment_id, $problem_id = NULL)
+	public function pdf($assignment_id=NULL, $problem_id = NULL)
 	{
 		// Find pdf file
+		if($assignment_id==NULL) show_404();
 		if ($problem_id === NULL)
 			$pattern = rtrim($this->settings_model->get_setting('assignments_root'),'/')."/assignment_{$assignment_id}/*.pdf";
 		else
@@ -114,6 +115,29 @@ class Assignments extends CI_Controller
 		force_download($filename, file_get_contents($pdf_files[0]), TRUE);
 	}
 
+	// ------------------------------------------------------------------------
+
+
+
+	/**
+	 * Download solution zip file of an assignment (or problem) to browser
+	 */
+	public function solution($assignment_id=NULL)
+	{
+		// Find zip file and download
+		if($assignment_id==NULL) show_404();
+		$this->load->model("assignment_model");
+		if($this->assignment_model->is_public($assignment_id)!=1)
+			show_404();
+		else{
+			$pattern = rtrim($this->settings_model->get_setting('assignments_root'),'/')."/assignment_{$assignment_id}/*.zip";
+			$zip_files = glob($pattern);
+			// Download the file to browser
+			$this->load->helper('download')->helper('file');
+			$filename = shj_basename($zip_files[0]);
+			force_download($filename, file_get_contents(zip_files[0]), TRUE);
+		}
+	}
 
 
 	// ------------------------------------------------------------------------
@@ -490,7 +514,7 @@ class Assignments extends CI_Controller
 
 			// Extract new test cases and descriptions in temp directory
 			$this->load->library('unzip');
-			$this->unzip->allow(array('txt', 'cpp', 'html', 'md', 'pdf'));
+			$this->unzip->allow(array('txt', 'cpp', 'html', 'md', 'pdf','zip'));
 			$extract_result = $this->unzip->extract($u_data['full_path'], $tmp_dir);
 
 			// Remove the zip file

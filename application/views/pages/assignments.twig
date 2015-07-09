@@ -71,7 +71,7 @@
 	</td>
 	<td>
 		{% if item.public %}
-			<span style="color: green;">Public</span>
+			<a href="{{ site_url('assignments/solution/'~item.id) }}"><img src="{{ base_url('assets/images/zip.svg') }}" /></a>
 		{% else %}
 			<span style="color: red;">Closed</span>
 		{% endif %}

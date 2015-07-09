@@ -480,6 +480,13 @@ class Assignment_model extends CI_Model
 			$this->db->query($query);
 		}
 	}
+	public function is_public($assignment_id)
+	{
+		return $this->db->select('public')
+						->where(array('id'=>$assignment_id))
+						->get("assignments")
+						->row()->public;
+	}
 
 
 }
