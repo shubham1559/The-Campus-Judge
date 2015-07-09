@@ -96,6 +96,7 @@ class Install extends CI_Controller
 				'problems'      => array('type' => 'SMALLINT', 'constraint' => 4, 'unsigned' => TRUE),
 				'total_submits' => array('type' => 'INT', 'constraint' => 11, 'unsigned' => TRUE),
 				'open'          => array('type' => 'TINYINT', 'constraint' => 1),
+				'public'        => array('type' => 'TINYINT', 'constraint' => 1),
 				'scoreboard'    => array('type' => 'TINYINT', 'constraint' => 1),
 				'javaexceptions'=> array('type' => 'TINYINT', 'constraint' => 1),
 				'description'   => array('type' => 'TEXT', 'default' => ''),

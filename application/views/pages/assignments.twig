@@ -40,6 +40,7 @@
 	<th>Start Time</th>
 	<th>Finish Time</th>
 	<th>Status</th>
+	<th>Solutions</th>
 	<th>PDF</th>
 	{% if user.level > 0 %}
 	<th>Actions</th>
@@ -66,6 +67,13 @@
 			<span style="color: green;">Open</span>
 		{% else %}
 			<span style="color: red;">Close</span>
+		{% endif %}
+	</td>
+	<td>
+		{% if item.public %}
+			<span style="color: green;">Public</span>
+		{% else %}
+			<span style="color: red;">Closed</span>
 		{% endif %}
 	</td>
 	<td>

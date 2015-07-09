@@ -63,7 +63,7 @@
 				<th width="3%" rowspan="2">ID</th>
 				{% endif %}
 				<th width="6%" rowspan="2">Username</th>
-				<th width="14%" rowspan="2">Name</th>
+				<!--th width="14%" rowspan="2">Name</th-->
 				<th width="4%" rowspan="2">Problem</th>
 				<th width="14%" rowspan="2">Submit Time</th>
 				<th colspan="3">Score</th>
@@ -81,7 +81,9 @@
 				<th width="5%" class="score">Final Score</th>
 			</tr>
 		{% else %}
-				<th width="10%" rowspan="2">Problem</th>
+				<th width="10%" rowspan="2">Username</th>
+				<!--th width="14%" rowspan="2">Name</th-->
+				<th width="6%" rowspan="2">Problem</th>
 				<th width="30%" rowspan="2">Submit Time</th>
 				<th width="7%" colspan="3">Score</th>
 				<th width="1%" rowspan="2">Language</th>
@@ -114,10 +116,10 @@
 				<td>{{ (page_number-1)*per_page+i }}</td>
 				<td>{{ submission.submit_id }}</td>
 			{% endif %}
-
-			<td><a href="{{ site_url('submissions/'~view~'/user/'~submission.username~(filter_problem?'/problem/'~filter_problem)) }}">{{ submission.username }}</a></td>
-			<td dir="auto">{{ submission.name }}</td>
 		{% endif %}
+			<td><a href="{{ site_url('submissions/'~view~'/user/'~submission.username~(filter_problem?'/problem/'~filter_problem)) }}">{{ submission.username }}</a></td>
+			<!--td dir="auto">{{ submission.name }}</td-->
+		
 			<td><a href="{{ site_url('submissions/'~view~(filter_user?'/user/'~filter_user)~'/problem/'~submission.problem) }}" title="{{ problems[submission.problem].name }}">{{ submission.problem }}</a></td>
 			<td>{{ submission.time }}</td>
 			<td>{{ submission.pre_score }}</td>

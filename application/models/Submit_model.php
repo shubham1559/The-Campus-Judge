@@ -39,11 +39,11 @@ class Submit_model extends CI_Model {
 	// ------------------------------------------------------------------------
 
 
-	public function get_final_submissions($assignment_id, $user_level, $username, $page_number = NULL, $filter_user = NULL, $filter_problem = NULL)
+	public function get_final_submissions($assignment_id, $user_level, $username, $page_number = NULL, $filter_user = NULL, $filter_problem = NULL,$public=FALSE)
 	{
 		$arr['assignment'] = $assignment_id;
 		$arr['is_final'] = 1;
-		if ($user_level === 0)// students can only get final submissions of themselves
+		if ($user_level === 0&&!$public)// students can only get final submissions of themselves
 			$arr['username']=$username;
 		elseif ($filter_user !== NULL)
 			$arr['username'] = $filter_user;
@@ -66,10 +66,10 @@ class Submit_model extends CI_Model {
 	// ------------------------------------------------------------------------
 
 
-	public function get_all_submissions($assignment_id, $user_level, $username, $page_number = NULL, $filter_user = NULL, $filter_problem = NULL)
+	public function get_all_submissions($assignment_id, $user_level, $username, $page_number = NULL, $filter_user = NULL, $filter_problem = NULL,$public=FALSE)
 	{
 		$arr['assignment']=$assignment_id;
-		if ($user_level === 0)
+		if ($user_level === 0&&!$public)
 			$arr['username']=$username;
 		elseif ($filter_user !== NULL)
 			$arr['username'] = $filter_user;
@@ -91,11 +91,11 @@ class Submit_model extends CI_Model {
 	// ------------------------------------------------------------------------
 
 
-	public function count_final_submissions($assignment_id, $user_level, $username, $filter_user = NULL, $filter_problem = NULL)
+	public function count_final_submissions($assignment_id, $user_level, $username, $filter_user = NULL, $filter_problem = NULL,$public=FALSE)
 	{
 		$arr['assignment'] = $assignment_id;
 		$arr['is_final'] = 1;
-		if ($user_level === 0)
+		if ($user_level === 0&&!$public)
 			$arr['username']=$username;
 		elseif ($filter_user !== NULL)
 			$arr['username'] = $filter_user;
@@ -108,10 +108,10 @@ class Submit_model extends CI_Model {
 	// ------------------------------------------------------------------------
 
 
-	public function count_all_submissions($assignment_id, $user_level, $username, $filter_user = NULL, $filter_problem = NULL)
+	public function count_all_submissions($assignment_id, $user_level, $username, $filter_user = NULL, $filter_problem = NULL,$public=FALSE)
 	{
 		$arr['assignment']=$assignment_id;
-		if ($user_level === 0)
+		if ($user_level === 0&&!$public)
 			$arr['username']=$username;
 		elseif ($filter_user !== NULL)
 			$arr['username'] = $filter_user;

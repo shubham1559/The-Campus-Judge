@@ -142,6 +142,12 @@
 		{{ form_error('open', '<div class="shj_error">', '</div>') }}
 	</p>
 	<p class="input_p">
+		<input id="form_a_public" type="checkbox" name="public" value="1" {{ edit ? (edit_assignment.public ? 'checked') : set_checkbox('public', '1')|raw }} />
+		<label for="form_a_public" class="default">Public</label>
+		<span class="form_comment space-left">Make solutions public or not</span>
+		{{ form_error('public', '<div class="shj_error">', '</div>') }}
+	</p>
+	<p class="input_p">
 		<input id="form_a_scoreboard" type="checkbox" name="scoreboard" value="1" {{ edit ? (edit_assignment.scoreboard ? 'checked') : set_checkbox('scoreboard', '1')|raw }} />
 		<label for="form_a_scoreboard" class="default">Scoreboard</label>
 		<span class="form_comment space-left">Check this to enable scoreboard</span>

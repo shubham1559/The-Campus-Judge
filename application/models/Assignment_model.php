@@ -44,6 +44,7 @@ class Assignment_model extends CI_Model
 			'problems' => $this->input->post('number_of_problems'),
 			'total_submits' => 0,
 			'open' => ($this->input->post('open')===NULL?0:1),
+			'public' => ($this->input->post('public')===NULL?0:1),
 			'scoreboard' => ($this->input->post('scoreboard')===NULL?0:1),
 			'javaexceptions' => ($this->input->post('javaexceptions')===NULL?0:1),
 			'description' => '', /* todo */

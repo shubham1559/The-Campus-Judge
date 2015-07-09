@@ -565,5 +565,4 @@ class Assignments extends CI_Controller
 	}
 
 
-
 }
