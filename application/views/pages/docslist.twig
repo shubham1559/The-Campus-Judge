@@ -1,0 +1,20 @@
+{#
+ # Sharif Judge
+ # file: docslist.twig
+ # author: Shubham vishwakarma <shubhamvishwakarma987@gmail.com>
+ #}
+{% set selected = 'docs' %}
+{% extends 'templates/base.twig' %}
+{% block icon %}fa-info{% endblock %}
+{% block title %}Docs{% endblock %}
+{% block head_title %}Docs{% endblock %}
+
+
+
+{% block main_content %}
+<ul>
+{% for doc in docs %}
+<li><a href="{{site_url('docs')}}/index/{{doc}}">{{doc}}</a></li>
+{% endfor %}
+</ul>
+{% endblock %} {# main_content #}

@@ -84,6 +84,9 @@ class Problems extends CI_Controller
 
 		$this->twig->display('pages/problems.twig', $data);
 	}
+	/**
+	 * It is used to display summary of the selected assignment
+	 */
 	//---------------------------------------------------------------------------
 	public function summary($assignment_id = NULL)
 	{
