@@ -467,7 +467,8 @@ class Submissions extends CI_Controller
 				show_404();
 
 			$type = $this->input->post('type'); // $type is 'code', 'result', or 'log'
-
+			if($type=='result')
+				exit("You are not allowed");
 			if ($this->user->level === 0 && $type === 'log')
 				show_404();
 

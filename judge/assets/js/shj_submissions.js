@@ -16,6 +16,7 @@ $(document).ready(function () {
 		var button = $(this);
 		var row = button.parents('tr');
 		var type = button.data('type');
+		if(type=='result') return;
 		if (type == 'download') {
 			window.location = shj.site_url + 'submissions/download_file/' + row.data('u') + '/' + row.data('a') + '/' + row.data('p') + '/' + row.data('s');
 			return;
