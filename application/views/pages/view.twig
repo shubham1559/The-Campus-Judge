@@ -1,0 +1,31 @@
+{#
+ # Sharif Judge
+ # file: view.twig
+ # author: Shubham vishwakarma <shubhamvishwakarma987@gmail.com>
+ #}
+{% set selected='users' %}
+{% extends 'templates/base.twig' %}
+{% block icon %}fa-user{% endblock %}
+{% block title %}{{username}}-{{role}}{% endblock %}
+{% block head_title %}{{username}}{% endblock %}
+
+{% block title_menu %}
+{% if user.level >=2 %}
+	<span class="title_menu_item"><a href="{{ site_url('profile/edit/'~id) }}"><i class="fa fa-edit color10"></i> Edit</a></span>
+{% elseif userid==id %}
+	<span class="title_menu_item"><a href="{{ site_url('profile/edit/') }}"><i class="fa fa-edit color10"></i> Edit</a></span>
+{% endif %}
+{% endblock %}
+
+{% block main_content %}
+Primary Email : {{email}}<br/>
+<h2>Members</h2>
+{% if members %}
+{% for member in members %}
+<h3>{{member.name}}</h3><br/>
+{{member.institute}}<br/>
+{% endfor %}
+{% else %}
+<p>No member data available</p>
+{% endif %}
+{% endblock %}  {# main_content #}

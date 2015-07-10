@@ -27,7 +27,7 @@ class Profile extends CI_Controller
 
 	// ------------------------------------------------------------------------
 
-
+/*
 	public function index($user_id = FALSE)
 	{
 		if ($user_id === FALSE)
@@ -67,7 +67,7 @@ class Profile extends CI_Controller
 		);
 
 		$this->twig->display('pages/profile.twig', $data);
-	}
+	}*/
 
 
 	// ------------------------------------------------------------------------
@@ -116,5 +116,84 @@ class Profile extends CI_Controller
 		print_r($this->queue_model->checkbetter("shu987",2,1));
 	}*/
 
+	public function edit($user_id=NULL)
+	{
+		$cur_id=$this->user_model->username_to_user_id($this->user->username);
+		if ($user_id === NULL)
+			$user_id = $cur_id;
+
+		if ( ! is_numeric($user_id))
+			show_404();
+
+
+		$user = $this->user_model->get_user($user_id);
+		if ($user === FALSE)
+			show_404();
+		$this->edit_username = $user->username;
+		$this->load->model('settings_model');
+		$max=$this->settings_model->get_setting('maximum_users');
+		if($this->user->level<=1&&$user_id!=$cur_id)
+			show_404();
+		$result=($this->user_model->get_members($user_id,$max));
+		for($i=0;$i<$max;$i++)
+			if(!isset($result[$i]))
+				$result[$i]=array();
+		$this->form_validation->set_rules('membername[]', 'Name', 'max_length[58]',array('max_length[58]' => 'name cannot be longer than 58 charachters'));
+		$this->form_validation->set_rules('memberinst[]', 'Institute name', 'max_length[58]',array('max_length[58]' => 'Institute name cannot be longer than 58 charachters'));
+		$this->form_validation->set_rules('email', 'email address', 'required|max_length[40]|valid_email|callback__email_check', array('_email_check' => 'This %s already exists.'));
+		$this->form_validation->set_rules('password', 'password', 'callback__password_check', array('_password_check' => 'The %s field must be between 6 and 200 characters in length.'));
+		$this->form_validation->set_rules('password_again', 'password confirmation', 'callback__password_again_check', array('_password_again_check' => 'The %s field does not match the password field.'));
+		$this->form_validation->set_rules('role', 'role', 'callback__role_check');
+		$this->form_status='';
+		if ($this->form_validation->run()){
+			$this->user_model->update_profile_members($user_id);
+			redirect("profile/$user_id");
+		}
+		$data = array(
+			'all_assignments' => $this->assignment_model->all_assignments(),
+			'id' => $user_id,
+			'username' => $user->username,
+			'role'=>$user->role,
+			'email' => $user->email,
+			'members'=>$result,
+			'max'=>$max,
+			'form_status' => $this->form_status,
+			);
+		
+			$this->twig->display("pages/edituser.twig",$data);
+
+	}
+
+	public function index($user_id=NULL)
+	{
+		$cur_id=$this->user_model->username_to_user_id($this->user->username);;
+		if ($user_id === NULL)
+			$user_id =$cur_id;
+
+		if ( ! is_numeric($user_id))
+			{$user_id=$this->user_model->username_to_user_id($user_id);
+				if($user_id==FALSE)
+					show_404();
+			}
+
+
+		$user = $this->user_model->get_user($user_id);
+		if ($user === FALSE)
+			show_404();
+
+		$this->load->model('settings_model');
+		$max=$this->settings_model->get_setting('maximum_users');
+			$data = array(
+			'all_assignments' => $this->assignment_model->all_assignments(),
+			'id' => $user_id,
+			'userid'=>$cur_id,
+			'username' => $user->username,
+			'role'=>$user->role,
+			'email' => $user->email,
+			'members'=> $this->user_model->get_members($user_id,$max),
+			);
+		$this->twig->display("pages/view.twig",$data);
+
+	}
 
 }

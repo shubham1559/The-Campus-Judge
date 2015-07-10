@@ -27,7 +27,7 @@
 {% for sc_username in scoreboard.username %}
 	<tr>
 	<td>{{ loop.index }}</td>
-	<td>{{ sc_username }}</td>
+	<td><a href="{{ site_url('profile/'~sc_username) }}">{{ sc_username }}</a></td>
 	<td dir="auto">{{ names[sc_username] }}</td>
 	{% for problem in problems %}
 	<td>

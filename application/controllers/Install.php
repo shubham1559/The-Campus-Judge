@@ -196,7 +196,7 @@ class Install extends CI_Controller
 
 			// insert default settings to table 'settings'
 			$result = $this->db->insert_batch('settings', array(
-				array('shj_key' => 'timezone',               'shj_value' => 'Asia/Tehran'),
+				array('shj_key' => 'timezone',               'shj_value' => 'Asia/Kolkata'),
 				array('shj_key' => 'tester_path',            'shj_value' => '/home/shj/tester'),
 				array('shj_key' => 'assignments_root',       'shj_value' => '/home/shj/assignments'),
 				array('shj_key' => 'file_size_limit',        'shj_value' => '50'),
@@ -221,6 +221,7 @@ class Install extends CI_Controller
 				array('shj_key' => 'results_per_page_all',   'shj_value' => '40'),
 				array('shj_key' => 'results_per_page_final', 'shj_value' => '80'),
 				array('shj_key' => 'week_start',             'shj_value' => '0'),
+				array('shj_key' => 'maximum_users',          'shj_value' => '2'),
 			));
 			if ( ! $result)
 				show_error("Error adding data to table ".$this->db->dbprefix('settings'));
@@ -235,6 +236,7 @@ class Install extends CI_Controller
 				'display_name'        => array('type' => 'VARCHAR', 'constraint' => 40, 'default' => ''),
 				'email'               => array('type' => 'VARCHAR', 'constraint' => 40),
 				'role'                => array('type' => 'VARCHAR', 'constraint' => 20),
+				'members'			  => array('type' => 'SMALLINT', 'constraint' => 4, 'unsigned' => TRUE, 'default' => 0),
 				'passchange_key'      => array('type' => 'VARCHAR', 'constraint' => 60, 'default' => ''),
 				'passchange_time'     => array('type' => $DATETIME, 'null' => TRUE),
 				'first_login_time'    => array('type' => $DATETIME, 'null' => TRUE),
@@ -248,7 +250,15 @@ class Install extends CI_Controller
 			if ( ! $this->dbforge->create_table('users', TRUE))
 				show_error("Error creating database table ".$this->db->dbprefix('users'));
 
-
+			// create table 'details'
+			$fields = array(
+				'id'                  => array('type' => 'INT', 'constraint' => 11, 'unsigned' => TRUE),
+				'name'            	  => array('type' => 'VARCHAR', 'constraint' => 60),
+				'institute'            => array('type' => 'VARCHAR', 'constraint' => 60),
+			);
+			$this->dbforge->add_field($fields);
+			if ( ! $this->dbforge->create_table('details', TRUE))
+				show_error("Error creating database table ".$this->db->dbprefix('details'));
 			// create table 'query'
 			$fields = array(
 				'assignment' 	=> array('type' => 'INT','constraint' => 11),

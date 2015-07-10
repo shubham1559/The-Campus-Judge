@@ -265,6 +265,7 @@ class User_model extends CI_Model
 			return FALSE;
 		$this->db->delete('users', array('id'=>$user_id));
 		$this->db->delete('submissions', array('username' => $username));
+		$this->db->delete('details',array('id'=>$user_id));
 		// each time we delete a user, we should update all scoreboards
 		$this->load->model('scoreboard_model');
 		$this->scoreboard_model->update_scoreboards();
@@ -423,6 +424,57 @@ class User_model extends CI_Model
 		$this->db->where('username', $username)->update('users', $user);
 	}
 
+		// ------------------------------------------------------------------------
+
+
+	/**
+	 * Update Profile and member
+	 *
+	 * Updates User Profile (Name, Email, Password, Role)
+	 *
+	 * @param $user_id
+	 * @return bool
+	 */
+	public function update_profile_members($user_id)
+	{
+		/*$query = $this->db->get_where('users', array('id'=>$user_id));
+		if ($query->num_rows() != 1)
+			return FALSE;
+		$the_user = $query->row();
+		$username = $the_user->username;*/
+
+		$user=array(
+			//'id' =>$user_id,
+			'email' => $this->input->post('email')
+		);
+
+		// if a role is provided, change the role
+		// (only admins are able to provide a role)
+		if ($this->input->post('role') !== NULL)
+			$user['role'] = $this->input->post('role');
+
+		// if a password is provided, change the password:
+		if ($this->input->post('password') != ''){
+			$this->load->library('password_hash', array(8, FALSE));
+			$user['password'] = $this->password_hash->HashPassword($this->input->post('password'));
+		}
+		$this->db->where('id',$user_id)
+				->update('users',$user);
+		$names=$this->input->post('membername[]');
+		$institute=$this->input->post('memberinst[]');
+		$members=[];
+		foreach($names as $key=>$name)
+		{
+			$val['id']=$user_id;
+			$val['name']=$name;
+			$val['institute']=$institute[$key];
+			if($val['name']!='')
+			array_push($members,$val);
+		}
+		$this->db->delete('details',array('id'=>$user_id));
+		if($members)
+		$this->db->insert_batch('details',$members);
+	}
 
 	// ------------------------------------------------------------------------
 
@@ -585,7 +637,20 @@ class User_model extends CI_Model
 		$this->db->where('username', $username)->update('users', array('last_login_time'=>$now));
 	}
 
+	// ------------------------------------------------------------------------
 
+
+	/**
+	 * return all the members data
+	 *
+	 */
+	public function get_members($user_id,$max)
+	{
+		$query= $this->db->limit($max)->get_where('details',array('id'=>$user_id));
+		if ($query->num_rows() <1)
+			return FALSE;
+		return $query->result_array();
+	}
 
 
 

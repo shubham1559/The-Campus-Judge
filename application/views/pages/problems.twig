@@ -62,7 +62,7 @@ $(document).ready(function(){
 {% for query in comments %}
 	 <div class="querynotif">
 		<div class="querynotif_title" dir="auto">
-			<span class="anchor queryttl_n">{{ query.username }}</span>
+			<a class="anchor queryttl_n" href="{{site_url('profile/'~query.username)}}">{{ query.username }}</a>
 		</div>
 		<div class="querynotif_text" dir="auto">{{query.message|raw}}</div>
 	</div>
