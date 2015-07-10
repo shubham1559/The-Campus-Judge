@@ -33,7 +33,6 @@
 			<th>#</th>
 			<th>User ID</th>
 			<th>Username</th>
-			<th>Display Name</th>
 			<th>Email</th>
 			<th>Role</th>
 			<th>First Login</th>
@@ -46,7 +45,6 @@
 			<td>{{ loop.index }}</td>
 			<td>{{ user.id }}</td>
 			<td id="un"><a href="{{site_url('profile/'~user.id) }}">{{ user.username }}</a></td>
-			<td dir="auto">{{ user.display_name }}</td>
 			<td>{{ user.email }}</td>
 			<td>{{ user.role }}</td>
 			<td>{{ user.first_login_time ? user.first_login_time : 'Never' }}</td>
