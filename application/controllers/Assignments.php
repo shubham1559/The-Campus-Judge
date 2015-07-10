@@ -100,6 +100,10 @@ class Assignments extends CI_Controller
 	public function pdf($assignment_id=NULL, $problem_id = NULL)
 	{
 		// Find pdf file
+		$this->load->model("assignment_model");
+		$assignment = $this->assignment_model->assignment_info($assignment_id);
+		if(shj_now()<strtotime($assignment['start_time']))
+			show_error("Assignment File not found");
 		if($assignment_id==NULL) show_404();
 		if ($problem_id === NULL)
 			$pattern = rtrim($this->settings_model->get_setting('assignments_root'),'/')."/assignment_{$assignment_id}/*.pdf";
