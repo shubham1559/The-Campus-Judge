@@ -39,7 +39,9 @@ class Settings extends CI_Controller
 				'all_assignments' => $this->assignment_model->all_assignments(),
 				'sandbox_built' => file_exists(rtrim($settings['tester_path'], '/').'/easysandbox/EasySandbox.so'),
 				'form_status' => $this->form_status,
-				'errors' => $this->errors
+				'errors' => $this->errors,
+				'maximum_users'=>$settings['maximum_users'],
+				'submit_penalty'=>$settings['submit_penalty'],
 			)
 		);
 		ob_start();
@@ -113,6 +115,8 @@ class Settings extends CI_Controller
 					'results_per_page_all' => $this->input->post('rpp_all'),
 					'results_per_page_final' => $this->input->post('rpp_final'),
 					'week_start' => $this->input->post('week_start'),
+					'maximum_users'=>$this->input->post('max_users'),
+					'submit_penalty'=>$this->input->post('penalty'),
 				)
 			);
 			

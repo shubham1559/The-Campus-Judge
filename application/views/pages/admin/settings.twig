@@ -115,6 +115,17 @@ $(document).ready(function(){
 		<span class="form_comment">Enable Log</span>
 	</p>
 	<p class="input_p">
+		<label for="form_max_users">Maximum no of users in a team</label>
+		<input id="form_max_users" type="number" name="max_users" class="sharif_input medium" value="{{ maximum_users }}" min="1"/><br/>
+		{{ form_error('max_users', '<div class="shj_error">', '</div>') }}
+	</p>
+	<p class="input_p">
+		<label for="form_penalty">Submit penalty</label>
+		<input id="form_penalty" type="number" name="penalty" class="sharif_input medium" value="{{ submit_penalty }}" min="0"/>
+		<p class="form_comment clear">This is time penalty for each wrong submission of a user (milliseconds)</p>
+		{{ form_error('penalty', '<div class="shj_error">', '</div>') }}
+	</p>
+	<p class="input_p">
 		<label for="form_late_rule">Default Coefficient Rule</label>
 		<span class="form_comment clear">PHP script without &lt;?php ?&gt; tags</span><br>
 		<textarea id="form_late_rule" name="default_late_rule" rows="15" class="sharif_input add_text clear">{{ default_late_rule }}</textarea>

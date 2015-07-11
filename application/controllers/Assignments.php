@@ -139,6 +139,8 @@ class Assignments extends CI_Controller
 		else{
 			$pattern = rtrim($this->settings_model->get_setting('assignments_root'),'/')."/assignment_{$assignment_id}/*.zip";
 			$zip_files = glob($pattern);
+			if ( ! $zip_files )
+			show_error("File not found");
 			// Download the file to browser
 			$this->load->helper('download')->helper('file');
 			$filename = shj_basename($zip_files[0]);
