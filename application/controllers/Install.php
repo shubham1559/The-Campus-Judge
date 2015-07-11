@@ -254,6 +254,9 @@ class Install extends CI_Controller
 			$fields = array(
 				'id'                  => array('type' => 'INT', 'constraint' => 11, 'unsigned' => TRUE),
 				'name'            	  => array('type' => 'VARCHAR', 'constraint' => 60),
+				'year'            => array('type' => 'INT', 'constraint' => 11,'unsigned'=>TRUE),
+				'branch'            => array('type' => 'VARCHAR', 'constraint' => 60),
+				'rollno'            => array('type' => 'VARCHAR', 'constraint' => 10),
 				'institute'            => array('type' => 'VARCHAR', 'constraint' => 60),
 			);
 			$this->dbforge->add_field($fields);
