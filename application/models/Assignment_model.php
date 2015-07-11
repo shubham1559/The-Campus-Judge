@@ -156,6 +156,7 @@ class Assignment_model extends CI_Model
 		$this->db->delete('assignments', array('id'=>$assignment_id));
 		$this->db->delete('problems', array('assignment'=>$assignment_id));
 		$this->db->delete('submissions', array('assignment'=>$assignment_id));
+		$this->db->delete('query', array('assignment'=>$assignment_id));
 
 		$this->db->trans_complete();
 

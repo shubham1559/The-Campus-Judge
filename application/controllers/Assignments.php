@@ -53,7 +53,6 @@ class Assignments extends CI_Controller
 			$item['finished'] = ($delay > $extra_time);
 			$item['started']=(shj_now()>strtotime($item['start_time']));
 		}
-
 		$this->twig->display('pages/assignments.twig', $data);
 
 	}
@@ -266,7 +265,6 @@ class Assignments extends CI_Controller
 			show_404();
 
 		$assignment = $this->assignment_model->assignment_info($assignment_id);
-
 		if ($assignment['id'] === 0)
 			show_404();
 
