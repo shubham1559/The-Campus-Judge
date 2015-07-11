@@ -90,9 +90,14 @@ shj.update_clock = function(){
 	var textvalue="Contest ends in";
 	var now = moment().add('milliseconds', shj.offset);
 	$('.timer').html('Server Time: '+now.format('MMM DD - HH:mm:ss'));
+
 	var countdown = shj.finish_time.diff(now);
 	var startcountdown=shj.start_time.diff(now);
-	if(startcountdown>0)
+	if(!shj.finish_time.isValid())
+	{
+		textvalue="Invalid contest";
+	}
+	else if(startcountdown>0)
 	{		
 			countdown=startcountdown;						//if yet to start then shown countdown of start time
 			textvalue="Contest Starts in";

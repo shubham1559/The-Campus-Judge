@@ -136,7 +136,7 @@ class Assignments extends CI_Controller
 		if($this->assignment_model->is_public($assignment_id)!=1)
 			show_404();
 		else{
-			$pattern = rtrim($this->settings_model->get_setting('assignments_root'),'/')."/assignment_{$assignment_id}/*.zip";
+			$pattern = rtrim($this->settings_model->get_setting('assignments_root'),'/')."/assignment_{$assignment_id}/solution/*.zip";
 			$zip_files = glob($pattern);
 			if ( ! $zip_files )
 			show_error("File not found");
@@ -508,6 +508,38 @@ class Assignments extends CI_Controller
 			);
 		}
 
+		// Upload Solution ZIP File of Assignment
+		$solutiondir=$assignment_dir."/solution";
+		if(!file_exists($solutiondir))
+			mkdir($solutiondir,0700);
+
+		$config = array(
+			'upload_path' => $solutiondir,
+			'allowed_types' => 'zip',
+		);
+		$this->upload->initialize($config);
+		$old_zip_files = glob("$solutiondir/*.zip");
+		$solutionzip_uploaded = $this->upload->do_upload("zip");
+		if ($_FILES['zip']['error'] === UPLOAD_ERR_NO_FILE)
+			$this->messages[] = array(
+				'type' => 'notice',
+				'text' => "Notice: You did not upload any solution zip file for assignment. If needed, upload by editing assignment."
+			);
+		elseif ( ! $solutionzip_uploaded)
+			$this->messages[] = array(
+				'type' => 'error',
+				'text' => "Error: Error uploading solution zip file of assignment: ".$this->upload->display_errors('', '')
+			);
+		else
+		{
+			foreach($old_zip_files as $old_name)
+				shell_exec("rm -f $old_name");
+			$this->messages[] = array(
+				'type' => 'success',
+				'text' => 'solution zip file uploaded successfully.'
+			);
+		}
+
 
 
 		// Extract Tests (zip file)
@@ -535,6 +567,8 @@ class Assignments extends CI_Controller
 					." rm -f */desc.html; rm -f */desc.md; rm -f */*.pdf;");
 				if (glob("$tmp_dir/*.pdf"))
 					shell_exec("cd $assignment_dir; rm -f *.pdf");
+				if (glob("$tmp_dir/solution/*.zip"))
+					shell_exec("cd $assignment_dir; rm -f solution/*.zip");
 				// Copy new test cases from temp dir
 				shell_exec("cd $assignments_root; cp -R $tmp_dir_name/* assignment_{$the_id};");
 				$this->messages[] = array(
