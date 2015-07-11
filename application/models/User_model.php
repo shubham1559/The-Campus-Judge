@@ -461,13 +461,21 @@ class User_model extends CI_Model
 		$this->db->where('id',$user_id)
 				->update('users',$user);
 		$names=$this->input->post('membername[]');
+		$year=$this->input->post('memberyear[]');
+		$branch=$this->input->post('memberbranch[]');
+		$rollno=$this->input->post('memberroll[]');
 		$institute=$this->input->post('memberinst[]');
 		$members=[];
 		foreach($names as $key=>$name)
 		{
-			$val['id']=$user_id;
-			$val['name']=$name;
-			$val['institute']=$institute[$key];
+			$val=array(
+					'id'=>$user_id,
+					'name'=>$name,
+					'institute'=>$institute[$key],
+					'year'=>$year[$key],
+					'branch'=>$branch[$key],
+					'rollno'=>$rollno[$key],
+				);
 			if($val['name']!='')
 			array_push($members,$val);
 		}

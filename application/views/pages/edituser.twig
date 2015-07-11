@@ -60,6 +60,21 @@
 	{{ form_error('membername[]', '<div class="shj_error">', '</div>') }}
 </p>
 <p class="input_p clear">
+	<label for="form_memberbranch" class="short2">Branch:</label>
+	<input id="form_memberbranch" type="text" name="memberbranch[]" class="sharif_input medium" value="{{member.branch}}"/>
+	{{ form_error('memberbranch[]', '<div class="shj_error">', '</div>') }}
+</p>
+<p class="input_p clear">
+	<label for="form_memberyear" class="short2">Year(1,2,...):</label>
+	<input id="form_memberyear" type="number" name="memberyear[]" class="sharif_input medium" value="{{member.year}}"/>
+	{{ form_error('memberyear[]', '<div class="shj_error">', '</div>') }}
+</p>
+<p class="input_p clear">
+	<label for="form_memberroll" class="short2">Roll no:</label>
+	<input id="form_memberroll" type="text" name="memberroll[]" class="sharif_input medium" value="{{member.rollno}}"/>
+	{{ form_error('memberroll[]', '<div class="shj_error">', '</div>') }}
+</p>
+<p class="input_p clear">
 	<label for="form_memberinst" class="short2">Institute:</label>
 	<input id="form_memberinst" type="text" name="memberinst[]" class="sharif_input medium" value="{{member.institute}}"/>
 	{{ form_error('memberinst[]', '<div class="shj_error">', '</div>') }}

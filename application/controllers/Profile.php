@@ -144,6 +144,9 @@ class Profile extends CI_Controller
 		$this->form_validation->set_rules('password', 'password', 'callback__password_check', array('_password_check' => 'The %s field must be between 6 and 200 characters in length.'));
 		$this->form_validation->set_rules('password_again', 'password confirmation', 'callback__password_again_check', array('_password_again_check' => 'The %s field does not match the password field.'));
 		$this->form_validation->set_rules('role', 'role', 'callback__role_check');
+		$this->form_validation->set_rules('memberbranch[]', 'Branch', 'max_length[58]',array('max_length[58]' => 'branch cannot be longer than 58 charachters'));
+		$this->form_validation->set_rules('memberroll[]', 'Roll no', 'max_length[10]',array('max_length[10]' => 'Roll no cannot be longer than 10 charachters'));
+		$this->form_validation->set_rules('memberyear[]', 'year', 'less_than[8]');
 		$this->form_status='';
 		if ($this->form_validation->run()){
 			$this->user_model->update_profile_members($user_id);

@@ -22,8 +22,20 @@ Primary Email : {{email}}<br/>
 <h2>Members</h2>
 {% if members %}
 {% for member in members %}
-<h3>{{member.name}}</h3><br/>
-{{member.institute}}<br/>
+<h3>{{member.name}}</h3>
+{% if member.rollno%}
+<b>Roll no:</b> {{member.rollno}}<br/>
+{% endif %}
+{% if member.year%}
+<b>Year:</b> {{member.year}}<br/>
+{% endif %}
+{% if member.branch%}
+<b>Branch:</b> {{member.branch}}<br/>
+{% endif %}
+{% if member.institute%}
+<b>Institute:</b> {{member.institute}}<br/>
+<br/>
+{% endif %}
 {% endfor %}
 {% else %}
 <p>No member data available</p>
