@@ -482,10 +482,13 @@ class Assignment_model extends CI_Model
 	}
 	public function is_public($assignment_id)
 	{
-		return $this->db->select('public')
+		$query=$this->db->select('public')
 						->where(array('id'=>$assignment_id))
-						->get("assignments")
-						->row()->public;
+						->get("assignments");
+		if($query->num_rows()!=1)
+			return FALSE;
+		else 
+			return $query->row()->public;
 	}
 
 

@@ -223,7 +223,9 @@ div.top_object.shj_white, div.top_object.shj_white>a {
 	background-color: #272727;
 
 }
-
+div#con_status{
+	width:50px;
+}
 div.countdown {
 	padding: 0 8px;
 	background-color:#27ae60;

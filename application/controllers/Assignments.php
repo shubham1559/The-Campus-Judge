@@ -51,6 +51,7 @@ class Assignments extends CI_Controller
 			ob_end_clean();
 			$item['coefficient'] = $coefficient;
 			$item['finished'] = ($delay > $extra_time);
+			$item['started']=(shj_now()>strtotime($item['start_time']));
 		}
 
 		$this->twig->display('pages/assignments.twig', $data);
@@ -105,7 +106,7 @@ class Assignments extends CI_Controller
 		$this->load->model("assignment_model");
 		$assignment = $this->assignment_model->assignment_info($assignment_id);
 		if(shj_now()<strtotime($assignment['start_time']))
-			show_error("Assignment File not found");
+			show_error("Assignment File wil be available after contest starts");
 		if($assignment_id==NULL) show_404();
 		if ($problem_id === NULL)
 			$pattern = rtrim($this->settings_model->get_setting('assignments_root'),'/')."/assignment_{$assignment_id}/*.pdf";

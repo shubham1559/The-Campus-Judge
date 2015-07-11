@@ -87,11 +87,16 @@ shj.update_clock = function(){
 		shj.sync_server_time();
 	}
 	shj.time = moment();
+	var textvalue="Contest ends in";
 	var now = moment().add('milliseconds', shj.offset);
 	$('.timer').html('Server Time: '+now.format('MMM DD - HH:mm:ss'));
 	var countdown = shj.finish_time.diff(now);
 	var startcountdown=shj.start_time.diff(now);
-	if(startcountdown>0)countdown=startcountdown;						//if yet to start then shown countdown of start time
+	if(startcountdown>0)
+	{		
+			countdown=startcountdown;						//if yet to start then shown countdown of start time
+			textvalue="Contest Starts in";
+	}
 	else 	if (countdown<=0 && countdown + shj.extra_time.asMilliseconds()>=0){		//if started then check if is in extra time or not
 		countdown = countdown + shj.extra_time.asMilliseconds();
 		$("div#extra_time").css("display","block");
@@ -100,8 +105,9 @@ shj.update_clock = function(){
 		$("div#extra_time").css("display","none");
 	if (countdown<=0){				//if finished then show time 0
 		countdown=0;
+		textvalue="Contest Ended";
 	}
-
+	document.getElementById("con_status").innerHTML=textvalue;
 	countdown = Math.floor(moment.duration(countdown).asSeconds());
 	var seconds = countdown%60; countdown=(countdown-seconds)/60;
 	var minutes = countdown%60; countdown=(countdown-minutes)/60;

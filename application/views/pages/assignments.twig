@@ -77,7 +77,11 @@
 		{% endif %}
 	</td>
 	<td>
-		<a href="{{ site_url('assignments/pdf/'~item.id) }}"><img src="{{ base_url('assets/images/pdf.svg') }}" /></a>
+		{% if item.started %}
+			<a href="{{ site_url('assignments/pdf/'~item.id) }}"><img src="{{ base_url('assets/images/pdf.svg') }}" /></a>
+		{% else %}
+			<span style="color: blue;">Yet to start</span>
+		{% endif %}
 	</td>
 	{% if user.level > 0 %}
 	<td>
