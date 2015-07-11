@@ -75,10 +75,12 @@ class Assignments extends CI_Controller
 		{
 			$this->user->select_assignment($this->input->post('assignment_select'));
 			$this->assignment = $this->assignment_model->assignment_info($this->input->post('assignment_select'));
-			$json_result = array(
+	$json_result = array(
 				'done' => 1,
-				'finish_time' => $this->assignment['finish_time'],
+				'finish_time' => $this->assignment['finish_time'],		
 				'extra_time' => $this->assignment['extra_time'],
+				'start_time' =>$this->assignment['start_time'],
+
 			);
 		}
 		else

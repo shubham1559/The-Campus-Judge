@@ -39,6 +39,7 @@ shj.csrf_token = $.cookie('shjcsrftoken');
 shj.offset = moment('{{ shj_now_str() }}').diff(moment());
 shj.time = moment();
 shj.finish_time = moment("{{ user.selected_assignment.finish_time|raw }}");
+shj.start_time = moment("{{ user.selected_assignment.start_time|raw }}");
 shj.extra_time = moment.duration({{ user.selected_assignment.extra_time|raw }}, 'seconds');
 // notifications
 shj.check_for_notifications = true;

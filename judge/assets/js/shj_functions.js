@@ -90,13 +90,15 @@ shj.update_clock = function(){
 	var now = moment().add('milliseconds', shj.offset);
 	$('.timer').html('Server Time: '+now.format('MMM DD - HH:mm:ss'));
 	var countdown = shj.finish_time.diff(now);
-	if (countdown<=0 && countdown + shj.extra_time.asMilliseconds()>=0){
+	var startcountdown=shj.start_time.diff(now);
+	if(startcountdown>0)countdown=startcountdown;						//if yet to start then shown countdown of start time
+	else 	if (countdown<=0 && countdown + shj.extra_time.asMilliseconds()>=0){		//if started then check if is in extra time or not
 		countdown = countdown + shj.extra_time.asMilliseconds();
 		$("div#extra_time").css("display","block");
 	}
 	else
 		$("div#extra_time").css("display","none");
-	if (countdown<=0){
+	if (countdown<=0){				//if finished then show time 0
 		countdown=0;
 	}
 
@@ -569,6 +571,7 @@ $(document).ready(function () {
 						checkboxes.filter("[data-id='" + id + "']").removeClass('fa-square-o').addClass('fa-check-square-o color6');
 						$(".assignment_name").html($('.top_object [data-id="' + id + '"]').parents('.assignment_block').children('.assignment_item').html());
 						shj.finish_time = moment(response.finish_time);
+						shj.start_time=moment(response.start_time);
 						shj.extra_time  = moment.duration(parseInt(response.extra_time, 10), 'seconds');
 						shj.update_clock();
 					}
