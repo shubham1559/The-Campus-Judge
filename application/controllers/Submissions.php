@@ -542,6 +542,14 @@ class Submissions extends CI_Controller
 		);
 
 	}
+	/*public function change($submission_id=NULL)
+	{
+		if($this->user->level<=1)show_404();
+		if($submission_id==NULL)show_404();
+		$assignment_id=$this->user->selected_assignment('id');
+		$this->twig->display("pages/admin/changeverdict.twig");
+	}*/
+
 
 
 }

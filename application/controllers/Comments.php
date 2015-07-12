@@ -159,7 +159,9 @@ class Comments extends CI_Controller
 				$values['assignment']=$this->user->selected_assignment['id'];
 				$values['problem']=$this->input->post('problem');
 				$values['source']=$this->user_model->username_to_user_id($this->user->username);
+				if($this->user->level==0)
 				$values['private']=1;
+				else $values['private']=0;
 				$values['time']=shj_now_str();
 				$values['reply']=0;
 				$this->query_model->add_query($values);
