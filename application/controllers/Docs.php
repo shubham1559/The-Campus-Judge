@@ -40,8 +40,9 @@ class Docs extends CI_Controller
 			'Sandboxing'=>"sandboxing.html",
 			'Security'=>"security.html",
 			'Shield'=>"shield.html");
-		$baseaddr="assets/docs/";
-		$filename="index.html";
+		$baseaddr="assets/docs/html/";
+		//$filename="index.html";
+		
 		$level= $this->user->level;
 		$docs=[];
 		for($i=0;$i<=$level;$i++)
@@ -55,7 +56,9 @@ class Docs extends CI_Controller
 				$this->twig->display('pages/docslist.twig', $data);
 			}
 		else{
-			if(array_key_exists($doc_id,$docs))
+			if(strchr($doc_id,".md"))
+				$doc_id=array_search(str_replace(".md", ".html", $doc_id),$docs);
+			if($doc_id&&array_key_exists($doc_id,$docs))
 			{
 					$data = array(
 					'all_assignments' => $this->assignment_model->all_assignments(),
@@ -67,6 +70,19 @@ class Docs extends CI_Controller
 			else
 			show_404();
 		}
+	}
+	public function img($imgname)
+	{
+		$filename="assets/docs/img/".$imgname;
+					if(file_exists($filename)){ 
+					header('Content-Length: '.filesize($filename)); //<-- sends filesize header
+					header('Content-Type: image/png'); //<-- send mime-type header
+					header('Content-Disposition: inline; filename="'.$filename.'";'); //<-- sends filename header
+					readfile($filename); //<--reads and outputs the file onto the output buffer
+					die(); //<--cleanup
+					exit; //and exit
+					}
+					else show_404();
 	}
 
 

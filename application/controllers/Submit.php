@@ -79,6 +79,21 @@ class Submit extends CI_Controller
 		}
 	}
 
+		// ------------------------------------------------------------------------
+
+
+	private function _retext($type)
+	{
+		switch ($type) {
+			case 'c': return 'c';
+			case 'cpp': return 'cpp';
+			case 'py2': return 'py';
+			case 'py3': return 'py';
+			case 'java': return 'java';
+		}
+	}
+
+
 
 	// ------------------------------------------------------------------------
 
@@ -174,6 +189,7 @@ class Submit extends CI_Controller
 				break;
 			}
 		$this->filetype = $this->_language_to_type(strtolower(trim($this->input->post('language'))));
+		$submitcode=$this->input->post("submitcode");
 		$this->ext = substr(strrchr($_FILES['userfile']['name'],'.'),1); // uploaded file extension
 		$this->file_name = basename($_FILES['userfile']['name'], ".{$this->ext}"); // uploaded file name without extension
 		if ( $this->queue_model->in_queue($this->user->username,$this->user->selected_assignment['id'], $this->problem['id']) )
@@ -191,30 +207,51 @@ class Submit extends CI_Controller
 		{
 			$filetype = $this->_language_to_type(strtolower(trim($filetype)));
 		}
-		if ($_FILES['userfile']['error'] == 4)
-			show_error('No file chosen.');
-		if ( ! in_array($this->filetype, $filetypes))
-			show_error('This file type is not allowed for this problem.');
-		if ( ! $this->_match($this->filetype, $this->ext) )
-			show_error('This file type does not match your selected language.');
-		if ( ! preg_match('/^[a-zA-Z0-9_\-()]+$/', $this->file_name) )
-			show_error('Invalid characters in file name.');
-
 		$user_dir = rtrim($this->assignment_root, '/').'/assignment_'.$this->user->selected_assignment['id'].'/p'.$this->problem['id'].'/'.$this->user->username;
 		if ( ! file_exists($user_dir))
 			mkdir($user_dir, 0700);
+		$done=false;
+		if($submitcode==""||$this->filetype=='zip'||$this->filetype=='pdf')
+			{			if ($_FILES['userfile']['error'] == 4)
+							show_error('No file chosen.');
+						if ( ! in_array($this->filetype, $filetypes))
+							show_error('This file type is not allowed for this problem.');
+						if ( ! $this->_match($this->filetype, $this->ext) )
+							show_error('This file type does not match your selected language.');
+						if ( ! preg_match('/^[a-zA-Z0-9_\-()]+$/', $this->file_name) )
+							show_error('Invalid characters in file name.');
+						$config['upload_path'] = $user_dir;
+						$config['allowed_types'] = '*';
+						$config['max_size']	= $this->settings_model->get_setting('file_size_limit');
+						$config['file_name'] = $this->file_name."-".($this->user->selected_assignment['total_submits']+1).".".$this->ext;
+						$config['max_file_name'] = 20;
+						$config['remove_spaces'] = TRUE;
+						$this->upload->initialize($config);	
 
-		$config['upload_path'] = $user_dir;
-		$config['allowed_types'] = '*';
-		$config['max_size']	= $this->settings_model->get_setting('file_size_limit');
-		$config['file_name'] = $this->file_name."-".($this->user->selected_assignment['total_submits']+1).".".$this->ext;
-		$config['max_file_name'] = 20;
-		$config['remove_spaces'] = TRUE;
-		$this->upload->initialize($config);
+						if($this->upload->do_upload('userfile'))
+						{$result=$this->upload->data();		
+						$done=true;}			
+			}
 
-		if ($this->upload->do_upload('userfile'))
+			else {
+				$this->load->helper('file');
+				$this->ext=$this->_retext($this->filetype);
+				$this->file_name="code";
+				$file_name="code-".($this->user->selected_assignment['total_submits']+1).".".$this->ext;
+				$upload_path=$user_dir;
+				$max_size=$this->settings_model->get_setting('file_size_limit');
+				$fp = fopen($upload_path."/".$file_name, 'w');
+				//show_error($max_size);
+				$wr=fwrite($fp,$submitcode,$max_size*1024);
+				if(!$wr)
+					show_error("Code is too large");
+				fclose($fp);
+				$result['raw_name']="code-".($this->user->selected_assignment['total_submits']+1);
+				$done=true;
+			}
+
+		if ($done)
 		{
-			$result = $this->upload->data();
 			$this->load->model('submit_model');
 
 			$submit_info = array(

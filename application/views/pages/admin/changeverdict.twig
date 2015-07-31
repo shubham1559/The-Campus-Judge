@@ -1,0 +1,52 @@
+{#
+ # Shubham Vishwakarma
+ # file: changeverdict.twig
+ # author: Shubham vishwakarma <shubhamvishwakarma987@gmail.com>
+ #}
+{% set selected = 'all_submissions' %}
+{% extends 'templates/base.twig' %}
+{% block icon %}fa-edit{% endblock %} 
+{% block title %}Change verdict{% endblock %}
+{% block head_title %}Change verdict{% endblock %}
+{% block other_assets %}
+<script>
+	$(document).ready(function(){
+		$("select#verdict").change(function(){
+			var v = $(this).val();
+			if (v==1)
+				{document.getElementById("score").value=10000;
+				document.getElementById("score").disabled=false;
+			}
+			else
+				{document.getElementById("score").value=0;
+			document.getElementById("score").disabled=true;
+		}
+		});
+	});
+</script>
+{% endblock %}
+
+{% block main_content %}
+{{ form_open_multipart('submissions/change') }}
+	<input type="hidden" name="submit_id" value="">
+	<p class="input_p">
+		<label for="verdict" class="tiny">Verdict:</label>
+		<select id="verdict" name ="verdict" class="sharif_input">
+			<option value="1" >AC</option>
+			<option value="2" >WA</option>
+			<option value="3" >RE</option>
+			<option value="4">TLE</option>
+		</select>
+		{{ form_error('verdict','<div class="shj_error">','</div>') }}
+	</p>
+	<p class="input_p">
+		<label for="languages" class="tiny">Score:</label>
+		<input type="number" id="score" min="0" max="10000" name="score" value="10000">
+		<p>10000 for full score and less than that for partial score</p>
+		{{ form_error('language','<div class="shj_error">','</div>') }}
+	</p>
+	<p class="input_p">
+		<input type="submit" value="Submit" class="sharif_input"/>
+	</p>
+	</form>
+{% endblock %}  {# main_content #}

@@ -78,6 +78,7 @@ $route['register'] = "login/register";
 $route['logout'] = "login/logout";
 $route['submissions/final']="submissions/the_final";
 $route['submissions/final/(.*)']="submissions/the_final/$1";
+$route['docs/img/(.*)']="docs/img/$1";
 $route['docs/(.*)']="docs/index/$1";
 $route['profile/edit/(:num)']="profile/edit/$1";
 $route['profile/(.*)'] = "profile/index/$1";

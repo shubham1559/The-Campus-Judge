@@ -143,7 +143,8 @@ class Assignments extends CI_Controller
 			// Download the file to browser
 			$this->load->helper('download')->helper('file');
 			$filename = shj_basename($zip_files[0]);
-			force_download($filename, file_get_contents(zip_files[0]), TRUE);
+			//force_download($filename, file_get_contents(zip_files[0]), TRUE);
+			force_download($zip_files[0],NULL,TRUE);
 		}
 	}
 
@@ -205,6 +206,11 @@ class Assignments extends CI_Controller
 		{
 			$path = $pdf_files[0];
 			$this->zip->add_data(shj_basename($path), file_get_contents($path));
+		}
+		$solution=glob("$root_path/solution/*.zip");
+		if($solution)
+		{
+			$this->zip->read_file($solution[0],"solution/".shj_basename($solution[0]));
 		}
 
 		$this->zip->download("assignment{$assignment_id}_tests_desc_".date('Y-m-d_H-i', shj_now()).'.zip');
