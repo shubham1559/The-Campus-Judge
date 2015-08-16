@@ -451,7 +451,7 @@ $('.submitcmnt').click(function () {
 		var problemid=this.getAttribute('id');
 		var name=this.getAttribute('name');
 		noty({
-			text: "Are you sure you want to post your comment",
+			text: "Are you sure you want to send this comment to the admin",
 			layout: 'center',
 			type: 'confirm',
 			animation: {

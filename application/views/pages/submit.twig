@@ -67,6 +67,9 @@
 		</select>
 		{{ form_error('language','<div class="shj_error">','</div>') }}
 	</p>
+
+	<p><i class="fa fa-info-circle fa-lg color8"></i>If you are using java make sure class name and file name are same.</p>
+
 	<p class="input_p">
 		<label for="file" class="tiny">File:</label>
 		<input type="file" id="file" class="sharif_input medium" name="userfile" />
@@ -77,7 +80,7 @@
 		{% endif %}
 	</p>
 	<p>OR</p>
-	<p> Put Your source Code Here:</p>
+	<p> Put Your source Code Here (use class name code for java):</p>
 <pre id="editor"></pre>
 <textarea id="submitcode" name="submitcode"></textarea>
 	<p class="input_p">

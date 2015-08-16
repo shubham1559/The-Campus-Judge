@@ -1,0 +1,55 @@
+<h1 id="the-campus-judge">The Campus Judge</h1>
+<p><a href="">The Campus Judge</a> is a free and open source online judge for C, C++, Java and Python programming languages. The Campus Judge is modified version of <a href="https://github.com/mjnaderi/Sharif-Judge">Sharif Judge</a>.</p>
+<p>The web interface is written in PHP (CodeIgniter framework) and the main backend is written in BASH.</p>
+<p>Python in The Campus Judge is not sandboxed yet. Just a low level of security is provided for python. If you want to use The Campus Judge for python, USE IT AT YOUR OWN RISK or provide sandboxing yourself.</p>
+<p>The full documentation is at</p>
+<p>Download the latest release from</p>
+<h2 id="new-featureschanges">New Features/Changes</h2>
+<ul>
+<li>Problem comments/queries by students</li>
+<li>Updated Documentation on Web Interface</li>
+<li>Downloadable Solution/Editorial of Assignment</li>
+<li>Other users code can be made public</li>
+<li>Judges response can be viewed after submission(no refreshing needed)</li>
+<li>Final submission is automatically selected</li>
+<li>Scoreboard algorithm changed according to standard ACM ICPC rules</li>
+<li>To save time, judge will stop execution once a wrong answer found</li>
+<li>Team profiles now have details of members</li>
+<li>Nothing is visible to students before assignment begins</li>
+<li>Countdown timer also shows time to start with proper messages</li>
+<li>Settings page updated</li>
+<li>Other minor changes</li>
+</ul>
+<h2 id="features">Features</h2>
+<ul>
+<li>Multiple user roles (admin, head instructor, instructor, student)</li>
+<li>Sandboxing <em>(not yet for python)</em></li>
+<li>Cheat detection (similar codes detection) using <a href="http://theory.stanford.edu/~aiken/moss/">Moss</a></li>
+<li>Custom rule for grading late submissions</li>
+<li>Submission queue</li>
+<li>Download results in excel file</li>
+<li>Download submitted codes in zip file</li>
+<li><em>&quot;Output Comparison&quot;</em> and <em>&quot;Tester Code&quot;</em> methods for checking output correctness</li>
+<li>Add multiple users</li>
+<li>Problem Descriptions (PDF/Markdown/HTML)</li>
+<li>Rejudge</li>
+<li>Scoreboard</li>
+<li>Notifications</li>
+<li>...</li>
+</ul>
+<h2 id="requirements">Requirements</h2>
+<p>For running The Campus Judge, a Linux server with following requirements is needed:</p>
+<ul>
+<li>Webserver running PHP version 5.3 or later</li>
+<li>PHP CLI (PHP command line interface, i.e. <code>php</code> shell command) You should be able to run <code>php</code> from command line. In Ubuntu you need to install <code>php5-cli</code> package.</li>
+<li>MySql database (with <code>mysqli</code> extension for PHP) or PostgreSql database</li>
+<li><p>PHP must have permission to run shell commands using <a href="http://www.php.net/manual/en/function.shell-exec.php">shell_exec</a> function. For example this command should run correctly:</p>
+<div class="sourceCode"><pre class="sourceCode php"><code class="sourceCode php"><span class="fu">echo</span> <span class="fu">shell_exec</span><span class="ot">(</span><span class="st">&quot;php -v&quot;</span><span class="ot">);</span></code></pre></div></li>
+<li>Tools for compiling and running submitted codes (<code>gcc</code>, <code>g++</code>, <code>javac</code>, <code>java</code>, <code>python2</code>, <code>python3</code> commands)</li>
+<li>It is better to have <code>perl</code> installed for more precise time and memory limit and imposing size limit on output of submitted code.</li>
+<li><p>It is better to have <code>Latex</code> and <code>Pandoc</code> installed to convert md file to pdf given in <a href="sample_assignment.md">Sample Assignment</a>.</p></li>
+</ul>
+<h2 id="installation">Installation</h2>
+<p>For Installation instructions <a href="installation.md">click here</a>.</p>
+<h2 id="license">License</h2>
+<p>GPL v3</p>

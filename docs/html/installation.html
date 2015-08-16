@@ -1,0 +1,68 @@
+<h1 id="installation">Installation</h1>
+<h2 id="requirements">Requirements</h2>
+<p>For running The Campus Judge, a Linux server with following requirements is needed:</p>
+<ul>
+<li>Webserver running PHP version 5.3 or later</li>
+<li>PHP CLI (PHP command line interface, i.e. <code>php</code> shell command) You should be able to run <code>php</code> from command line. In Ubuntu you need to install <code>php5-cli</code> package.</li>
+<li>MySql database (with <code>mysqli</code> extension for PHP) or PostgreSql database</li>
+<li><p>PHP must have permission to run shell commands using <a href="http://www.php.net/manual/en/function.shell-exec.php">shell_exec</a> function. For example this command should run correctly:</p>
+<div class="sourceCode"><pre class="sourceCode php"><code class="sourceCode php"><span class="fu">echo</span> <span class="fu">shell_exec</span><span class="ot">(</span><span class="st">&quot;php -v&quot;</span><span class="ot">);</span></code></pre></div></li>
+<li>Tools for compiling and running submitted codes (<code>gcc</code>, <code>g++</code>, <code>javac</code>, <code>java</code>, <code>python2</code>, <code>python3</code> commands)</li>
+<li>It is better to have <code>perl</code> installed for more precise time and memory limit and imposing size limit on output of submitted code.</li>
+<li><p>It is better to have <code>Latex</code> and <code>Pandoc</code> installed to convert md file to pdf given in <a href="sample_assignment.md">Sample Assignment</a>.</p></li>
+</ul>
+<h2 id="installation-1">Installation</h2>
+<ul>
+<li><ol style="list-style-type: decimal">
+<li>Download the latest release from <a href="">download page</a> and unpack downloaded file in your public html directory.</li>
+</ol></li>
+<li><ol start="2" style="list-style-type: decimal">
+<li><p>Make the <code>judge</code> folder document root for your judge, you can put other folders anywhere you want and enter full path of application folder, and system folder in <code>index.php</code> file.</p>
+<div class="sourceCode"><pre class="sourceCode php"><code class="sourceCode php"><span class="kw">$system_path</span> = <span class="st">&#39;/home/xyz/secret/system&#39;</span><span class="ot">;</span>
+<span class="kw">$application_folder</span> = <span class="st">&#39;/home/xyz/secret/application&#39;</span><span class="ot">;</span></code></pre></div></li>
+</ol></li>
+<li><ol start="3" style="list-style-type: decimal">
+<li>Create a MySql or PostgreSql database for The Campus Judge. Do not install any database connection package for C/C++, Java or Python.</li>
+</ol></li>
+<li><ol start="4" style="list-style-type: decimal">
+<li><p>Set database connection settings in file <code>application/config/database.php</code>. You can use a prefix for your table names.</p>
+<div class="sourceCode"><pre class="sourceCode php"><code class="sourceCode php"><span class="co">/*  Enter database connection settings here:  */</span>
+<span class="st">&#39;dbdriver&#39;</span> =&gt; <span class="st">&#39;postgre&#39;</span><span class="ot">,</span>    <span class="co">// database driver (mysqli, postgre)</span>
+<span class="st">&#39;hostname&#39;</span> =&gt; <span class="st">&#39;localhost&#39;</span><span class="ot">,</span>  <span class="co">// database host</span>
+<span class="st">&#39;username&#39;</span> =&gt; <span class="st">`,           // database username</span>
+<span class="st">&#39;password&#39; =&gt; `</span><span class="ot">,</span>           <span class="co">// database password</span>
+<span class="st">&#39;database&#39;</span> =&gt; <span class="st">`,           // database name</span>
+<span class="st">&#39;dbprefix&#39; =&gt; &#39;shj_&#39;,       // table prefix</span>
+<span class="st">/**********************************************/</span></code></pre></div></li>
+</ol></li>
+<li><ol start="5" style="list-style-type: decimal">
+<li>Make following files/folders writable by php.
+<ol style="list-style-type: decimal">
+<li>application/cache/Twig</li>
+<li>application/config/config.php</li>
+<li>tester folder</li>
+<li>assignments folder</li>
+</ol></li>
+</ol></li>
+<li><ol start="6" style="list-style-type: decimal">
+<li>Open The Campus Judge's main page in a web browser and follow the installation process.</li>
+</ol></li>
+<li><ol start="7" style="list-style-type: decimal">
+<li>Log in with your admin account.</li>
+</ol></li>
+<li><ol start="8" style="list-style-type: decimal">
+<li><strong>[IMPORTANT]</strong> Move folders <code>tester</code> and <code>assignments</code> somewhere outside your public directory. Then save their full path in <code>Settings</code> page. <strong>These two folders must be writable by PHP.</strong> Submitted files will be stored in <code>assignments</code> folder. So it should be somewhere not publicly accessible.</li>
+</ol></li>
+</ul>
+<p>Important: <a href="security.md">Secure The Campus Judge</a></p>
+<h2 id="after-installation">After Installation</h2>
+<p>Now that you have installed The Campus Judge, you may want to:</p>
+<ul>
+<li><a href="add_assignment.md">Add Assignment</a></li>
+<li><a href="settings.md">Settings</a></li>
+<li><a href="users.md#add_users">Add Users</a></li>
+<li><strong>[IMPORTANT]</strong> <a href="security.md">Secure The Campus Judge</a></li>
+<li><strong>[IMPORTANT]</strong> Enable <a href="sandboxing.md">Sandbox</a></li>
+<li>Learn about <a href="shield.md">Shield</a></li>
+<li><a href="clean_urls.md">Enable clean URLs</a></li>
+</ul>

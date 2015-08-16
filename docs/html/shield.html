@@ -1,0 +1,62 @@
+<h1 id="shield">Shield</h1>
+<p>Shield is an extremely simple mechanism to forbid running of potentially harmful codes.</p>
+<p>Shield is not a sandboxing solution. Shield provides only a partial protection against trivial attacks. Real protection against untrusted code comes only by enabling <a href="sandboxing.md">Sandbox</a>.</p>
+<h2 id="shield-for-cc">Shield for C/C++</h2>
+<p>By enabling Shield for C/C++, The Campus Judge just adds some <code>#define</code>s at the beginning of submitted C/C++ code before running.</p>
+<p>For example we can forbid using <code>goto</code> by adding this line at the beginning of submitted code:</p>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="ot">#define goto YouCannotUseGoto</span></code></pre></div>
+<p>With this line at the beginning of files, all submitted codes which use <code>goto</code> will get a compilation error.</p>
+<p>If you enable Shield, any code that contains <code>#undef</code> will get a compilation error.</p>
+<h3 id="enabling-shield-for-c-or-c">Enabling Shield for C or C++</h3>
+<p>You can enable or disable Shield in <code>Settings</code> page.</p>
+<h3 id="adding-rules-for-cc">Adding Rules for C/C++</h3>
+<p>List of <code>#define</code> rules is located in files <code>tester/shield/defc.h</code> (for C) and <code>tester/shield/defcpp.h</code> (for C++). You can add new <code>#define</code> rules in these files. The contents of these files is editable in <code>Settings</code> page.</p>
+<p>The syntax used in these files is like this:</p>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="co">/*</span>
+
+<span class="co">@file defc.h</span>
+<span class="co">There should be a newline at end of this file.</span>
+<span class="co">Put the message displayed to user after // in each line</span>
+
+<span class="co">e.g. If you want to disallow goto, add this line:</span>
+<span class="co">#define goto errorNo13    //Goto is not allowd</span>
+
+<span class="co">*/</span>
+
+<span class="ot">#define system errorNo1      </span><span class="co">//&quot;system&quot; is not allowed</span>
+<span class="ot">#define freopen errorNo2     </span><span class="co">//File operation is not allowed</span>
+<span class="ot">#define fopen errorNo3       </span><span class="co">//File operation is not allowed</span>
+<span class="ot">#define fprintf errorNo4     </span><span class="co">//File operation is not allowed</span>
+<span class="ot">#define fscanf errorNo5      </span><span class="co">//File operation is not allowed</span>
+<span class="ot">#define feof errorNo6        </span><span class="co">//File operation is not allowed</span>
+<span class="ot">#define fclose errorNo7      </span><span class="co">//File operation is not allowed</span>
+<span class="ot">#define ifstream errorNo8    </span><span class="co">//File operation is not allowed</span>
+<span class="ot">#define ofstream errorNo9    </span><span class="co">//File operation is not allowed</span>
+<span class="ot">#define fork errorNo10       </span><span class="co">//Fork is not allowed</span>
+<span class="ot">#define clone errorNo11      </span><span class="co">//Clone is not allowed</span>
+<span class="ot">#define sleep errorNo12      </span><span class="co">//Sleep is not allowed</span></code></pre></div>
+<p>There should be a newline at the end of files <code>defc.h</code> and <code>defcpp.h</code>.</p>
+<p>Note that lots of these rules are not usable in g++. For example we cannot use <code>#define fopen errorNo3</code> for C++. Because it results in compile error.</p>
+<h2 id="shield-for-python">Shield for Python</h2>
+<p>By enabling Shield for Python, The Campus Judge just adds some code at the beginning of submitted Python code before running to prevent using dangerous functions. These codes are located in files <code>tester/shield/shield_py2.py</code> and <code>tester/shield/shield_py3.py</code>.</p>
+<p>You can enable/disable Shield for Python in Settings.</p>
+<p>There are ways to escape from Shield in python and use blacklisted functions!</p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="co"># @file shield_py3.py</span>
+
+<span class="im">import</span> sys
+sys.modules[<span class="st">&#39;os&#39;</span>]<span class="op">=</span><span class="va">None</span>
+
+BLACKLIST <span class="op">=</span> [
+  <span class="co">#&#39;__import__&#39;, # deny importing modules</span>
+  <span class="st">&#39;eval&#39;</span>, <span class="co"># eval is evil</span>
+  <span class="co">&#39;open&#39;</span>,
+  <span class="co">&#39;file&#39;</span>,
+  <span class="co">&#39;exec&#39;</span>,
+  <span class="co">&#39;execfile&#39;</span>,
+  <span class="co">&#39;compile&#39;</span>,
+  <span class="co">&#39;reload&#39;</span>,
+  <span class="co">#&#39;input&#39;</span>
+  ]
+<span class="cf">for</span> func <span class="op">in</span> BLACKLIST:
+  <span class="cf">if</span> func <span class="op">in</span> __builtins__.__dict__:
+    <span class="kw">del</span> __builtins__.__dict__[func]</code></pre></div>

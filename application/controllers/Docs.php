@@ -24,16 +24,19 @@ class Docs extends CI_Controller
 
 	public function index($doc_id=NULL)
 	{
-		$docss[0]=array();
-		$docss[1]=array();
+		$docss[0]=array("Basic Instructions"=>'basics.html',
+			);
+		$docss[1]=array("Answering Queries"=>'queries.html');
 
 		$docss[2]=array('Add Assignment'=>"add_assignment.html",
 				"Sample Assignment"=>"sample_assignment.html",
 				"Detect similar codes"=>"moss.html",
 				"Tests Structure" =>"tests_structure.html",
+				"Assignment Helper" =>"assignment_helper.html",
 				);
 
-		$docss[3]=array('Users'=>"users.html",
+		$docss[3]=array('About The Campus Judge'=>'readme.html',
+			'Users'=>"users.html",
 			'Clean urls'=>"clean_urls.html",
 			'Installation'=>"installation.html",
 			'Settings'=>"settings.html",

@@ -1,0 +1,25 @@
+<h1 id="clean-urls">Clean URLs</h1>
+<p>By default, <code>index.php</code> is a part of all urls in The Campus Judge. e.g.</p>
+<pre><code>http://example.mjnaderi.ir/index.php/dashboard
+http://example.mjnaderi.ir/index.php/users/add</code></pre>
+<p>You can remove <code>index.php</code> and have pretty and nice urls if your system supports rewrite rules:</p>
+<pre><code>http://example.mjnaderi.ir/dashboard
+http://example.mjnaderi.ir/users/add</code></pre>
+<h2 id="enabling-clean-urls">Enabling clean urls</h2>
+<p>Rename file <code>.htaccess2</code> located in the main directory of The Campus Judge to <code>.htaccess</code>.</p>
+<p>This is <code>.htaccess2</code> file:</p>
+<div class="sourceCode"><pre class="sourceCode apache"><code class="sourceCode apache"><span class="co"># You also need to change </span>
+<span class="co"># $config[&#39;index_page&#39;] = &#39;index.php&#39;;</span>
+<span class="co"># to</span>
+<span class="co"># $config[&#39;index_page&#39;] = &#39;&#39;;</span>
+<span class="co"># in application/config/config.php</span>
+<span class="co"># in order to enable clean urls.</span>
+
+<span class="ot">RewriteEngine</span><span class="ch"> </span><span class="kw">on</span>
+RewriteCond<span class="st"> $1 !^(index\.php|assets|robots\.txt)</span>
+RewriteRule<span class="st"> ^(.*)$ index.php?/$1 [L]</span></code></pre></div>
+<p>Then open file <code>application/config/config.php</code> and change</p>
+<div class="sourceCode"><pre class="sourceCode php"><code class="sourceCode php"><span class="kw">$config</span><span class="ot">[</span><span class="st">&#39;index_page&#39;</span><span class="ot">]</span> = <span class="st">&#39;index.php&#39;</span><span class="ot">;</span></code></pre></div>
+<p>to</p>
+<div class="sourceCode"><pre class="sourceCode php"><code class="sourceCode php"><span class="kw">$config</span><span class="ot">[</span><span class="st">&#39;index_page&#39;</span><span class="ot">]</span> = <span class="st">&#39;&#39;</span><span class="ot">;</span></code></pre></div>
+<p>If it didn't work, just revert the changes!</p>

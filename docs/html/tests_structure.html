@@ -1,0 +1,66 @@
+<h1 id="tests-structure">Tests Structure</h1>
+<p>When adding assignments, you must provide a zip file containing test cases,description and solution. Everything is optional. You can edit this file later and upload again if you want any change. For a sample you may view <a href="sample_assignment.md">Sample assignment</a>.</p>
+<p>There are two methods of checking output for each problem: “Input/Output Comparison” method and “Tester” method:</p>
+<h2 id="inputoutput-comparison-method">Input/Output Comparison method</h2>
+<p>In this method, you must put some input and output files in the problem's folder. The Campus Judge gives each test's input file to user's code and compares user's output with the test's output. Input files must be in folder <code>in</code> with names input1.txt, input2.txt, … and output files must be in folder <code>out</code> with names output1.txt, output2.txt, …</p>
+<h2 id="tester-method">Tester method</h2>
+<p>In this method, you must provide some input test files and a C++ file (tester.cpp) and (optionally) some output test files. The Campus Judge gives the input test file to user's code and gets the user's output. Then tester.cpp gets test's input, test's output and user's output. If the user's output is correct, tester.cpp should return 0, otherwise return 1.</p>
+<p>You can use this code template for writing tester.cpp:</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="co">/*</span>
+<span class="co"> * tester.cpp</span>
+<span class="co"> */</span>
+ 
+<span class="ot">#include &lt;iostream&gt;</span>
+<span class="ot">#include &lt;fstream&gt;</span>
+<span class="ot">#include &lt;string&gt;</span>
+<span class="kw">using</span> <span class="kw">namespace</span> std;
+<span class="dt">int</span> main(<span class="dt">int</span> argc, <span class="dt">char</span> <span class="dt">const</span> *argv[])
+{
+ 
+    ifstream test_in(argv[<span class="dv">1</span>]);    <span class="co">/* This stream reads from test&#39;s input file   */</span>
+    ifstream test_out(argv[<span class="dv">2</span>]);   <span class="co">/* This stream reads from test&#39;s output file  */</span>
+    ifstream user_out(argv[<span class="dv">3</span>]);   <span class="co">/* This stream reads from user&#39;s output file  */</span>
+ 
+    <span class="co">/* Your code here */</span>
+    <span class="co">/* If user&#39;s output is correct, return 0, otherwise return 1       */</span>
+ 
+    ...
+ 
+}</code></pre></div>
+<h2 id="structure">Structure</h2>
+<p>In the zip file you should have a folder for each problem named p1,p2,... . Each of these folders should have a markdown file like desc.md. This file will be converted to html internallly. You can also have a pdf file which students can download from the problem page. Along with these files you must have input/output files and (optionally) tester file according to your judging method described above. You can edit description file in your browser too. But you must upload pdf file again if you want any changes in pdf too.</p>
+<p>You can have pdf for the whole assignment which can be downloaded from <code>Assignments</code> page. this must should be in root of the zip file.</p>
+<p>You can have a solution ZIP file which can be downloaded by students after the assignment is made public. from <code>Assignments</code> page. this file should be kept in a folder named <code>solution</code>.</p>
+<p>You can find a sample tests file in <code>judge/samples</code> folder of The Campus Judge. You can find the details of sample tests file <a href="sample_assignment.md">here</a></p>
+<p>This is the tree for the sample file</p>
+<pre><code>  .
+    ├── p1
+    │   ├── in
+    │   │   ├── input1.txt
+    │   │   ├── input2.txt
+    │   │   └── input3.txt
+    │   ├── out
+    │   │   ├── output1.txt
+    │   │   └── output2.txt
+    │   ├── tester.cpp
+    |   ├── desc.pdf
+    │   └── desc.md
+    ├── p2
+    │   ├── in
+    │   │   ├── input1.txt
+    │   │   ├── input2.txt
+    │   │   └── input3.txt
+    │   ├── out
+    │   │   ├── output1.txt
+    │   │   ├── output2.txt
+    │   │   └── output3.txt
+    │   ├── desc.md
+    │   └── desc.pdf
+    ├── p3
+    |   ├── desc.pdf
+    │   └── desc.md
+    ├── solution
+    │   └── solution.zip
+    └── assignment.pdf</code></pre>
+<h2 id="convert-markdown-to-pdf">Convert markdown to pdf</h2>
+<p>You can easily generate pdf files for assignment and problems if you have made the markdown file. If you have pandoc and latex installed then you can use scripts in <code>judge/samples/sample_with_resources.zip</code> file. For details see <a href="assignment_helper.md">this</a></p>

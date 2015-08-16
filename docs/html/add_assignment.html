@@ -1,0 +1,113 @@
+<h1 id="add-assignment">Add Assignment</h1>
+<p>See <a href="sample_assignment.md">Sample Assignment</a> to learn and test adding assignments by adding a sample assignment.</p>
+<p>You can add a new assignment by clicking on &quot;Add&quot; in &quot;Assignments&quot; page. You will see this page:</p>
+<div class="figure">
+<img src="img/add_assignment.png" alt="Add Assignment" />
+<p class="caption">Add Assignment</p>
+</div>
+<p>There are several settings in &quot;Add Assignment&quot; page:</p>
+<h2 id="assignment-name">Assignment Name</h2>
+<p>The assignment will be shown with this name in list of assignments.</p>
+<h2 id="start-time">Start Time</h2>
+<p>Users will not be able to submit before &quot;Start Time&quot;.</p>
+<p>Use this format for start time: <code>MM/DD/YYYY HH:MM:SS</code> e.g. <code>08/31/2013 12:00:00</code></p>
+<h2 id="finish-time-extra-time">Finish Time, Extra Time</h2>
+<p>Users will not be able to submit after <code>Finish Time + Extra Time</code>.</p>
+<p>Late submissions (submissions in extra time) will be multiplied by a coefficient. You should write a PHP script for calculating the coefficient in &quot;Coefficient Rule&quot; field.</p>
+<p>Use this format for finish time: <code>MM/DD/YYYY HH:MM:SS</code> e.g. <code>08/31/2013 23:59:59</code></p>
+<p>Extra time must be in minutes. You can use <code>*</code>. e.g. <code>120</code> (2 hours) or <code>48*60</code> (2 days)</p>
+<h2 id="participants">Participants</h2>
+<p>Enter usernames of participants here (comma separated). Only these users are able to submit. You can use keyword <code>ALL</code> for allowing all users to submit.</p>
+<p>e.g.</p>
+<pre><code>admin, instructor1 , instructor2 ,student1  ,   student2,student3 , student4</code></pre>
+<h2 id="tests">Tests</h2>
+<p>You can upload test cases in a zip file with <a href="tests_structure.md">this structure</a>.</p>
+<h2 id="open">Open</h2>
+<p>You can open or close the assignment for students using this option. If you close the assignment, non-student users will still be able to submit.</p>
+<h2 id="public">Public</h2>
+<p>Students cannot view others codes but if you enable this they can see others codes. This should ideally be enabled after the assignment is finished. This button also enables downloadable Solutions.</p>
+<h2 id="scoreboard">Scoreboard</h2>
+<p>You can enable or disable scoreboard for the assignment using this option.</p>
+<h2 id="java-exceptions">Java Exceptions</h2>
+<p>You can enable or disable showing java exceptions to students. Changing this option does not affect previously judged codes.</p>
+<p>The exception name will be shown only if <code>tester/java_exceptions_list</code> contains that name.</p>
+<p>If you enable this feature, something like this will be displayed to students when an exception is thrown:</p>
+<pre><code>Test 1
+ACCEPT
+Test 2
+Runtime Error (java.lang.ArrayIndexOutOfBoundsException)
+Test 3
+Runtime Error (java.lang.ArrayIndexOutOfBoundsException)
+Test 4
+ACCEPT
+Test 5
+ACCEPT
+Test 6
+ACCEPT
+Test 7
+ACCEPT
+Test 8
+Runtime Error (java.lang.ArrayIndexOutOfBoundsException)
+Test 9
+Runtime Error (java.lang.StackOverflowError)
+Test 10
+Runtime Error (java.lang.ArrayIndexOutOfBoundsException)</code></pre>
+<h2 id="coefficient-rule">Coefficient Rule</h2>
+<p>You can write a PHP script here that calculates the coefficient multiplied by scores. Your script must put coefficient (from 100) in variable <code>$coefficient</code>. You can use variables <code>$extra_time</code> and <code>$delay</code>. <code>$extra_time</code> is the total extra time given to users in seconds (the extra time that you entered in Extra Time field) and <code>$delay</code> is number of seconds passed from finish time (can be negative).</p>
+<p>This PHP script should not contain <code>&lt;?php</code> , <code>&lt;?</code> , <code>?&gt;</code> tags.</p>
+<p>In this example, $extra_time is 172800 (2 days):</p>
+<div class="sourceCode"><pre class="sourceCode php"><code class="sourceCode php"><span class="kw">if</span> <span class="ot">(</span><span class="kw">$delay</span>&lt;=<span class="dv">0</span><span class="ot">)</span>
+  <span class="co">// no delay</span>
+  <span class="kw">$coefficient</span> = <span class="dv">100</span><span class="ot">;</span>
+
+<span class="kw">elseif</span> <span class="ot">(</span><span class="kw">$delay</span>&lt;=<span class="dv">3600</span><span class="ot">)</span>
+  <span class="co">// delay less than 1 hour</span>
+  <span class="kw">$coefficient</span> = <span class="fu">ceil</span><span class="ot">(</span><span class="dv">100</span>-<span class="ot">((</span><span class="dv">30</span>*<span class="kw">$delay</span><span class="ot">)</span>/<span class="dv">3600</span><span class="ot">));</span>
+
+<span class="kw">elseif</span> <span class="ot">(</span><span class="kw">$delay</span>&lt;=<span class="dv">86400</span><span class="ot">)</span>
+  <span class="co">// delay more than 1 hour and less than 1 day</span>
+  <span class="kw">$coefficient</span> = <span class="dv">70</span><span class="ot">;</span>
+
+<span class="kw">elseif</span> <span class="ot">((</span><span class="kw">$delay</span><span class="dv">-86400</span><span class="ot">)</span>&lt;=<span class="dv">3600</span><span class="ot">)</span>
+  <span class="co">// delay less than 1 hour in second day</span>
+  <span class="kw">$coefficient</span> = <span class="fu">ceil</span><span class="ot">(</span><span class="dv">70</span>-<span class="ot">((</span><span class="dv">20</span>*<span class="ot">(</span><span class="kw">$delay</span><span class="dv">-86400</span><span class="ot">))</span>/<span class="dv">3600</span><span class="ot">));</span>
+
+<span class="kw">elseif</span> <span class="ot">((</span><span class="kw">$delay</span><span class="dv">-86400</span><span class="ot">)</span>&lt;=<span class="dv">86400</span><span class="ot">)</span>
+  <span class="co">// delay more than 1 hour in second day</span>
+  <span class="kw">$coefficient</span> = <span class="dv">50</span><span class="ot">;</span>
+
+<span class="kw">elseif</span> <span class="ot">(</span><span class="kw">$delay</span> &gt; <span class="kw">$extra_time</span><span class="ot">)</span>
+  <span class="co">// too late</span>
+  <span class="kw">$coefficient</span> = <span class="dv">0</span><span class="ot">;</span></code></pre></div>
+<p>Problems</p>
+<div class="figure">
+<img src="img/problems.png" alt="Problems" />
+<p class="caption">Problems</p>
+</div>
+<p>Enter information about problems in this field. There are several items in this field.</p>
+<h2 id="name">Name</h2>
+<p>The name of problem.</p>
+<h2 id="score">Score</h2>
+<p>The score of problem.</p>
+<h2 id="time-limit">Time Limit</h2>
+<p>You can set a time limit in milliseconds for running codes. Python and Java are usually slower than C/C++. So they need more time.</p>
+<h2 id="memory-limit">Memory Limit</h2>
+<p>Set memory limit in kilobytes. This memory limit is not very accurate.</p>
+<h2 id="allowed-languages">Allowed Languages</h2>
+<p>Set allowed languages for each problems in this field (comma separated).</p>
+<p>Available languages are: <code>C</code>, <code>C++</code>, <code>Java</code>, <code>Python 2</code>, <code>Python 3</code>, <code>Zip</code>, <code>PDF</code></p>
+<p>Note: You can use <code>Zip</code> or <code>PDF</code> only if you have enabled <code>Upload Only</code> option.</p>
+<p>e.g. <code>C, C++   , Zip</code> or <code>Python 2,Python 3</code> or <code>Java ,C</code></p>
+<h2 id="diff-command">Diff Command</h2>
+<p>The command used to compare output with correct output. By default The Campus Judge uses <code>diff</code>. But you can change this command here.</p>
+<p>This field should not contain any space.</p>
+<h2 id="diff-arguments">Diff Arguments</h2>
+<p>You can set arguments of Diff command here. See <code>man diff</code> for a complete list of available <code>diff</code> arguments.</p>
+<p>I have added two new options: <code>ignore</code> and <code>identical</code>.</p>
+<ul>
+<li><strong><code>ignore</code></strong>: The Campus Judge ignores all newlines and whitespaces.</li>
+<li><strong><code>identical</code></strong>: The Campus Judge doesn't ignore anything. Output of submitted file must be identical to the test case's output to be accepted.</li>
+</ul>
+<p>This field should not contain any space. You may consider using <code>-b</code>, <code>-bB</code>, <code>-iw</code> or <code>ignore</code>.</p>
+<h2 id="upload-only">Upload Only</h2>
+<p>If you set a problem as Upload-Only, The Campus Judge will not judge submissions of that problem. You can use <code>Zip</code> and <code>PDF</code> in allowed languages if you have enabled this option.</p>

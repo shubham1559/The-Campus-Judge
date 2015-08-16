@@ -1,0 +1,55 @@
+<h1 id="settings">Settings</h1>
+<p>You can change the settings for this judge on &quot;Settings&quot; page. You will see this page:</p>
+<div class="figure">
+<img src="img/settings.png" alt="Settings page" />
+<p class="caption">Settings page</p>
+</div>
+<p>The following settings are there in the settings page:</p>
+<h2 id="timezone">Timezone</h2>
+<p>This should be one of php standard timezones. this is used to manage time of your judge.</p>
+<h2 id="weekstart">Weekstart</h2>
+<p>change this to make your calendar start at a different day.</p>
+<h2 id="path-to-tester-and-assignments-directory">Path to tester and assignments directory</h2>
+<p>These should have the absolute path of tester and assignments. make sure they are writable by php. if not, change the permissions.</p>
+<h2 id="file-size-limit-and-results-per-page">File size limit and results per page</h2>
+<p>file size limits are maximum file size for upload and output of a code respectively. Results per page are used for paging in &quot;All submissions&quot; and &quot;Final Submissions&quot;.</p>
+<h2 id="registration">Registration</h2>
+<p>If you want your users to register themselves to the judge then enable this feature. If this feature is enabled then you will see a register button on login screen where a user can register himself.</p>
+<p>Registration page is like this:</p>
+<div class="figure">
+<img src="img/register.png" alt="Registration Page" />
+<p class="caption">Registration Page</p>
+</div>
+<p>Registration code is a code that is used as security for Registrations. This is required for a registration. if you want certain people to register then give this code to them. If you want to disable this then simply put a &quot;0&quot; there.</p>
+<h2 id="log">Log</h2>
+<p>This is used to enable or disable log on admin side.</p>
+<h2 id="maximum-no-of-users-in-a-team">Maximum no of users in a team</h2>
+<p>This is maximum no of persons possible in a team. This will be visible in team profile</p>
+<h2 id="submit-penalty">Submit Penalty</h2>
+<p>This is time penalty in milliseconds given for each incorrect submission. This will affect the scoreboard. This will not change the scoreboard immediately the change will be applied when scoreboard is calculated after it.</p>
+<h2 id="default-coefficient-rule">Default coefficient rule</h2>
+<p>You can write a PHP script here that calculates the coefficient multiplied by scores. This will be used as default for assignments. Your script must put coefficient (from 0 to 100) in variable <code>$coefficient</code>. You can use variables <code>$extra_time</code> and <code>$delay</code>. <code>$extra_time</code> is the total extra time given to users in seconds (the extra time that you entered in Extra Time field) and <code>$delay</code> is number of seconds passed from finish time (can be negative).</p>
+<p>This PHP script should not contain <code>&lt;?php</code> , <code>&lt;?</code> , <code>?&gt;</code> tags. a sample is given here:</p>
+<div class="sourceCode"><pre class="sourceCode php"><code class="sourceCode php"><span class="kw">if</span> <span class="ot">(</span><span class="kw">$delay</span>&lt;=<span class="dv">0</span><span class="ot">)</span>
+  <span class="co">// no delay</span>
+  <span class="kw">$coefficient</span> = <span class="dv">100</span><span class="ot">;</span>
+
+<span class="kw">elseif</span> <span class="ot">(</span><span class="kw">$delay</span>&lt;=<span class="dv">3600</span><span class="ot">)</span>
+  <span class="co">// delay less than 1 hour</span>
+  <span class="kw">$coefficient</span> = <span class="fu">ceil</span><span class="ot">(</span><span class="dv">100</span>-<span class="ot">((</span><span class="dv">30</span>*<span class="kw">$delay</span><span class="ot">)</span>/<span class="dv">3600</span><span class="ot">));</span>
+
+<span class="kw">elseif</span> <span class="ot">(</span><span class="kw">$delay</span>&lt;=<span class="dv">86400</span><span class="ot">)</span>
+  <span class="co">// delay more than 1 hour and less than 1 day</span>
+  <span class="kw">$coefficient</span> = <span class="dv">70</span><span class="ot">;</span>
+
+<span class="kw">elseif</span> <span class="ot">((</span><span class="kw">$delay</span><span class="dv">-86400</span><span class="ot">)</span>&lt;=<span class="dv">3600</span><span class="ot">)</span>
+  <span class="co">// delay less than 1 hour in second day</span>
+  <span class="kw">$coefficient</span> = <span class="fu">ceil</span><span class="ot">(</span><span class="dv">70</span>-<span class="ot">((</span><span class="dv">20</span>*<span class="ot">(</span><span class="kw">$delay</span><span class="dv">-86400</span><span class="ot">))</span>/<span class="dv">3600</span><span class="ot">));</span>
+
+<span class="kw">elseif</span> <span class="ot">((</span><span class="kw">$delay</span><span class="dv">-86400</span><span class="ot">)</span>&lt;=<span class="dv">86400</span><span class="ot">)</span>
+  <span class="co">// delay more than 1 hour in second day</span>
+  <span class="kw">$coefficient</span> = <span class="dv">50</span><span class="ot">;</span>
+
+<span class="kw">elseif</span> <span class="ot">(</span><span class="kw">$delay</span> &gt; <span class="kw">$extra_time</span><span class="ot">)</span>
+  <span class="co">// too late</span>
+  <span class="kw">$coefficient</span> = <span class="dv">0</span><span class="ot">;</span></code></pre></div>

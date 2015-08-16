@@ -1,0 +1,30 @@
+<h1 id="cheat-detection">Cheat Detection</h1>
+<p>The Campus Judge uses <strong><a href="http://theory.stanford.edu/~aiken/moss">Moss</a></strong> to detect similar codes. Moss (for a Measure Of Software Similarity) is an automatic system for determining the similarity of programs. To date, the main application of Moss has been in detecting plagiarism in programming classes.</p>
+<p>You can send <strong>Final</strong> submitted codes (those selected by students as &quot;Final Submission&quot;) to Moss server with one click.</p>
+<p>Before using Moss, you must get a <strong>Moss user id</strong> and set your Moss user id in The Campus Judge. Read <a href="http://theory.stanford.edu/~aiken/moss">this page</a> and register for Moss. You will receive a mail containing a perl script. Your user id is in that script.</p>
+<p>This is a part of this perl script containing user id:</p>
+<div class="sourceCode"><pre class="sourceCode perl"><code class="sourceCode perl">
+...
+
+<span class="dt">$server</span> = <span class="kw">&#39;</span><span class="st">moss.stanford.edu</span><span class="kw">&#39;</span>;
+<span class="dt">$port</span> = <span class="kw">&#39;</span><span class="st">7690</span><span class="kw">&#39;</span>;
+<span class="dt">$noreq</span> = <span class="kw">&quot;</span><span class="st">Request not sent.</span><span class="kw">&quot;</span>;
+<span class="dt">$usage</span> = <span class="kw">&quot;</span><span class="st">usage: moss [-x] [-l language] [-d] [-b basefile1] ... [-b basefilen] [-m #] [-c \&quot;string\&quot;] file1 file2 file3 ...</span><span class="kw">&quot;</span>;
+
+<span class="co">#</span>
+<span class="co"># The userid is used to authenticate your queries to the server; don&#39;t change it!</span>
+<span class="co">#</span>
+<span class="dt">$userid</span>=YOUR_MOSS_USER_ID;
+
+<span class="co">#</span>
+<span class="co"># Process the command line options.  This is done in a non-standard</span>
+<span class="co"># way to allow multiple -b&#39;s.</span>
+<span class="co">#</span>
+<span class="dt">$opt_l</span> = <span class="kw">&quot;</span><span class="st">c</span><span class="kw">&quot;</span>;   <span class="co"># default language is c</span>
+<span class="dt">$opt_m</span> = <span class="dv">10</span>;
+<span class="dt">$opt_d</span> = <span class="dv">0</span>;
+
+...</code></pre></div>
+<p>Find your user id and use it in The Campus Judge for cheat detection. You don't need to put your user id in any file. Just save your user id in The Campus Judge's Moss page and The Campus Judge will use your user id in Moss perl script.</p>
+<p>Your server must have <code>perl</code> installed to use Moss.</p>
+<p>It is recommended to detect similar codes after assignment finishes. Because The Campus Judge just sends <strong>Final</strong> submissions to Moss and students can change their <strong>Final</strong> submissions before assignment finishes.</p>

@@ -60,16 +60,12 @@ echo shell_exec("php -v");
 ```
 * Tools for compiling and running submitted codes (`gcc`, `g++`, `javac`, `java`, `python2`, `python3` commands)
 * It is better to have `perl` installed for more precise time and memory limit and imposing size limit on output of submitted code.
-* It is better to have `Latex` and `Pandoc` installed to convert md file to pdf given in [Sample Assignment](docs/sample_assignment.md). 
+* It is better to have `Latex` and `Pandoc` installed to convert md file to pdf given in [Sample Assignment](sample_assignment.md). 
 
 ## Installation
 
-For Installation instructions [click here](docs/installation.md).
+For Installation instructions [click here](installation.md).
 
-##Documentation
-
-Check out The Campus Judge Documentation inside `docs` folder.
-After installation you can read the docs on web interface too. 
 
 ## License
 

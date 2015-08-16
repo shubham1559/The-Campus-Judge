@@ -1,0 +1,120 @@
+<h1 id="sample-assignment">Sample Assignment</h1>
+<p>Here is a sample assignment for testing The Campus Judge. Add this assignment by clicking on <code>Add</code> in <code>Assignments</code> page. You can find <code>sample</code> file in <code>judge/samples</code> directory or by clicking <a href="/samples/sample.zip">here</a></p>
+<h2 id="problems">Problems</h2>
+<p>This assignment has three problems:</p>
+<h3 id="problem-1-divide">Problem 1 (Divide):</h3>
+<p>Read two numbers a and b print a/b. errors upto 10ˆ-6 will be accepted.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Sample Input</th>
+<th align="left">Sample Output</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">4 2</td>
+<td align="left">2</td>
+</tr>
+</tbody>
+</table>
+<h3 id="problem-2-max">Problem 2 (Max):</h3>
+<p>Read integer n, and then read n integers. Print sum of these n numbers.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Sample Input</th>
+<th align="left">Sample Output</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">2<br/>4 5</td>
+<td align="left">9</td>
+</tr>
+</tbody>
+</table>
+<h3 id="problem-3-upload">Problem 3 (Upload!):</h3>
+<p>Upload a <code>c</code> or <code>zip</code> file! (This problem is &quot;Upload Only&quot;, and will not be judged)</p>
+<h2 id="tests">Tests</h2>
+<p>Tests follow <a href="tests_structure.md">this structure</a>.</p>
+<p>You can find the zip file of the tests in Assignments folder.</p>
+<p>The tree of this file is:</p>
+<pre><code>    .
+    ├── p1
+    │   ├── in
+    │   │   ├── input1.txt
+    │   │   ├── input2.txt
+    │   │   └── input3.txt
+    │   ├── out
+    │   │   ├── output1.txt
+    │   │   └── output2.txt
+    │   ├── tester.cpp
+    |   ├── desc.pdf
+    │   └── desc.md
+    ├── p2
+    │   ├── in
+    │   │   ├── input1.txt
+    │   │   ├── input2.txt
+    │   │   └── input3.txt
+    │   ├── out
+    │   │   ├── output1.txt
+    │   │   ├── output2.txt
+    │   │   └── output3.txt
+    │   ├── desc.md
+    │   └── desc.pdf
+    ├── p3
+    |   ├── desc.pdf
+    │   └── desc.md
+    ├── solution
+    │   └── solution.zip
+    └── assignment.pdf</code></pre>
+<p>Problem 1 uses &quot;Tester&quot; method for checking output. So it has a file <code>tester.cpp</code> (the Tester Script)</p>
+<p>This is the file <code>tester.cpp</code> for problem 1:</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="co">/*</span>
+<span class="co"> * tester.cpp</span>
+<span class="co"> */</span>
+ 
+<span class="ot">#include &lt;iostream&gt;</span>
+<span class="ot">#include &lt;fstream&gt;</span>
+<span class="ot">#include &lt;string&gt;</span>
+<span class="ot">#include &lt;cmath&gt;</span>
+<span class="kw">using</span> <span class="kw">namespace</span> std;
+<span class="dt">int</span> main(<span class="dt">int</span> argc, <span class="dt">char</span> <span class="dt">const</span> *argv[])
+{
+
+    ifstream test_in(argv[<span class="dv">1</span>]);    <span class="co">/* This stream reads from test&#39;s input file   */</span>
+    ifstream test_out(argv[<span class="dv">2</span>]);   <span class="co">/* This stream reads from test&#39;s output file  */</span>
+    ifstream user_out(argv[<span class="dv">3</span>]);   <span class="co">/* This stream reads from user&#39;s output file  */</span>
+
+    <span class="co">/* Your code here */</span>
+    <span class="co">/* If user&#39;s output is correct, return 0, otherwise return 1       */</span>
+    <span class="co">/* e.g.: Here the problem is: read a and b numbers and print a/b precision upto 10^-6:  */</span>
+
+    <span class="dt">double</span> sum, user_output;
+    user_out &gt;&gt; user_output;
+
+    <span class="kw">if</span> ( test_out.good() ) <span class="co">// if test&#39;s output file exists</span>
+    {
+        test_out &gt;&gt; sum;
+    }
+    <span class="kw">else</span>
+    {
+        <span class="dt">int</span> n;
+        sum=<span class="dv">0</span>;
+        <span class="dt">int</span> a,b;
+        test_in&gt;&gt;a;
+        test_in&gt;&gt;b;
+        sum=(<span class="dt">double</span>)a/b;
+    }
+
+    <span class="kw">if</span> (abs(sum-user_output)&lt;<span class="fl">1e-6</span>)
+        <span class="kw">return</span> <span class="dv">0</span>;
+    <span class="kw">else</span>
+        <span class="kw">return</span> <span class="dv">1</span>;
+
+}</code></pre></div>
+<p>Problem 2 uses &quot;Output Comparison&quot; method for checking output. So it has two folders <code>in</code> and <code>out</code> containing test cases.</p>
+<p>Problem 3 is an &quot;Upload-Only&quot; problem.</p>
+<h2 id="sample-solutions">Sample Solutions</h2>
+<p>Sample solution of all the problems is given in <code>solution.zip</code> file.</p>

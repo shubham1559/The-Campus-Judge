@@ -132,7 +132,7 @@ class Profile extends CI_Controller
 		$this->edit_username = $user->username;
 		$this->load->model('settings_model');
 		$max=$this->settings_model->get_setting('maximum_users');
-		if($this->user->level<=1&&$user_id!=$cur_id)
+		if($this->user->level<=2&&$user_id!=$cur_id)
 			show_404();
 		$result=($this->user_model->get_members($user_id,$max));
 		for($i=0;$i<$max;$i++)

@@ -81,6 +81,7 @@ $route['submissions/final/(.*)']="submissions/the_final/$1";
 $route['docs/img/(.*)']="docs/img/$1";
 $route['docs/(.*)']="docs/index/$1";
 $route['profile/edit/(:num)']="profile/edit/$1";
+$route['profile/edit']="profile/edit";
 $route['profile/(.*)'] = "profile/index/$1";
 $route['moss/(:num)'] = "moss/index/$1";
 $route['problems/(:num)'] = "problems/index/$1";
