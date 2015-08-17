@@ -1,6 +1,6 @@
 # Sample Assignment
 
-Here is a sample assignment for testing The Campus Judge. Add this assignment by clicking on `Add` in `Assignments` page. You can find `sample` file in `judge/samples` directory or by clicking [here](/samples/sample.zip)
+Here is a sample assignment for testing The Campus Judge. Add this assignment by clicking on `Add` in `Assignments` page. You can find `sample` file in `judge/samples` directory.
 
 ## Problems
 

@@ -1,6 +1,6 @@
 # The Campus Judge
 
-[The Campus Judge]() is a free and open source online judge for C, C++, Java and Python programming languages.
+[The Campus Judge](https://github.com/shubham1559/The-Campus-Judge/) is a free and open source online judge for C, C++, Java and Python programming languages.
 The Campus Judge is modified version of [Sharif Judge](https://github.com/mjnaderi/Sharif-Judge).
 
 The web interface is written in PHP (CodeIgniter framework) and the main backend is written in BASH.
@@ -8,9 +8,9 @@ The web interface is written in PHP (CodeIgniter framework) and the main backend
 Python in The Campus Judge is not sandboxed yet. Just a low level of security is provided for python.
 If you want to use The Campus Judge for python, USE IT AT YOUR OWN RISK or provide sandboxing yourself.
 
-The full documentation is at 
+The full documentation is [here](https://github.com/shubham1559/The-Campus-Judge/tree/master/docs)
 
-Download the latest release from 
+Download the latest release from [github](https://github.com/shubham1559/The-Campus-Judge/)
 
 
 ##New Features/Changes

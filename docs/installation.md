@@ -22,7 +22,7 @@ echo shell_exec("php -v");
 Installation
 ------------
 
-* 1. Download the latest release from [download page]() and unpack downloaded file in your public html directory.
+* 1. Download the latest release from [download page](https://github.com/shubham1559/The-Campus-Judge/) and unpack downloaded file in your public html directory.
 * 2. Make the `judge` folder document root for your judge, you can put other folders anywhere you want and enter full path of application folder, and system folder in `index.php` file.
 ```php
 $system_path = '/home/xyz/secret/system';
