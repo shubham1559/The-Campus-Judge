@@ -8,7 +8,7 @@
 
 {% if installed %}
 	<div id="install_success">
-		<h2>Sharif Judge Installed</h2>
+		<h2>The Campus Judge Installed</h2>
 		{% if not key_changed %}
 			<p class="shj_error">
 				<code>application/config/config.php</code> is not writable by PHP.
@@ -24,13 +24,13 @@
 			</p>
 			<br>
 		{% endif %}
-		<p class="shj_ok">Sharif Judge installed! Now you can <a href="{{ site_url('login') }}">login</a>.</p>
+		<p class="shj_ok">The Campus Judge installed! Now you can <a href="{{ site_url('login') }}">login</a>.</p>
 	</div>
 
 {% else %}
 
 	<div id="install_form">
-		<h2>Sharif Judge Installation</h2>
+		<h2>The Campus Judge Installation</h2>
 		{{ form_open('install') }}
 		<p class="input_p">
 			<label for="form_username">Admin username:</label>
