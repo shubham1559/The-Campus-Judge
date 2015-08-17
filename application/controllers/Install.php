@@ -202,7 +202,7 @@ class Install extends CI_Controller
 				array('shj_key' => 'file_size_limit',        'shj_value' => '50'),
 				array('shj_key' => 'output_size_limit',      'shj_value' => '1024'),
 				array('shj_key' => 'queue_is_working',       'shj_value' => '0'),
-				array('shj_key' => 'default_late_rule',      'shj_value' => "/* \n * Put coefficient (from 100) in variable \$coefficient.\n * You can use variables \$extra_time and \$delay.\n * \$extra_time is the total extra time given to users\n * (in seconds) and \$delay is number of seconds passed\n * from finish time (can be negative).\n *  In this example, \$extra_time is 172800 (2 days):\n */\n\nif (\$delay<=0)\n  // no delay\n  \$coefficient = 100;\n\nelse  \$coefficient = 0;"),
+				array('shj_key' => 'default_late_rule',      'shj_value' => "/* \n * Put coefficient (from 100) in variable \$coefficient.\n * You can use variables \$extra_time and \$delay.\n * \$extra_time is the total extra time given to users\n * (in seconds) and \$delay is number of seconds passed\n * from finish time (can be negative).\n *  In this example, The full or nothing score is used\n */\n\nif (\$delay<=0)\n  // no delay\n  \$coefficient = 100;\n\nelse  \$coefficient = 0;"),
 				array('shj_key' => 'enable_easysandbox',     'shj_value' => '1'),
 				array('shj_key' => 'enable_c_shield',        'shj_value' => '1'),
 				array('shj_key' => 'enable_cpp_shield',      'shj_value' => '1'),
