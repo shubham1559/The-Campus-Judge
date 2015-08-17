@@ -15,6 +15,9 @@
 	{% if user.level >= 1 %}
 	<span class="title_menu_item"><a href="{{ site_url('comments/add') }}"><i class="fa fa-plus color10"></i> New</a></span>
 	{% endif %}
+	<span class="title_menu_item">
+	<a href="{{site_url('docs/Answering Queries')}}" target="_blank"><i class="fa fa-question-circle color6"></i> Help</a>
+</span>
 {% endblock %}
 
 

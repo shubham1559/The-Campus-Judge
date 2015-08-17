@@ -63,7 +63,11 @@ $(document).ready(function () {
 </script>
 {% endblock %}
 
-
+{% block title_menu %}
+<span class="title_menu_item">
+	<a href="{{site_url('docs/Basic Instructions')}}" target="_blank"><i class="fa fa-question-circle color6"></i> Help</a>
+</span>
+{% endblock %}
 
 {% block main_content %}
 {% for error in errors %}
