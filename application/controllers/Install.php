@@ -197,8 +197,8 @@ class Install extends CI_Controller
 			// insert default settings to table 'settings'
 			$result = $this->db->insert_batch('settings', array(
 				array('shj_key' => 'timezone',               'shj_value' => 'Asia/Kolkata'),
-				array('shj_key' => 'tester_path',            'shj_value' => '/home/shj/tester'),
-				array('shj_key' => 'assignments_root',       'shj_value' => '/home/shj/assignments'),
+				array('shj_key' => 'tester_path',            'shj_value' => '/home/tcj/tester'),
+				array('shj_key' => 'assignments_root',       'shj_value' => '/home/tcj/assignments'),
 				array('shj_key' => 'file_size_limit',        'shj_value' => '50'),
 				array('shj_key' => 'output_size_limit',      'shj_value' => '1024'),
 				array('shj_key' => 'queue_is_working',       'shj_value' => '0'),
@@ -213,7 +213,7 @@ class Install extends CI_Controller
 				array('shj_key' => 'submit_penalty',         'shj_value' => '300'),
 				array('shj_key' => 'enable_registration',    'shj_value' => '0'),
 				array('shj_key' => 'registration_code',      'shj_value' => '0'),
-				array('shj_key' => 'mail_from',              'shj_value' => 'tcjj@example.com'),
+				array('shj_key' => 'mail_from',              'shj_value' => 'tcj@example.com'),
 				array('shj_key' => 'mail_from_name',         'shj_value' => 'The Campus Judge'),
 				array('shj_key' => 'reset_password_mail',    'shj_value' => "<p>\nSomeone requested a password reset for your The Campus Judge account at {SITE_URL}.\n</p>\n<p>\nTo change your password, visit this link:\n</p>\n<p>\n<a href=\"{RESET_LINK}\">Reset Password</a>\n</p>\n<p>\nThe link is valid for {VALID_TIME}. If you don't want to change your password, just ignore this email.\n</p>"),
 				array('shj_key' => 'add_user_mail',          'shj_value' => "<p>\nHello! You are registered in The Campus Judge at {SITE_URL} as {ROLE}.\n</p>\n<p>\nYour username: {USERNAME}\n</p>\n<p>\nYour password: {PASSWORD}\n</p>\n<p>\nYou can log in at <a href=\"{LOGIN_URL}\">{LOGIN_URL}</a>\n</p>"),
