@@ -37,13 +37,14 @@
     └── solution.zip
 </code></pre>
 <p>scripts folder cantains some useful code snnippets to convert description files to pdf documents. A sample desc.md file is given for all problems in their respective folders.</p>
-<p><code>bash</code> is a bash script file; running this will generate pdf files for all the problems and for the assignment from desc.md files. To use it <code>cd path/to/sources/directory</code> and <code>sh bash</code>. bash file uses pandoc and xelatex to generate pdf files. these two must be installed. On windows you can use You may want to change your assignment name and authors name; to do that change this in template.latex file.</p>
+<p><code>bash</code> is a bash script file; running this will generate pdf files for all the problems and for the assignment from desc.md files. To use it <code>cd path/to/sources/directory</code> and <code>sh bash</code>. bash file uses pandoc and xelatex to generate pdf files. these two must be installed. You may want to change your assignment name and authors name; to do that change this in template.latex file.</p>
 <pre><code> \fancyhead[CO,CE]{The assignment name}</code></pre>
 <p>and change this in frontpage.md file</p>
 <pre><code>% ![The Campus Judge](sources/banner.png)    
    The assignment name
 % Author One
   Author Two</code></pre>
+<p>On windows you can use</p>
 <pre><code> pandoc &quot;p1/desc.md&quot; --latex-engine=xelatex --template sources/template.latex -o &quot;p1/desc.pdf&quot;</code></pre>
 <p>this will generate pdf for that particular problem use this to generate pdf for the whole assignment</p>
 <pre><code>pandoc sources/frontpage.md p1/desc.md p2/desc.md p3/desc.md --latex-engine=xelatex --template sources/template.latex -o assignment.pdf</code></pre>

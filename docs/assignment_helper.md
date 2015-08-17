@@ -41,8 +41,7 @@ Extract this file. the tree of this file is
 ```
 scripts folder cantains some useful code snnippets to convert description files to pdf documents. A sample desc.md file is given for all problems in their respective folders.
 
- `bash` is a bash script file; running this will generate pdf files for all the problems and for the assignment from desc.md files. To use it `cd path/to/sources/directory` and  `sh bash`. bash file uses pandoc and xelatex to generate pdf files. these two must be installed. On windows you can use
- You may want to change your assignment name and authors name; to do that
+ `bash` is a bash script file; running this will generate pdf files for all the problems and for the assignment from desc.md files. To use it `cd path/to/sources/directory` and  `sh bash`. bash file uses pandoc and xelatex to generate pdf files. these two must be installed. You may want to change your assignment name and authors name; to do that
  change this in template.latex file.
 ```
  \fancyhead[CO,CE]{The assignment name}
@@ -55,6 +54,8 @@ and change this in frontpage.md file
   Author Two
 ```
 
+ On windows you can use
+ 
 ```
  pandoc "p1/desc.md" --latex-engine=xelatex --template sources/template.latex -o "p1/desc.pdf"
 ```
