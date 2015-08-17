@@ -1,6 +1,6 @@
 <?php
 /**
- * The Campus Judge developed on Sharif Judge
+ * Sharif Judge
  *
  * A free and open source online judge for programming assignments
  *
@@ -8,7 +8,7 @@
  *
  */
 
-define('TCJ_VERSION','2.0');
+define('SHJ_VERSION','2.0');
 
 /**
  * CodeIgniter
@@ -53,8 +53,8 @@ define('TCJ_VERSION','2.0');
  *
  * NOTE: If you change these, also change the error_reporting() code below
  */
-	define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'production');
-	//define('ENVIRONMENT','development');
+	//define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'production');
+	define('ENVIRONMENT','development');
 
 /*
  *---------------------------------------------------------------
@@ -92,7 +92,7 @@ switch (ENVIRONMENT)
  * Include the path if the folder is not in the same directory
  * as this file.
  */
-	$system_path = '';
+	$system_path = '/home/shubham/Documents/thejudge/system';
 
 /*
  *---------------------------------------------------------------
@@ -107,7 +107,7 @@ switch (ENVIRONMENT)
  *
  * NO TRAILING SLASH!
  */
-	$application_folder = '';
+	$application_folder = '/home/shubham/Documents/thejudge/application';
 
 /*
  *---------------------------------------------------------------
