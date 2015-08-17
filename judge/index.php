@@ -55,7 +55,6 @@ define('SHJ_VERSION','2.0');
  */
 	define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'production');
 
-
 /*
  *---------------------------------------------------------------
  * ERROR REPORTING
@@ -286,7 +285,7 @@ switch (ENVIRONMENT)
 if(!is_writable(APPPATH."cache/Twig"))
 {
 			header('HTTP/1.1 503 Service Unavailable.', TRUE, 503);
-			echo 'Your application/cache/Twig folder path does not appear to be writable. use chown or chgrp to make it writable by php ';
+			echo 'Your application/cache/Twig folder does not appear to be writable by PHP. use chown or chgrp to make it writable by php ';
 			exit(3); // EXIT_* constants not yet defined; 3 is EXIT_CONFIG.
 		}
 require_once BASEPATH.'core/CodeIgniter.php';
