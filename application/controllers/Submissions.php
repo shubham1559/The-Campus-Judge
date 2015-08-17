@@ -23,6 +23,8 @@ class Submissions extends CI_Controller
 		parent::__construct();
 		if ( ! $this->session->userdata('logged_in')) // if not logged in
 			redirect('login');
+		if($this->user->selected_assignment['id']==0)
+			show_error('No assignment selected.');
 		$this->load->model('submit_model');
 		$this->problems = $this->assignment_model->all_problems($this->user->selected_assignment['id']);
 
