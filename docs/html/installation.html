@@ -14,7 +14,7 @@
 <h2 id="installation-1">Installation</h2>
 <ul>
 <li><ol style="list-style-type: decimal">
-<li>Download the latest release from <a href="https://github.com/shubham1559/The-Campus-Judge/">download page</a> and unpack downloaded file in your public html directory.</li>
+<li>Download the latest release from <a href="https://github.com/shubham1559/The-Campus-Judge/releases">download page</a> and unpack downloaded file in your public html directory.</li>
 </ol></li>
 <li><ol start="2" style="list-style-type: decimal">
 <li><p>Make the <code>judge</code> folder document root for your judge, you can put other folders anywhere you want and enter full path of application folder, and system folder in <code>index.php</code> file.</p>
@@ -29,11 +29,11 @@
 <div class="sourceCode"><pre class="sourceCode php"><code class="sourceCode php"><span class="co">/*  Enter database connection settings here:  */</span>
 <span class="st">&#39;dbdriver&#39;</span> =&gt; <span class="st">&#39;postgre&#39;</span><span class="ot">,</span>    <span class="co">// database driver (mysqli, postgre)</span>
 <span class="st">&#39;hostname&#39;</span> =&gt; <span class="st">&#39;localhost&#39;</span><span class="ot">,</span>  <span class="co">// database host</span>
-<span class="st">&#39;username&#39;</span> =&gt; <span class="st">`,           // database username</span>
-<span class="st">&#39;password&#39; =&gt; `</span><span class="ot">,</span>           <span class="co">// database password</span>
-<span class="st">&#39;database&#39;</span> =&gt; <span class="st">`,           // database name</span>
-<span class="st">&#39;dbprefix&#39; =&gt; &#39;shj_&#39;,       // table prefix</span>
-<span class="st">/**********************************************/</span></code></pre></div></li>
+<span class="st">&#39;username&#39;</span> =&gt; <span class="st">&#39;&#39;</span><span class="ot">,</span>           <span class="co">// database username</span>
+<span class="st">&#39;password&#39;</span> =&gt; <span class="st">&#39;&#39;</span><span class="ot">,</span>           <span class="co">// database password</span>
+<span class="st">&#39;database&#39;</span> =&gt; <span class="st">&#39;&#39;</span><span class="ot">,</span>           <span class="co">// database name</span>
+<span class="st">&#39;dbprefix&#39;</span> =&gt; <span class="st">&#39;shj_&#39;</span><span class="ot">,</span>       <span class="co">// table prefix</span>
+<span class="co">/**********************************************/</span></code></pre></div></li>
 </ol></li>
 <li><ol start="5" style="list-style-type: decimal">
 <li>Make following files/folders writable by php.
@@ -45,15 +45,24 @@
 </ol></li>
 </ol></li>
 <li><ol start="6" style="list-style-type: decimal">
-<li>Open The Campus Judge's main page in a web browser and follow the installation process.</li>
+<li>Move the <code>docs</code> folder inside <code>judge/assets</code> folder Or make a symlink to <code>docs</code> folder there.</li>
 </ol></li>
 <li><ol start="7" style="list-style-type: decimal">
-<li>Log in with your admin account.</li>
+<li>Open The Campus Judge's main page in a web browser and follow the installation process.</li>
 </ol></li>
 <li><ol start="8" style="list-style-type: decimal">
+<li>Log in with your admin account.</li>
+</ol></li>
+<li><ol start="9" style="list-style-type: decimal">
 <li><strong>[IMPORTANT]</strong> Move folders <code>tester</code> and <code>assignments</code> somewhere outside your public directory. Then save their full path in <code>Settings</code> page. <strong>These two folders must be writable by PHP.</strong> Submitted files will be stored in <code>assignments</code> folder. So it should be somewhere not publicly accessible.</li>
 </ol></li>
+<li><ol start="10" style="list-style-type: decimal">
+<li>If there are some errors during installation you can see the error messages(if not visible) by changing the following in <code>judge/index.php</code> file.</li>
+</ol></li>
 </ul>
+<div class="sourceCode"><pre class="sourceCode php"><code class="sourceCode php">  <span class="fu">define</span><span class="ot">(</span><span class="st">&#39;ENVIRONMENT&#39;</span><span class="ot">,</span> <span class="fu">isset</span><span class="ot">(</span><span class="kw">$_SERVER</span><span class="ot">[</span><span class="st">&#39;CI_ENV&#39;</span><span class="ot">])</span> <span class="ot">?</span> <span class="kw">$_SERVER</span><span class="ot">[</span><span class="st">&#39;CI_ENV&#39;</span><span class="ot">]</span> <span class="ot">:</span> <span class="st">&#39;production&#39;</span><span class="ot">);</span></code></pre></div>
+<p>to</p>
+<div class="sourceCode"><pre class="sourceCode php"><code class="sourceCode php">  <span class="fu">define</span><span class="ot">(</span><span class="st">&#39;ENVIRONMENT&#39;</span><span class="ot">,</span><span class="st">&#39;development&#39;</span><span class="ot">);</span></code></pre></div>
 <p>Important: <a href="security.md">Secure The Campus Judge</a></p>
 <h2 id="after-installation">After Installation</h2>
 <p>Now that you have installed The Campus Judge, you may want to:</p>

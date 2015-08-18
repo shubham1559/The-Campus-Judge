@@ -1,6 +1,6 @@
 #The Campus Judge
 
-[The Campus Judge]() is a free and open source online judge for C, C++, Java and Python programming languages based on [Sharif Judge](https://github.com/mjnaderi/Sharif-Judge).
+[The Campus Judge](https://github.com/shubham1559/The-Campus-Judge/) is a free and open source online judge for C, C++, Java and Python programming languages based on [Sharif Judge](https://github.com/mjnaderi/Sharif-Judge).
 
 Profile
 ------------

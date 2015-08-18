@@ -10,7 +10,7 @@ If you want to use The Campus Judge for python, USE IT AT YOUR OWN RISK or provi
 
 The full documentation is [here](https://github.com/shubham1559/The-Campus-Judge/tree/master/docs)
 
-Download the latest release from [github](https://github.com/shubham1559/The-Campus-Judge/)
+Download the latest release from [github](https://github.com/shubham1559/The-Campus-Judge/releases)
 
 
 ##New Features/Changes
