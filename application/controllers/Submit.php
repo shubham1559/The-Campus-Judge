@@ -291,7 +291,7 @@ class Submit extends CI_Controller
 		$assignment_id=$this->user->selected_assignment['id'];
 		$status=$this->submit_model->get_status($assignment_id,$submission_id,$this->user->username)[0]['status'];
 		//exit($status);
-		if(in_array($status,array("SCORE","WA","TLE","RE","CE","PENDING")))
+		if(in_array($status,array("SCORE","WA","TLE","RE","CE","PENDING","Uploaded")))
 		exit(("$status"));
 		else
 		exit("JE");
