@@ -111,7 +111,7 @@ class Submit extends CI_Controller
 	// ------------------------------------------------------------------------
 
 
-	public function index()
+	public function index($probid=0)
 	{
 		$this->form_validation->set_rules('problem', 'problem', 'required|integer|greater_than[0]', array('greater_than' => 'Select a %s.'));
 		$this->form_validation->set_rules('language', 'language', 'required|callback__check_language', array('_check_language' => 'Select a valid %s.'));
@@ -167,7 +167,7 @@ class Submit extends CI_Controller
 			$this->data['error'] = 'You are not registered for submitting.';
 		else
 			$this->data['error'] = 'none';
-
+		$this->data['probid']=$probid;
 		$this->twig->display('pages/submit.twig', $this->data);
 
 	}

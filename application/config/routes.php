@@ -86,6 +86,7 @@ $route['profile/(.*)'] = "profile/index/$1";
 $route['moss/(:num)'] = "moss/index/$1";
 $route['problems/(:num)'] = "problems/index/$1";
 $route['problems/(:num)/(:num)'] = "problems/index/$1/$2";
+$route['submit/(:num)']="submit/index/$1";
 $route['rejudge/(:num)'] = "rejudge/index/$1";
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

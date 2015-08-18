@@ -28,6 +28,14 @@
 				$('<option value="'+shj.p[v][i]+'">'+shj.p[v][i]+'</option>').appendTo('select#languages');
 		});
 	});
+	 {% if probid!=0%} 	
+	 $(document).ready(function(){
+		$("select#problems").val("{{probid}}");
+		var v={{probid}};
+		for (var i=0;i<shj.p[v].length;i++)
+				$('<option value="'+shj.p[v][i]+'">'+shj.p[v][i]+'</option>').appendTo('select#languages');
+	});
+	 {% endif %}
 </script>
 <style type="text/css" media="screen">
     #editor { 

@@ -83,7 +83,19 @@ class Problems extends CI_Controller
 							$problems[$problem['id']]['cnt']=$summ[$problem['id']]['cnt'];
 						else $problems[$problem['id']]['cnt']=0;
 						if(isset($summ[$problem['id']]['col']))
-							$problems[$problem['id']]['col']=$summ[$problem['id']]['col']=="SCORE"?"solved":"wrong";
+						{
+							switch ($summ[$problem['id']]['col']) {
+								case 'SCORE':
+									$problems[$problem['id']]['col']="solved";
+									break;
+								case 'Uploaded':
+									$problems[$problem['id']]['col']="uploaded";
+									break;
+								default:
+									$problems[$problem['id']]['col']="wrong";
+									break;
+							}
+						}
 						else $problems[$problem['id']]['col']='';
 					$problems[$problem['id']]['avg']= sprintf('%0.2f', $problems[$problem['id']]['avg']);
 				}

@@ -477,6 +477,7 @@ $('.submitcmnt').click(function () {
 						error: shj.loading_error,
 						success: function (response) {
 							if (response.done) {
+								document.getElementById('comment_text').value="";
 								noty({text: 'Your comment has been sent to admin', layout: 'bottomRight', type: 'success', timeout: 5000});
 							}
 							else
