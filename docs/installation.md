@@ -45,11 +45,10 @@ $application_folder = '/home/xyz/secret/application';
         2. application/config/config.php
         3. tester folder
         4. assignments folder
-* 6. Move the `docs` folder inside `judge/assets` folder Or make a symlink to `docs`  folder there.
-* 7. Open The Campus Judge's main page in a web browser and follow the installation process.
-* 8. Log in with your admin account.
-* 9. **[IMPORTANT]** Move folders `tester` and `assignments` somewhere outside your public directory. Then save their full path in `Settings` page. **These two folders must be writable by PHP.** Submitted files will be stored in `assignments` folder. So it should be somewhere not publicly accessible.
-* 10. If there are some errors during installation you can see the error messages(if not visible) by changing the following in `judge/index.php` file.
+* 6. Open The Campus Judge's main page in a web browser and follow the installation process.
+* 7. Log in with your admin account.
+* 8. **[IMPORTANT]** Move folders `tester` and `assignments` somewhere outside your public directory. Then save their full path in `Settings` page. **These two folders must be writable by PHP.** Submitted files will be stored in `assignments` folder. So it should be somewhere not publicly accessible.
+* 9. If there are some errors during installation you can see the error messages(if not visible) by changing the following in `judge/index.php` file.
 
 ```php
   define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'production');
