@@ -474,7 +474,7 @@ class Submissions extends CI_Controller
 			if ($this->user->level === 0 && $type === 'log')
 				show_404();
 
-			if ($this->user->level === 0 && $this->user->username != $submission['username'])
+			if ($this->user->level === 0 && $this->user->username != $submission['username']&& $this->user->selected_assignment['public']==0)
 				exit('Don\'t try to see submitted codes :)');
 
 			if ($type === 'result')
