@@ -128,10 +128,10 @@ class Notifications_model extends CI_Model
 	 */
 	public function have_new_notification($time)
 	{
-		$notifs = $this->db->select('time')->get('notifications')->result_array();
+		$notifs = $this->db->get('notifications')->result_array();
 		foreach ($notifs as $notif) {
 			if (strtotime($notif['time']) > $time)
-				return TRUE;
+				return $notif['title'].":".$notif['text'];
 		}
 		return FALSE;
 	}

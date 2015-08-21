@@ -62,6 +62,45 @@ $(document).ready(function () {
 		}
 
 	});
+	$(".shj_details").attr('title', 'Show test case');
+	shj.details_open=false;
+	$(".shj_details").click(function () {
+		var row = $(this).parents('tr');
+		var view_test_request=$.ajax({
+			cache:true,
+			type: 'POST',
+			url: shj.site_url + 'submissions/show_diff',
+			data: {
+				username: row.data('u'),
+				assignment: row.data('a'),
+				problem: row.data('p'),
+				submit_id: row.data('s'),
+				shj_csrf_token: shj.csrf_token
+			},
+			success: function (data) {
+				$('.test_input').html('<pre class="code-column">'+data.input+'</pre>');
+				$('.test_output').html('<pre class="code-column">'+data.output+'</pre>');
+				$('.test_useroutput').html('<pre class="code-column">'+data.useroutput+'</pre>');
+			$('.header').html('<p><code>Verdict : '+data.verdict+' | Test Case : '+data.wrong_at+' | Submit ID: '+row.data('s')+' | Username: '+row.data('u')+' | Problem: '+row.data('p')+'</code></p>');
+			}
+		});
+		if (!shj.details_open) {
+			shj.details_open = true;
+			$('#test_modal').reveal(
+				{
+					animationspeed: 300,
+					on_close_modal: function () {
+						view_test_request.abort();
+					},
+					on_finish_modal: function () {
+						$("#test_details").html('<div style="text-align: center;">Loading<br><img src="'+shj.base_url+'assets/images/loading.gif"/></div>');
+						shj.details_open = false;
+					}
+				}
+			);
+		}
+	});
+
 	$(".shj_rejudge").attr('title', 'Rejudge');
 	$(".shj_rejudge").click(function () {
 		var row = $(this).parents('tr');
@@ -88,6 +127,8 @@ $(document).ready(function () {
 			}
 		});
 	});
+
+
 	$(".set_final").click(
 		function () {
 			var row = $(this).parents('tr');

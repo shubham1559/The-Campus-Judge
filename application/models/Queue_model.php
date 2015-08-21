@@ -196,6 +196,7 @@ class Queue_model extends CI_Model
 		$arr = array(
 			'status' => $submission['status'],
 			'pre_score' => $submission['pre_score'],
+			'wrong_at' =>$submission['wrong_at'],
 		);
 
 	/*	if ($type === 'judge')

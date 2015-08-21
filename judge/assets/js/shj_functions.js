@@ -209,9 +209,9 @@ shj.check_notifs = function () {
 			shj_csrf_token: shj.csrf_token
 		},
 		success: function (data) {
-			if (data == "new_notification") {
+			if (data != "no_new_notification") {
 				noty({
-					text: 'New Notification',
+					text: data,
 					layout: 'bottomRight',
 					type: 'information',
 					closeWith: ['click', 'button'],

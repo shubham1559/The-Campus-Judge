@@ -104,7 +104,7 @@ class Query_model extends CI_Model
  */
 	public function have_new_comments($assignment_id,$time)
 	{
-		$notifs = $this->db->select_max('time')->where('assignment',$assignment_id)->get('query')->result_array();
+		$notifs = $this->db->select_max('time')->where(array('assignment'=>$assignment_id,"reply"=>"0"))->get('query')->result_array();
 		foreach ($notifs as $notif) {
 			if (strtotime($notif['time']) > $time)
 				return TRUE;

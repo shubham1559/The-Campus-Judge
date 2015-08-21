@@ -559,7 +559,6 @@ for((i=1;i<=TST;i++)); do
 			ACCEPTED=true
 		fi
 	fi
-
 	if $ACCEPTED; then
 		shj_log "ACCEPTED"
 		echo "<span class=\"shj_g\">ACCEPT</span>" >>$PROBLEMPATH/$UN/result.html
@@ -584,16 +583,16 @@ done
 	#fi
 
 
-
+mv out $PROBLEMPATH/$UN/out
 cd ..
 rm -r $JAIL >/dev/null 2>/dev/null # removing files
 
 ((SCORE=PASSEDTESTS*10000/TST)) # give score from 10,000
 shj_log "\nScore from 10000: $SCORE"
-
+((PASSEDTESTS=PASSEDTESTS+1))
 #shj_finish $SCORE
 if [ "$VERDICT" == "AC" ];then
 	shj_finish "$SCORE"
 else
-	shj_finish "$VERDICT"
+	shj_finish "$VERDICT $PASSEDTESTS"
 fi

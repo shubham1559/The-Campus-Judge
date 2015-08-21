@@ -119,8 +119,9 @@ class Notifications extends CI_Controller
 		$time  = $this->input->post('time');
 		if ($time === NULL)
 			exit('error');
-		if ($this->notifications_model->have_new_notification(strtotime($time)))
-			exit('new_notification');
+		$data=$this->notifications_model->have_new_notification(strtotime($time));
+		if ($data)
+			exit($data);
 		exit('no_new_notification');
 	}
 

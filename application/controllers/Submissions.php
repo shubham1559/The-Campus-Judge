@@ -552,6 +552,78 @@ class Submissions extends CI_Controller
 		$this->twig->display("pages/admin/changeverdict.twig");
 	}*/
 
+	/**To see the failed input and output test case
+	 */
+	public function show_diff()
+	{
+		if ( ! $this->input->is_ajax_request() )
+			show_404();
+		$this->form_validation->set_rules('username','username','required|min_length[3]|max_length[20]|alpha_numeric');
+		$this->form_validation->set_rules('assignment','assignment','integer|greater_than[0]');
+		$this->form_validation->set_rules('problem','problem','integer|greater_than[0]');
+		$this->form_validation->set_rules('submit_id','submit_id','integer|greater_than[0]');
+
+		if($this->form_validation->run())
+		{
+			$submission = $this->submit_model->get_submission(
+				$this->input->post('username'),
+				$this->input->post('assignment'),
+				$this->input->post('problem'),
+				$this->input->post('submit_id')
+			);
+			if ($submission === FALSE)
+				show_404();
+
+			if ($this->user->level <=1)
+				exit('You\'re not suppossed to be here :)');
+			$result = array(
+				'input' => "No Input",//file_exists($file_path)?file_get_contents($file_path):'File Not Found'
+				'output'=>"No Output",
+				'useroutput'=>"No Output",
+				'verdict'=>"NULL",
+				'wrong_at'=>0,
+			);
+			$basepath = rtrim($this->settings_model->get_setting('assignments_root'),'/')."/assignment_{$submission['assignment']}/p{$submission['problem']}/";
+			$inputfile=$basepath."in/input".$submission['wrong_at'].".txt";
+			$outputfile=$basepath."out/output".$submission['wrong_at'].".txt";
+			$userfile=$basepath."{$submission['username']}/out-{$submission['submit_id']}";
+			if($submission['status']=='Uploaded'||$submission['status']=="SCORE")
+				$result['verdict']=$submission['status'];
+			elseif($submission['status']!="WA")
+			{
+				$result['wrong_at']=$submission['wrong_at'];
+				$result['verdict']=$submission['status'];
+				$result['input']=$this->_readfile($inputfile);;
+				$result['output']=$this->_readfile($outputfile);;
+				$result['useroutput']="No User Output";
+			}
+			else
+			{
+				$result['wrong_at']=$submission['wrong_at'];
+				$result['verdict']=$submission['status'];
+				$result['input']=$this->_readfile($inputfile);
+				$result['output']=$this->_readfile($outputfile);
+				$result['useroutput']=$this->_readfile($userfile);
+			}
+			
+
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+
+		}
+		else
+			exit('Are you trying to see other users\' Output? :)');
+	}
+	private function _readfile($path)
+	{
+		if(file_exists($path))
+		{
+			return file_get_contents($path,0,NULL,0,500);
+		}
+		else{
+			return "File Not Found";
+		}
+	}
+
 
 
 }

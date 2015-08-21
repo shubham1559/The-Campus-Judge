@@ -730,6 +730,11 @@ select.sharif_time {
 	cursor: pointer;
 }
 
+.adjust{
+	width:30px;
+	height:20px;
+	float:left;
+}
 #problems_table {
 	padding: 5px;
 	text-align: center;

@@ -120,15 +120,19 @@ class Queueprocess extends CI_Controller
 			{
 				shell_exec("mv $userdir/result.html $userdir/result-{$submit_id}.html");
 				shell_exec("mv $userdir/log $userdir/log-{$submit_id}");
+				shell_exec("mv $userdir/out $userdir/out-{$submit_id}");
 			}
 
 			if (is_numeric($output)) {
 				$submission['pre_score'] = $output;
 				$submission['status'] = 'SCORE';
+				$submission['wrong_at'] = 0;
 			}
 			else {
+				$output=explode(" ",$output);
 				$submission['pre_score'] = 0;
-				$submission['status'] = $output;
+				$submission['status'] = $output[0];
+				$submission['wrong_at'] = $output[1];
 			}
 
 			// Save the result
