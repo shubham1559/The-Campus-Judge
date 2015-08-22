@@ -544,13 +544,6 @@ class Submissions extends CI_Controller
 		);
 
 	}
-	/*public function change($submission_id=NULL)
-	{
-		if($this->user->level<=1)show_404();
-		if($submission_id==NULL)show_404();
-		$assignment_id=$this->user->selected_assignment('id');
-		$this->twig->display("pages/admin/changeverdict.twig");
-	}*/
 
 	/**To see the failed input and output test case
 	 */
@@ -622,6 +615,44 @@ class Submissions extends CI_Controller
 		else{
 			return "File Not Found";
 		}
+	}
+	public function changeverdict()
+	{
+		
+		if ( ! $this->input->is_ajax_request() )
+			show_404();
+		$this->form_validation->set_rules('username','username','required|min_length[3]|max_length[20]|alpha_numeric');
+		$this->form_validation->set_rules('assignment','assignment','integer|greater_than[0]');
+		$this->form_validation->set_rules('problem','problem','integer|greater_than[0]');
+		$this->form_validation->set_rules('submit_id','submit_id','integer|greater_than[0]');
+
+		if($this->form_validation->run())
+		{
+			if ($this->user->level <=1)
+				exit('Error');
+			$this->load->model('queue_model');
+			$data=array(
+				'username'=>$this->input->post('username'),
+				'submit_id'=>$this->input->post('submit_id'),
+				'assignment'=>$this->input->post('assignment'),
+				'problem'=>$this->input->post('problem'),
+				'status'=>$this->input->post('verdict'),
+				'wrong_at'=>1,
+				'pre_score'=>$this->input->post('score'),
+			);
+			$assignments_dir = rtrim($this->settings_model->get_setting('assignments_root'), '/');
+			$problemdir = $assignments_dir."/assignment_".$data['assignment']."/p".$data['problem'];
+			$userdir = "$problemdir/".$data['username'];
+			$logfile=$userdir."/log-".$data['submit_id'];
+			file_put_contents($logfile,"Forced status change");
+			$this->queue_model->save_judge_result_in_db($data,"rejudge");
+			exit("Success");
+			//exit("Success");
+		}
+		else
+			exit('Error');
+
+
 	}
 
 

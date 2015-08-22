@@ -4,6 +4,8 @@
  * @author Mohammad Javad Naderi <mjnaderi@gmail.com>
  *
  *     Javascript codes for "All Submissions" and "Final Submissions" pages
+ *
+ * edited by Shubham Vishwakarma
  */
 
 shj.modal_open = false;
@@ -100,6 +102,52 @@ $(document).ready(function () {
 			);
 		}
 	});
+	$(".shj_change").attr('title','Force Change Status')
+	shj.change_open=false;
+	$(".shj_change").click(function(){
+		var row=$(this).parents('tr');
+		$('.header').html('<p><code> Submit ID: '+row.data('s')+' | Username: '+row.data('u')+' | Problem: '+row.data('p')+' | Current Status: '+row.data('v')+'</code></p>');
+	$("input#change_verdict").unbind().click(function(){
+		var form=$(this).parents('form').serializeArray();
+			$.ajax({
+			type:'POST',
+			url:shj.site_url+'submissions/changeverdict',
+			error: shj.loading_error,
+				data: {
+				username: row.data('u'),
+				assignment: row.data('a'),
+				problem: row.data('p'),
+				submit_id: row.data('s'),
+				shj_csrf_token: shj.csrf_token,
+				verdict:form[0].value,
+				score:form[1].value,
+			},
+			success:function(data){
+				if(data!="Error")
+				{row.children('.status').html('<div class="btn pending" data-code="0">PENDING</div>');
+				$('#change_modal').trigger('reveal:close');
+				}
+			}
+		});
+	});
+			if(!shj.change_open){
+		$('#change_modal').reveal(
+			{
+				animationspeed: 300,
+					on_finish_modal: function () {
+						shj.change_open = false;
+					}
+			})
+		}
+	})
+	$("select#verdict").change(function(){
+		if($(this).val()=="SCORE")
+		{
+			$("input#score").val(10000);
+		}
+		else $("input#score").val(0);
+	})
+
 
 	$(".shj_rejudge").attr('title', 'Rejudge');
 	$(".shj_rejudge").click(function () {

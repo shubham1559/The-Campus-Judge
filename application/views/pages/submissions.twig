@@ -20,11 +20,11 @@
 	<script type='text/javascript' src="{{ base_url("assets/reveal/jquery.reveal.js") }}"></script>
 	<script type='text/javascript' src="{{ base_url("assets/js/shj_submissions.js") }}"></script>
 	<style type="text/css">
-	/* .test_details{
-		width:32%;
-		margin-left: 1%;
-		float:left;
-	} */
+.test_details{
+	width:32%;
+	margin-left: 1%;
+	float:left;
+} 
 	#test_modal{
 		width:1000px;
 		margin-left: -500px;
@@ -119,7 +119,7 @@
 			{% set j = j+1 %}
 		{% endif %}
 		{% set un = submission.username %}
-		<tr data-u="{{ submission.username }}" data-a="{{ submission.assignment }}" data-p="{{ submission.problem }}" data-s="{{ submission.submit_id }}" {% if view == 'final' and j is even %}class="hl"{% endif %}>
+		<tr data-u="{{ submission.username }}" data-a="{{ submission.assignment }}" data-p="{{ submission.problem }}" data-s="{{ submission.submit_id }}"  data-v="{{submission.status}}"{% if view == 'final' and j is even %}class="hl"{% endif %}>
 		{% if view == 'all' %}
 		{% endif %}
 		{% if user.level > 0 %}
@@ -187,9 +187,13 @@
 			{% if user.level >= 2 %}
 				<td>
 					<div class="shj_rejudge pointer adjust"><i class="fa fa-refresh fa-lg color10"></i></div>
+					{% if submission.status!='Uploaded' and submission.status!="PENDING"%}
+					<div class="shj_change pointer adjust"><i class="fa fa-fire fa-lg color10"></i></div>
+					{% endif %}
 					{% if submission.status != 'Uploaded'and submission.status!="SCORE" %}
 					<div class="shj_details pointer adjust"><i class="fa fa-briefcase fa-lg color10"></i></div>
 					{% endif %}
+
 				</td>
 			{% endif %}
 		</tr>
@@ -211,22 +215,41 @@
 	</div>
 	<a class="close-reveal-modal">&#215;</a>
 </div>
-{% if submission.status != 'Uploaded'and submission.status!="SCORE" %}
 <div id="test_modal" class="reveal-modal xlarge">
 	<div class="header"></div>
 	<div class="test_details">Input Test Case</div>
+	<div class="test_details">Expected Output</div>
+	<div class="test_details">Users Output</div>
 	<div class="test_details test_input">
 		<div style="text-align: center;">Loading<br><img src="{{ base_url('assets/images/loading.gif') }}"/></div>
 	</div>
-	<div class="test_details">Expected Output</div>
+	
 	<div class="test_details test_output">
 		<div style="text-align: center;">Loading<br><img src="{{ base_url('assets/images/loading.gif') }}"/></div>
 	</div>
-	<div class="test_details">Users Output</div>
+	
 	<div class="test_details test_useroutput">
 		<div style="text-align: center;">Loading<br><img src="{{ base_url('assets/images/loading.gif') }}"/></div>
 	</div>
 	<a class="close-reveal-modal">&#215;</a>
 </div>
-	{% endif %}
+<div id="change_modal" class="reveal-modal large">
+	<div class="header"></div>
+	<p>Change Status for this submission</p>
+	<form>
+		<label for="verdict" class="tiny">Status:</label>
+		<select id="verdict" name ="verdict" class="sharif_input">
+			<option value="SCORE" >AC</option>
+			<option value="WA" >WA</option>
+			<option value="RE" >RE</option>
+			<option value="TLE">TLE</option>
+			<option value="CE">CE</option>
+		</select>
+		<label >Score:</label>
+		<input type="number" id="score" min="0" max="10000" name="score" value="10000">
+		<p>10000 for full score and less than that for partial score</p>
+		<input type="button" id="change_verdict" value="Change Status" class="sharif_input"/>
+	</form>
+		<a class="close-reveal-modal">&#215;</a>
+</div>
 {% endblock %}
