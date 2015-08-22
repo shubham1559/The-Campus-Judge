@@ -187,7 +187,7 @@
 			{% if user.level >= 2 %}
 				<td>
 					<div class="shj_rejudge pointer adjust"><i class="fa fa-refresh fa-lg color10"></i></div>
-					{% if submission.status!='Uploaded' and submission.status!="PENDING"%}
+					{% if submission.status!="PENDING" %}
 					<div class="shj_change pointer adjust"><i class="fa fa-fire fa-lg color10"></i></div>
 					{% endif %}
 					{% if submission.status != 'Uploaded'and submission.status!="SCORE" %}

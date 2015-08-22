@@ -1,0 +1,66 @@
+	<tr data-u="{{ username }}" data-a="{{ assignment }}" data-p="{{ problem }}" data-s="{{ submit_id }}"  data-v="{{status}}">
+	<td>{{ submit_id }}</td>
+	<td><a href="{{ site_url('/'~view~'/user/'~username~(filter_problem?'/problem/'~filter_problem)) }}">{{ username }}</a></td>
+			<!--td dir="auto">{{ name }}</td-->
+<td><a href="{{ site_url('/'~view~(filter_user?'/user/'~filter_user)~'/problem/'~problem) }}" title="{{ problems[problem].name }}">{{ problem }}</a></td>
+<td>{{ time }}</td>
+	<td>{{ pre_score }}</td>
+	<td>
+<span class="tiny_text" {{ delay > 0 ? 'style="color:red;"' }}>
+				{% if delay <= 0 %}
+					No Delay
+				{% else %}
+					<span title="HH:MM">{{ time_hhmm(delay) }}</span>
+				{% endif %}
+				</span><br>
+				{{ coefficient }}%
+			</td>
+			<td style="font-weight: bold;">{{ final_score }} </td>
+			<td>{{ language }}</td>
+			<td class="status">
+				{% if status == 'Uploaded' %}
+					Uploaded
+				{% else %}
+					{% if status|lower == 'pending' %}
+						{% set class = 'btn' %}
+					{% elseif status|lower == 'score' %}
+						{% set class = (fullmark ? 'btn shj-green' : 'btn shj-red') %}
+					{% else %}
+						{% set class = 'btn shj-red' %}
+					{% endif %}
+					<div class="{{ class }}" data-type="result" >
+						{% if status == 'SCORE' %}
+							{{ final_score }}
+						{% else %}
+							{{ status }}
+						{% endif %}
+					</div>
+				{% endif %}
+			</td>
+			<td>
+				{% if file_type == 'zip' or file_type == 'pdf' %}
+					<div class="btn shj-orange" data-type="download">Download</div>
+				{% else %}
+					<div class="btn shj-orange" data-type="code" >Code</div>
+				{% endif %}
+			</td>
+			{% if user.level > 0 %}
+			<td>
+				{% if status == 'Uploaded' %}
+					---
+				{% else %}
+					<div class="btn" data-type="log" >Log</div>
+				{% endif %}
+			</td>
+			{% endif %}
+			{% if user.level >= 2 %}
+				<td>
+					<div class="shj_rejudge pointer adjust"><i class="fa fa-refresh fa-lg color10"></i></div>
+					<div class="shj_change pointer adjust"><i class="fa fa-fire fa-lg color10"></i></div>
+					{% if status != 'Uploaded'and status!="SCORE" %}
+					<div class="shj_details pointer adjust"><i class="fa fa-briefcase fa-lg color10"></i></div>
+					{% endif %}
+
+				</td>
+			{% endif %}
+	</tr>

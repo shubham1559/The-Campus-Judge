@@ -8,7 +8,7 @@
 {% block icon %}fa-puzzle-piece{% endblock %}
 {% block title %}{{ all_problems[problem.id].name }}{% endblock %}
 {% block head_title %}Problem {{ problem.id }}{% endblock %}
-{% block other_title%} <base href="{{base_url('assets/images/'~description_assignment.id)}}/" />{% endblock %}
+{% block other_title%} <base href="{{site_url('assignments/images/'~description_assignment.id)}}/" />{% endblock %}
 
 
 {% block other_assets %}

@@ -86,6 +86,7 @@
 	{% if user.level > 0 %}
 	<td>
 		{% if user.level >= 2 %}
+		<a href="{{ site_url('assignments/showall/'~item.id) }}"><i title="View all uploaded images for this assignment" class="fa fa-th fa-lg color13"></i></a>
 			<a href="{{ site_url('assignments/downloadtestsdesc/'~item.id) }}"><i title="Download Tests and Descriptions" class="fa fa-cloud-download fa-lg color11"></i></a>
 		{% endif %}
 		{% if user.level >= 1 %}

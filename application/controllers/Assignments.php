@@ -546,8 +546,6 @@ class Assignments extends CI_Controller
 			);
 		}
 
-
-
 		// Extract Tests (zip file)
 
 		if ($zip_uploaded) // if zip file is uploaded
@@ -559,12 +557,11 @@ class Assignments extends CI_Controller
 
 			// Extract new test cases and descriptions in temp directory
 			$this->load->library('unzip');
-			$this->unzip->allow(array('txt', 'cpp', 'html', 'md', 'pdf','zip'));
+			$this->unzip->allow(array('txt', 'cpp', 'html', 'md', 'pdf','zip','jpg','png','gif'));
 			$extract_result = $this->unzip->extract($u_data['full_path'], $tmp_dir);
 
 			// Remove the zip file
 			unlink($u_data['full_path']);
-
 			if ( $extract_result )
 			{
 				// Remove previous test cases and descriptions
@@ -599,7 +596,33 @@ class Assignments extends CI_Controller
 			shell_exec("rm -rf $tmp_dir");
 		}
 
-
+		//Upload all images of assignment
+		$image_folder="$assignments_root/assignment_{$the_id}/images";
+		if(!file_exists($image_folder))
+			mkdir($image_folder,0700);
+		$config = array(
+			'upload_path' => $image_folder,
+			'allowed_types' => 'jpg|png|gif',
+		);
+		$this->upload->initialize($config);
+		$image_uploaded = $this->upload->do_upload("images");
+		if ($_FILES['images']['error'] === UPLOAD_ERR_NO_FILE)
+			$this->messages[] = array(
+				'type' => 'notice',
+				'text' => "Notice: You did not upload any image for assignment. If needed, upload by editing assignment."
+			);
+		elseif ( ! $image_uploaded)
+			$this->messages[] = array(
+				'type' => 'error',
+				'text' => "Error: Error uploading image for assignment: ".$this->upload->display_errors('', '')
+			);
+		else
+		{
+				$this->messages[] = array(
+				'type' => 'success',
+				'text' => 'Image Uploaded successfully',
+			);
+		}
 
 		// Create problem directories and parsing markdown files
 
@@ -622,10 +645,10 @@ class Assignments extends CI_Controller
 	// ------------------------------------------------------------------------
 
 
-	public function edit($assignment_id)
+	public function edit($assignment_id=NULL)
 	{
 
-		if ($this->user->level <= 1) // permission denied
+		if ($this->user->level <= 1||$assignment_id==NULL) // permission denied
 			show_404();
 
 		$this->edit_assignment = $assignment_id;
@@ -633,6 +656,53 @@ class Assignments extends CI_Controller
 
 		// redirect to add function
 		$this->add();
+	}
+
+	//------------------------------------------------
+	public function images($assignment_id=NULL,$imagename=NULL)
+	{
+		$assignments_root = rtrim($this->settings_model->get_setting('assignments_root'), '/');
+		$filename="$assignments_root/assignment_{$assignment_id}/images/$imagename";
+		$assignment = $this->assignment_model->assignment_info($assignment_id);
+		if($this->user->level==0&&shj_now() < strtotime($assignment['start_time']))
+				show_404();
+		if(file_exists($filename)){
+					header('Content-Length: '.filesize($filename)); //<-- sends filesize header
+					$mime=$this->_getmime(pathinfo($filename,PATHINFO_EXTENSION));
+					header("Content-Type: $mime"); //<-- send mime-type header
+					header('Content-Disposition: inline; filename="'.$filename.'";'); //<-- sends filename header
+					readfile($filename); //<--reads and outputs the file onto the output buffer
+					die(); //<--cleanup
+					exit; //and exit
+					}
+					else show_404();
+	}
+// ------------------------------------------------------------------------
+
+	public function showall($assignment_id=NULL)
+	{
+
+		if ($this->user->level <= 1||$assignment_id==NULL) // permission denied
+			show_404();
+		$assignments_root = rtrim($this->settings_model->get_setting('assignments_root'), '/');
+		$image_folder="$assignments_root/assignment_{$assignment_id}/images";
+		$images=scandir($image_folder);
+		$data=array(
+			'all_assignments' => $this->assignment_model->all_assignments(),
+			'images'=>array_slice($images,2),
+			'id'=>$assignment_id,
+			);
+		$this->twig->display("pages/admin/showimages.twig",$data);
+	}
+	//---------------------------------------------------------------------
+	private function _getmime($ext)
+	{
+					switch ($ext) {
+						case 'jpg':	return "image/jpeg";break;
+						case 'png':return "image/png"; break;
+						case 'gif':return "image/gif";break;
+						default:return NULL;break;
+					}
 	}
 
 
