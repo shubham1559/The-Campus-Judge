@@ -225,10 +225,10 @@ class Problems extends CI_Controller
 		$this->twig->display('pages/admin/edit_problem_'.$type.'.twig', $data);
 
 	}
-	public function showmcq()
+/*	public function showmcq()
 	{
 		$data=array('all_assignments' => $this->assignment_model->all_assignments());
 		$this->twig->display("pages/showmcq.twig",$data);
-	}
+	}*/
 
 }

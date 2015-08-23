@@ -735,7 +735,7 @@ select.sharif_time {
 	height:20px;
 	float:left;
 }
-#problems_table {
+#problems_table,#mcqproblems_table {
 	padding: 5px;
 	text-align: center;
 	border-radius: 5px;
@@ -1385,7 +1385,7 @@ div#main_container .problem_description {
 	line-height: normal;
 }
 
-div#md_div {
+div#md_div,div#mcq_edit {
 	margin-right: 235px;
 }
 
@@ -1408,4 +1408,10 @@ div.md_cheatsheet pre{
 
 div.md_cheatsheet p{
 	margin: 0;
+}
+div#mcq_edit .desc,div#mcq_edit table {
+	width: 100%;
+}
+div#mcq_edit .option {
+	width: 90%;
 }

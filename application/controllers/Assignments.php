@@ -329,7 +329,9 @@ class Assignments extends CI_Controller
 			$data['edit_assignment'] = $this->assignment_model->assignment_info($this->edit_assignment);
 			if ($data['edit_assignment']['id'] === 0)
 				show_404();
+			$this->load->model('mcq_model');
 			$data['problems'] = $this->assignment_model->all_problems($this->edit_assignment);
+			$data['mcqproblems']=$this->mcq_model->getallmcq($this->edit_assignment,TRUE);
 		}
 		else
 		{
@@ -624,6 +626,48 @@ class Assignments extends CI_Controller
 			);
 		}
 
+		//Upload MCQ problems of assignment
+		$mcqfolder="$assignments_root/assignment_{$the_id}/mcq";
+		if(!file_exists($mcqfolder))
+			mkdir($mcqfolder,0700);
+		$config=array(
+			'upload_path'=>$mcqfolder,
+			'allowed_types'=>'JSON'
+			);
+		$this->upload->initialize($config);
+		$json_uploaded=$this->upload->do_upload("json");
+		$json_path = $this->upload->data()['full_path'];
+		if ($_FILES['json']['error'] === UPLOAD_ERR_NO_FILE)
+			$this->messages[] = array(
+				'type' => 'notice',
+				'text' => "Notice: You did not upload any JSON file for assignment. If needed, upload by editing assignment."
+			);
+		elseif ( ! $image_uploaded)
+			$this->messages[] = array(
+				'type' => 'error',
+				'text' => "Error: Error uploading JSON file for assignment: ".$this->upload->display_errors('', '')
+			);
+		else
+		{
+				$this->messages[] = array(
+				'type' => 'success',
+				'text' => 'JSON Uploaded successfully',
+			);
+		}
+		if($json_uploaded)
+		{
+			$allmcqs=json_decode($json_path);
+			foreach ($mcq as $allmcqs) {
+				$mcq['assignment']=$the_id;
+			}
+			$this->load->model('mcq_model');
+			$this->mcq_model->batchadd($allmcqs);
+			$this->messages[] = array(
+				'type' => 'success',
+				'text' => 'MCQ Problems inserted successfully',
+			);
+			unlink($json_path);
+		}
 		// Create problem directories and parsing markdown files
 
 		for ($i=1; $i <= $this->input->post('number_of_problems'); $i++)
