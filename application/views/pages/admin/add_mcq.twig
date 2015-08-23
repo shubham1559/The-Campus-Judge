@@ -1,0 +1,230 @@
+{#
+ # The Campus Judge
+ # file: edit_mcq.twig
+ # author: Shubham vishwakarma <shubhamvishwakarma987@gmail.com>
+ #}
+{% set selected = 'assignments' %}
+{% extends 'templates/base.twig' %}
+{% block icon %}fa-{{edit?"edit":"plus"}}{% endblock %}
+{% block title %}{{edit?"Edit MCQ Problem":"Add MCQ Problem"}}{% endblock %}
+{% block head_title %}{{edit?"Edit MCQ Problem":"Add MCQ Problem"}}{% endblock %}
+
+
+
+{% block other_assets %}
+<script type='text/javascript' src="{{ base_url('assets/js/taboverride.min.js') }}"></script>
+<script>
+$(document).ready(function(){
+	tabOverride.set(document.getElementById('md_editor'));
+});
+</script>
+{% endblock %}
+
+{% block title_menu %}
+<span class="title_menu_item">
+	<a href="{{site_url('assignments/edit/'~id)}}"><i class="fa fa-arrow-left color11"></i> Back to assignments page</a>
+</span>
+{% endblock %}
+
+{% block main_content %}
+<div class="pull-right md_cheatsheet">
+<h2>Markdown Cheatsheet</h2>
+From <a href="http://daringfireball.net/projects/markdown/dingus">Daring Fireball</a>
+<h3>Headers</h3>
+
+<p>Setext-style:</p>
+
+<pre><code>Header 1
+========
+
+Header 2
+--------
+</code></pre>
+
+<p>atx-style (closing #'s are optional):</p>
+
+<pre><code># Header 1 #
+
+## Header 2 ##
+
+###### Header 6
+</code></pre>
+
+<h3>Phrase Emphasis</h3>
+
+<pre><code>*italic*   **bold**
+_italic_   __bold__
+</code></pre>
+
+<h3>Code Spans</h3>
+
+<pre><code>`&lt;code&gt;` spans are delimited
+by backticks.</code></pre>
+
+<h3>Fenced Code Blocks</h3>
+<pre>
+```
+function test() {
+	printf("Hello World!\n");
+}
+```</pre>
+<h3>Syntax Highlighting</h3>
+<code>c</code>, <code>cpp</code>, <code>python</code> and <code>java</code> supported.
+<pre>
+```python
+def test:
+	print ("Python Syntax")
+```</pre>
+
+<h3>Preformatted Code Blocks</h3>
+
+<p>Indent every line of a code block by at least 4 spaces or 1 tab.</p>
+
+<pre><code>This is a normal paragraph.
+
+    This is a preformatted
+    code block.
+</code></pre>
+
+<h3>Lists</h3>
+
+<p>Ordered, without paragraphs:</p>
+
+<pre><code>1.  Foo
+2.  Bar
+</code></pre>
+
+<p>Unordered, with paragraphs:</p>
+
+<pre><code>*   A list item.
+
+    With multiple paragraphs.
+
+*   Bar
+</code></pre>
+
+<p>You can nest them:</p>
+
+<pre><code>*   Item 1
+    * item
+*   Item 2
+    1.  item 1
+    2.  item 2
+        * item
+    3. item 3
+*   Item 3
+</code></pre>
+
+<h3>Links</h3>
+
+<p>Inline:</p>
+
+<pre><code>An [example](http://url.com/ "Title")
+</code></pre>
+
+<p>Reference-style labels (titles are optional):</p>
+
+<pre><code>An [example][id]. Then, anywhere
+else in the doc, define the link:
+
+  [id]: http://example.com/  "Title"
+</code></pre>
+<h3>Images</h3>
+
+<p>Inline (titles are optional):</p>
+
+<pre><code>![alt text](/path/img.jpg "Title")
+</code></pre>
+
+<p>Reference-style:</p>
+
+<pre><code>![alt text][id]
+
+[id]: /url/to/img.jpg "Title"
+</code></pre>
+<h3>Blockquotes</h3>
+
+<pre><code>&gt; Email-style angle brackets
+&gt; are used for blockquotes.
+
+&gt; &gt; And, they can be nested.
+
+&gt; #### Headers in blockquotes
+&gt;
+&gt; * You can quote a list.
+&gt; * Etc.
+</code></pre>
+<h3>Horizontal Rules</h3>
+
+<p>Three or more dashes or asterisks:</p>
+
+<pre><code>---
+
+* * *
+
+- - - -
+</code></pre>
+
+<h3>Manual Line Breaks</h3>
+
+<p>End a line with two or more spaces:</p>
+
+<pre><code>Roses are red,
+Violets are blue.
+</code></pre>
+</div>
+{% if message %}
+<p class="shj_g">{{message}}</p>
+{% endif%}
+<div id="mcq_edit">
+	{{ form_open("mcq/add/"~id) }}
+			{% if edit %}
+			<input type="hidden" name="id" value="{{edit.id}}">
+			{% endif%}
+			<label for="star">Star:</label>
+			<input type="checkbox" name="star" id="star" value="1" class="sharif_input" {{newdata?(edit.star==1?'checked':''):set_checkbox("star","1")}}/>
+			<label for="name">Name:</label>
+			<input type="text" name="name" class="long sharif_input" id="name" value="{{ newdata?edit.name:(set_value('name')) }}" required	>
+			<label for="Score">Score:</label>
+			<input type="number" min="1" name="score" id="score" class="sharif_input" value="{{newdata?edit.score:set_value('score')}}" required>
+			<br/>
+			{{ form_error('name', '<div class="shj_error">', '</div>') }}
+			{{ form_error('score', '<div class="shj_error">', '</div>') }}
+		<label for="desc">Description:</label>
+		<table>
+		<tr>
+		<textarea dir="auto" name="desc" rows="7" cols="80" id="desc" class="sharif_input desc" id="" required>{{ newdata?edit.description:(set_value('desc')) }}</textarea>
+		{{ form_error('desc', '<div class="shj_error">', '</div>') }}</tr>
+		<tr>
+		<td>
+		A.
+		<input type="radio" name="correct" value="1" required {{newdata?(edit.correct==1?'checked':''):set_checkbox("correct","1")}} >
+		<textarea dir="auto" name="o1" rows="4" cols="40" class="sharif_input option" id="">{{ newdata?edit.o1:(set_value('o1')) }}</textarea>
+		</td>
+		<td>
+		B.
+		<input type="radio" name="correct" value="2" {{newdata?(edit.correct==2?'checked':''):set_checkbox("correct","2")}}>
+		<textarea dir="auto" name="o2" rows="4" cols="40" class="sharif_input option" id="">{{ newdata?edit.o2:set_value('o2') }}</textarea>
+		</td>
+		</tr>
+		<tr>
+		<td>
+		C.
+		<input type="radio" name="correct" value="3" {{newdata?(edit.correct==3?'checked':''):set_checkbox("correct","3")}}>
+		<textarea dir="auto" name="o3" rows="4" cols="40" class="sharif_input option" id="">{{ newdata?edit.o3:set_value('o3') }}</textarea>
+		</td>
+		<td>
+		D.
+		<input type="radio" name="correct" value="4" {{newdata?(edit.correct==4?'checked':''):set_checkbox("correct","4")}}>
+		<textarea dir="auto" name="o4" rows="4" cols="40" class="sharif_input option" id="">{{ newdata?edit.o4:set_value('o4') }}</textarea>
+		</td>
+		</tr>
+		{{ form_error('correct', '<div class="shj_error">', '</div>') }}
+	</table>
+		<p class="input_p">
+		<input type="submit" value="Save" class="sharif_input"/>
+	</p>
+	</form>
+</div>
+
+{% endblock %}  {# main_content #}

@@ -1,0 +1,15 @@
+{#
+ # The Campus Judge
+ # file: message.twig
+ # author: Shubham vishwakarma <shubhamvishwakarma987@gmail.com>
+ #}
+{% set selected='assignments' %}
+{% extends 'templates/base.twig' %}
+{% block icon %}{{ 'fa-puzzle-piece' }}{% endblock %}
+{% block title %}{{title}}{% endblock %}
+{% block head_title %}{{title}}{% endblock %}
+
+{% block main_content %}
+<p>{{message}}</p>
+<a href="{{site_url(redirect)}}">Click here to go back</a>
+{% endblock %}

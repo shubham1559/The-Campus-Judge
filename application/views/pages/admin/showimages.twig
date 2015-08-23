@@ -1,0 +1,25 @@
+{#
+ #The Campus Judge
+ #showimages.twig
+ # author: Shubham vishwakarma <shubhamvishwakarma987@gmail.com>
+ #}
+{% set selected = 'assignments' %}
+{% extends 'templates/base.twig' %}
+{% block icon %}fa-th{% endblock %}
+{% block title %}Images{% endblock %}
+{% block head_title %}Assignment Images{% endblock %}
+{% block other_title%} <base href="{{site_url('assignments/images/'~id)}}/" />{% endblock %}
+
+
+
+{% block main_content %}
+<p>Here is the list of all the images for the selected assignment</p>
+<p>
+	Assignment id: {{ id }}<br>
+</p>
+<ul>
+{% for image in images %}
+<li><img src="{{image}}"alt="{{image}}" title="{{image}}"></li>
+{% endfor %}
+</ul>
+{% endblock %}  {# main_content #}
