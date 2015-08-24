@@ -96,6 +96,24 @@ class Mcq extends CI_Controller
 		$this->add($assignment_id);
 	}
 	/**
+	 * Function to display a question, This is only to preview the question 
+	 */
+	public function view($assignment_id,$problem_id)
+	{
+		if($this->user->level<=1||$assignment_id==NULL||$problem_id=NULL) //permission denied
+		show_404();
+		$problem=$this->mcq_model->getproblem($assignment_id,$problem_id);
+			if($problem)
+				{
+					$data=array('all_assignments'=>$this->assignment_model->all_assignments(),
+							'problems'=>$problem,
+							);
+					$this->twig->display("pages/admin/show_mcq.twig");
+				}
+			else
+				show_404();
+	}
+	/**
 	 * Function to delete an assignment
 	 */
 	public function remove($assignment_id=NULL,$problem_id=NULL)
@@ -120,5 +138,19 @@ class Mcq extends CI_Controller
 		$allmcqs=$this->mcq_model->getallmcq($assignment_id,FALSE);
 		$this->load->helper('download');
 		force_download("mcqproblems.json",json_encode($allmcqs),TRUE);
+	}
+	/**
+	 * Function to create a public json file
+	 */
+	public function create_assignment()
+	{
+		if($this->user->level<=1||!$this->input->is_ajax_request() )//permission denied
+			show_404();
+		$assignment_id=$this->input->post('assignment');
+		$assignments_root = rtrim($this->settings_model->get_setting('assignments_root'), '/');
+		$mcqpath="$assignments_root/assignment_{$assignment_id}/mcq";
+		$this->mcq_model->generate($assignment_id,$mcqpath);
+		exit("Success");
+
 	}
 }

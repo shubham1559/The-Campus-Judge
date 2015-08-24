@@ -559,7 +559,7 @@ class Assignments extends CI_Controller
 
 			// Extract new test cases and descriptions in temp directory
 			$this->load->library('unzip');
-			$this->unzip->allow(array('txt', 'cpp', 'html', 'md', 'pdf','zip','jpg','png','gif'));
+			$this->unzip->allow(array('txt', 'cpp', 'html', 'md', 'pdf','zip','jpg','png','gif','json'));
 			$extract_result = $this->unzip->extract($u_data['full_path'], $tmp_dir);
 
 			// Remove the zip file
@@ -628,11 +628,13 @@ class Assignments extends CI_Controller
 
 		//Upload MCQ problems of assignment
 		$mcqfolder="$assignments_root/assignment_{$the_id}/mcq";
+		$json_file=glob("$assignments_root/assignment_{$the_id}/mcq/*.json");
+		if($json_file)$json_path=$json_file[0];
 		if(!file_exists($mcqfolder))
 			mkdir($mcqfolder,0700);
 		$config=array(
 			'upload_path'=>$mcqfolder,
-			'allowed_types'=>'JSON'
+			'allowed_types'=>'*',
 			);
 		$this->upload->initialize($config);
 		$json_uploaded=$this->upload->do_upload("json");
@@ -642,7 +644,7 @@ class Assignments extends CI_Controller
 				'type' => 'notice',
 				'text' => "Notice: You did not upload any JSON file for assignment. If needed, upload by editing assignment."
 			);
-		elseif ( ! $image_uploaded)
+		elseif ( !$json_uploaded)
 			$this->messages[] = array(
 				'type' => 'error',
 				'text' => "Error: Error uploading JSON file for assignment: ".$this->upload->display_errors('', '')
@@ -654,19 +656,32 @@ class Assignments extends CI_Controller
 				'text' => 'JSON Uploaded successfully',
 			);
 		}
-		if($json_uploaded)
+		if($json_uploaded||$json_file)
 		{
-			$allmcqs=json_decode($json_path);
-			foreach ($mcq as $allmcqs) {
+			if($json_file)$json_path=$json_file[0];
+			$allmcqs=json_decode(file_get_contents($json_path),TRUE);
+			if($allmcqs)
+			{
+				foreach($allmcqs as &$mcq) {
 				$mcq['assignment']=$the_id;
 			}
 			$this->load->model('mcq_model');
-			$this->mcq_model->batchadd($allmcqs);
+			$this->mcq_model->batchadd($allmcqs,$the_id);
 			$this->messages[] = array(
 				'type' => 'success',
-				'text' => 'MCQ Problems inserted successfully',
+				'text' => 'MCQ Problems added successfully',
 			);
-			unlink($json_path);
+			}
+			else{
+				$this->messages[] = array(
+				'type' => 'error',
+				'text' => 'Error in json file',
+			);
+			}
+			$mcqpath="$assignments_root/assignment_{$the_id}/mcq";
+			$this->mcq_model->generate($the_id,$mcqpath);
+			
+
 		}
 		// Create problem directories and parsing markdown files
 

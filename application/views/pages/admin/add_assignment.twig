@@ -58,6 +58,24 @@
 		$('#finish_time').datetimepicker({
 			timeFormat: 'HH:mm:ss'
 		});
+		$('#cjson').click(function(){
+			$.ajax({
+			type: 'POST',
+			url: shj.site_url + 'mcq/create_assignment',
+			data: {
+				assignment: "{{edit_assignment.id}}",
+				shj_csrf_token: shj.csrf_token
+			},
+			error: shj.loading_error,
+			success: function (response) {
+				if (response=="Success") {
+				noty({text: 'MCQ Assignment files Created', layout: 'bottomRight', type: 'success', timeout: 2500});
+				}
+				else
+					shj.loading_failed("The request could not be completed");
+			}
+		});
+		});
 	});
 </script>
 {% endblock %}
@@ -85,6 +103,9 @@
 {% endif %}
 <p>
 	<i class="fa fa-info-circle fa-lg color8"></i>You can download samples <a href="{{base_url('samples')}}">here</a>
+</p>
+<p>
+	<i class="fa fa-info-circle fa-lg color8"></i>You Must click Create MCQ Assignment button after all the MCQ problems are added/edited
 </p>
 {{ form_open_multipart(edit ? 'assignments/edit/'~edit_assignment.id : 'assignments/add') }}
 <div class="panel_left">
@@ -276,6 +297,7 @@
 {{ form_error('diff_arg[]', '<div class="shj_error">', '</div>') }}
 <p class="input_p">
 	<input type="submit" value="{{ edit ? 'Edit' : 'Add' }} Assignment" class="sharif_input"/>
+	<input type="button" id="cjson" class="sharif_input" value="Create MCQ Assignment"/>
 </p>
 </form>
 {% endblock %}  {# main_content #}

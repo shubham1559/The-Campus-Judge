@@ -1,0 +1,70 @@
+{#
+ # The Campus Judge
+ # file: show_mcq.twig
+ # author: Shubham vishwakarma <shubhamvishwakarma987@gmail.com>
+ #}
+{% set selected = 'assignments' %}
+{% extends 'templates/base.twig' %}
+{% block icon %}fa-flash{% endblock %}
+{% block title %}View MCQ Problem{% endblock %}
+{% block head_title %}View MCQ Problem{% endblock %}
+
+
+{% block title_menu %}
+<span class="title_menu_item">
+	<a href="{{site_url('assignments/edit/'~id)}}"><i class="fa fa-arrow-left color11"></i> Back to assignments page</a>
+</span>
+{% endblock %}
+
+{% block main_content %}
+{% if message %}
+<p class="shj_g">{{message}}</p>
+{% endif%}
+<div id="mcq_edit">
+			<label for="star">Star:</label>
+			<input type="checkbox" name="star" id="star" value="1" class="sharif_input" {{newdata?(edit.star==1?'checked':''):set_checkbox("star","1")}}/>
+			<label for="name">Name:</label>
+			<input type="text" name="name" class="long sharif_input" id="name" value="{{ newdata?edit.name:(set_value('name')) }}" required	>
+			<label for="Score">Score:</label>
+			<input type="number" min="1" name="score" id="score" class="sharif_input" value="{{newdata?edit.score:set_value('score')}}" required>
+			<br/>
+			{{ form_error('name', '<div class="shj_error">', '</div>') }}
+			{{ form_error('score', '<div class="shj_error">', '</div>') }}
+		<label for="desc">Description:</label>
+		<table>
+		<tr>
+		<textarea dir="auto" name="desc" rows="7" cols="80" id="desc" class="sharif_input desc" id="" required>{{ newdata?edit.description:(set_value('desc')) }}</textarea>
+		{{ form_error('desc', '<div class="shj_error">', '</div>') }}</tr>
+		<tr>
+		<td>
+		A.
+		<input type="radio" name="correct" value="1" required {{newdata?(edit.correct==1?'checked':''):set_checkbox("correct","1")}} >
+		<textarea dir="auto" name="o1" rows="4" cols="40" class="sharif_input option" id="">{{ newdata?edit.o1:(set_value('o1')) }}</textarea>
+		</td>
+		<td>
+		B.
+		<input type="radio" name="correct" value="2" {{newdata?(edit.correct==2?'checked':''):set_checkbox("correct","2")}}>
+		<textarea dir="auto" name="o2" rows="4" cols="40" class="sharif_input option" id="">{{ newdata?edit.o2:set_value('o2') }}</textarea>
+		</td>
+		</tr>
+		<tr>
+		<td>
+		C.
+		<input type="radio" name="correct" value="3" {{newdata?(edit.correct==3?'checked':''):set_checkbox("correct","3")}}>
+		<textarea dir="auto" name="o3" rows="4" cols="40" class="sharif_input option" id="">{{ newdata?edit.o3:set_value('o3') }}</textarea>
+		</td>
+		<td>
+		D.
+		<input type="radio" name="correct" value="4" {{newdata?(edit.correct==4?'checked':''):set_checkbox("correct","4")}}>
+		<textarea dir="auto" name="o4" rows="4" cols="40" class="sharif_input option" id="">{{ newdata?edit.o4:set_value('o4') }}</textarea>
+		</td>
+		</tr>
+		{{ form_error('correct', '<div class="shj_error">', '</div>') }}
+	</table>
+		<p class="input_p">
+		<input type="submit" value="Save" class="sharif_input"/>
+	</p>
+	</form>
+</div>
+
+{% endblock %}  {# main_content #}

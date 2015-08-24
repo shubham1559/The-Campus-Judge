@@ -18,8 +18,9 @@ class Mcq_model extends CI_Model {
 		$this->db->insert('mcqproblems',$data);
 	}
 	//----------------------
-	public function batchadd($data)
+	public function batchadd($data,$assignment_id)
 	{
+		$this->db->delete('mcqproblems', array('assignment'=>$assignment_id));
 		$this->db->insert_batch('mcqproblems',$data);
 	}
 	//--------------------------
@@ -51,6 +52,23 @@ class Mcq_model extends CI_Model {
 	public function drop($assignment_id,$problem_id)
 	{
 		$this->db->delete('mcqproblems', array('id' => $problem_id,'assignment'=>$assignment_id));
+	}
+	//--------------------------------
+	/**
+	 * This function is used to generate json files for the mcq problems
+	 * @param  Path to mcq folder has the path of the mcq folder of some assignment without a trailing slash
+	 */
+	public function generate($assignment_id,$path_to_mcq)
+	{
+		array_map('unlink', glob("$path_to_mcq/*"));
+		$data=$this->db->select(array('id','name','score','description','o1','o2','o3','o4','star','correct'))
+							->get_where('mcqproblems',array("assignment"=>$assignment_id))
+							->result_array();
+		file_put_contents("$path_to_mcq/mcq_answ.json",json_encode($data));
+		foreach ($data as &$element) {
+    	$element = array_slice($element, 0, 9);
+			}
+		file_put_contents("$path_to_mcq/mcq_without_answer.json",json_encode($data));
 	}
 
 }
