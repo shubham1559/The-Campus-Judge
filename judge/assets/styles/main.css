@@ -1412,19 +1412,17 @@ div.md_cheatsheet p{
 div#mcq_edit .desc,div#mcq_edit table {
 	width: 100%;
 }
-div#mcq_edit .option {
-	width: 90%;
-}
 .letter{
 	font-size:large;
 	float:left;
 	padding-top: 8px;
 }
-div#mcq_view .unselected{
+div#mcq_view .option{
+width: 90%;
 background-color: #FFF;
 box-shadow: 0px 0px 10px -2px #DDD;}
 
-div#mcq_view .unselected:hover{
+div#mcq_view .option:hover{
 background-color: #FFF;
 box-shadow:  0px 0px 5px rgba(82, 168, 236, 0.6);}
 

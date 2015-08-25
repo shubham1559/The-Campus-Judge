@@ -22,6 +22,7 @@
 
 {% block main_content %}
 <input type="hidden" id="assignment_id" value="{{user.selected_assignment.id}}"/>
+<div id="message" class="shj_r"><i class="fa fa-warning color1"></i>the Problem is locked. To change your answer; First reset it.</div>
 <img id="loading_icon" src="{{base_url('assets/images/load.gif')}}" alt="Loading icon"/>
 <div id="mcq_view" style="display:none;">
 			<h2 class="pull-right" id="score"></h2> 	
@@ -30,21 +31,22 @@
 		</div>
 		<input type="hidden" id="problem_id" value=""/>
 		<table style="width: 100%;table-layout:fixed;" data-i="">
-		<tr><td class="option unselected" id="o1">	
+		<tr><td class="option" id="o1">
 		<div class="letter" >A.</div><div class="data">o1</div>
 		</td>
-		<td class="option unselected" id="o2">
+		<td class="option" id="o2">
 		<div class="letter" >B.</div><div class="data">o2</div>
 		</td></tr>
-		<tr><td class="option unselected" id="o3">
+		<tr><td class="option" id="o3">
 		<div class="letter" >C.</div><div class="data">o3</div>
 		</td>
-		<td class="option unselected" id="o4">
+		<td class="option" id="o4">
 		<div class="letter" >D.</div><div class="data">o4</div>
 		</td></tr>
 		</table>
 <div class="buttongroup">
 	<input type="button" value="next" id="next" class="sharif_input pull-right" />
+	<input type="button" value="reset" id="reset" class="sharif_input" />
 	<input type="button" value="prev" id="prev" class="sharif_input pull-left" />
 </div>
 </div>

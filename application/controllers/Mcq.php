@@ -181,9 +181,10 @@ class Mcq extends CI_Controller
 		$filename="$assignments_root/assignment_{$assignment_id}/mcq/$filename";
 		if(!file_exists($filename))
 			exit("No MCQ Problems");
-		$data=file_get_contents($filename);
-		if($data===FALSE)exit("NO MCQ Problems");
-		$this->output->set_content_type('application/json')->set_output($data);
+		$data[0]=file_get_contents($filename);
+		if($data[0]===FALSE)exit("NO MCQ Problems");
+		$data[1]=($this->mcq_model->get_responses($assignment_id,$this->user->username));
+		$this->output->set_content_type('application/json')->set_output(json_encode($data));
 	}
 	/**
 	 * Function to add a response for a problems
@@ -208,6 +209,27 @@ class Mcq extends CI_Controller
 			$response['response']=$this->input->post('response');
 			$update=$this->input->post('update')=="true"?TRUE:FALSE;
 			$this->mcq_model->add_response($data,$response,$update);
+		}else show_404();
+	}
+	/**
+	 * Function to delete a response
+	 */
+	public function delete_response()
+	{
+		if(!$this->input->is_ajax_request())
+			show_404();
+		$assignment_id=$this->user->selected_assignment['id'];
+		if($assignment_id==0)
+			show_404();
+		$username=$this->user->username;;
+		$this->form_validation->set_rules('id',"Problem Id",'required');
+		if($this->form_validation->run())
+		{
+			$data=array('assignment'=>$assignment_id,
+				'username'=>$username,
+				'id'=>$this->input->post('id')
+				);
+			$this->mcq_model->delete_response($data);
 		}else show_404();
 	}
 
