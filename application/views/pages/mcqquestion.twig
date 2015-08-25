@@ -1,0 +1,52 @@
+{#
+ # The Campus Judge
+ # file: mcqquestion.twig
+ # author: Shubham vishwakarma <shubhamvishwakarma987@gmail.com>
+ #}
+{% set selected = 'problems' %}
+{% extends 'templates/base.twig' %}
+{% block icon %}fa-puzzle-piece{% endblock %}
+{% block title %}{{user.selected_assignment.name}}{% endblock %}
+{% block head_title %}{{user.selected_assignment.name}}{% endblock %}
+{% block other_assets %}
+<script type='text/javascript' src="{{ base_url('assets/js/tcj_mcq.js') }}"></script>
+<script type="text/javascript">
+	mcq.no=0;
+</script>
+{% endblock%}
+
+{% block title_menu %}
+<span class="title_menu_item">
+</span>
+{% endblock %}
+
+{% block main_content %}
+<input type="hidden" id="assignment_id" value="{{user.selected_assignment.id}}"/>
+<img id="loading_icon" src="{{base_url('assets/images/load.gif')}}" alt="Loading icon"/>
+<div id="mcq_view" style="display:none;">
+			<h2 class="pull-right" id="score"></h2> 	
+			<h2 dir="auto"><i id="star" class="fa " title="Star marked question"></i><span id="pname"></span><i class="fa fa-flag" title="Click here to flag the question"></i></h2>
+		<div id="desc">
+		</div>
+		<input type="hidden" id="problem_id" value=""/>
+		<table style="width: 100%;table-layout:fixed;" data-i="">
+		<tr><td class="option unselected" id="o1">	
+		<div class="letter" >A.</div><div class="data">o1</div>
+		</td>
+		<td class="option unselected" id="o2">
+		<div class="letter" >B.</div><div class="data">o2</div>
+		</td></tr>
+		<tr><td class="option unselected" id="o3">
+		<div class="letter" >C.</div><div class="data">o3</div>
+		</td>
+		<td class="option unselected" id="o4">
+		<div class="letter" >D.</div><div class="data">o4</div>
+		</td></tr>
+		</table>
+<div class="buttongroup">
+	<input type="button" value="next" id="next" class="sharif_input pull-right" />
+	<input type="button" value="prev" id="prev" class="sharif_input pull-left" />
+</div>
+</div>
+
+{% endblock %}  {# main_content #}

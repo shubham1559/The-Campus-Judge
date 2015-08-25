@@ -264,6 +264,7 @@
 		<th rowspan="2">Score</th>
 		<th rowspan="2">Correct</th>
 		<th rowspan="2">Starred</th>
+		<th rowspan="2">View</th>
 		<th rowspan="2">Edit</th>
 		<th rowspan="2">Delete</th>
 	</tr>
@@ -277,6 +278,7 @@
 	<td class="short">{{mcq.score}}</td>
 	<td class="tiny">{{mcq.correct}}</td>
 	<td class="tiny"><i class="fa fa-{{mcq.star?'asterisk':'minus'}} fa-lg"></i></td>
+	<td class="tiny"><a href="{{site_url('mcq/view/'~edit_assignment.id~'/'~mcq.id)}}"><i class="fa fa-flash fa-lg"></i></a></td>
 	<td class="tiny"><a href="{{site_url('mcq/edit/'~edit_assignment.id~'/'~mcq.id)}}"><i class="fa fa-edit fa-lg"></i></a></td>
 	<td class="tiny"><a href="{{site_url('mcq/remove/'~edit_assignment.id~'/'~mcq.id)}}"><i class="fa fa-times-circle fa-lg"></i></a></td>
 	</tr>

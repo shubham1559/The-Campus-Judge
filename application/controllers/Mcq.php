@@ -21,13 +21,8 @@ class Mcq extends CI_Controller
 		$this->mcq_edit=FALSE;
 	}
 
-	public function view($problem_id)
-	{
-		echo "function created";
-	}
-
 	/**
-	 * Function to add and MCQ Question
+	 * Function to add MCQ Question
 	 */
 	public function add($assignment_id=NULL)
 	{
@@ -64,8 +59,9 @@ class Mcq extends CI_Controller
 			}
 			else
 			{
-					$this->mcq_model->edit($assignment_id,$this->input->post('id'),$data);
-					redirect("assignments/edit/$assignment_id");
+				$problem_id=$this->input->post('id');
+					$this->mcq_model->edit($assignment_id,$problem_id,$data);
+					redirect("mcq/view/$assignment_id/$problem_id");
 			}
 		}
 		if($this->mcq_edit)
@@ -98,17 +94,23 @@ class Mcq extends CI_Controller
 	/**
 	 * Function to display a question, This is only to preview the question 
 	 */
-	public function view($assignment_id,$problem_id)
+	public function view($assignment_id=NULL,$problem_id=NULL)
 	{
-		if($this->user->level<=1||$assignment_id==NULL||$problem_id=NULL) //permission denied
+		if($this->user->level<=1||$assignment_id==NULL||$problem_id==NULL) //permission denied
 		show_404();
 		$problem=$this->mcq_model->getproblem($assignment_id,$problem_id);
 			if($problem)
 				{
+					$this->load->library('parsedown');
+					$problem['description']=$this->parsedown->parse($problem['description']);
+					$problem['o1']=$this->parsedown->parse($problem['o1']);
+					$problem['o2']=$this->parsedown->parse($problem['o2']);
+					$problem['o3']=$this->parsedown->parse($problem['o3']);
+					$problem['o4']=$this->parsedown->parse($problem['o4']);
 					$data=array('all_assignments'=>$this->assignment_model->all_assignments(),
-							'problems'=>$problem,
+							'problem'=>$problem,
 							);
-					$this->twig->display("pages/admin/show_mcq.twig");
+					$this->twig->display("pages/admin/show_mcq.twig",$data);
 				}
 			else
 				show_404();
@@ -151,6 +153,62 @@ class Mcq extends CI_Controller
 		$mcqpath="$assignments_root/assignment_{$assignment_id}/mcq";
 		$this->mcq_model->generate($assignment_id,$mcqpath);
 		exit("Success");
-
 	}
+	/**
+	 * Function to return mcqproblems for assignments
+	 *
+	 */
+	public function public_assignments()
+	{
+		if(!$this->input->is_ajax_request())
+			show_404();
+		$assignment_id=$this->input->post('assignment');
+		if($assignment_id==NULL)
+			show_404();
+		$assignment = $this->assignment_model->assignment_info($assignment_id);
+		if($assignment['id']==0||! $this->assignment_model->is_participant($assignment['participants'], $this->user->username))
+			show_404();
+		//if assignment not started the donot show any data of the assignment
+		if(shj_now() < strtotime($assignment['start_time']))
+		{
+			show_error('assignment not started');
+		}
+		elseif($assignment['public'])
+			$filename="mcq_answ.json";
+		else
+			$filename="mcq_without_answer.json";
+		$assignments_root = rtrim($this->settings_model->get_setting('assignments_root'), '/');
+		$filename="$assignments_root/assignment_{$assignment_id}/mcq/$filename";
+		if(!file_exists($filename))
+			exit("No MCQ Problems");
+		$data=file_get_contents($filename);
+		if($data===FALSE)exit("NO MCQ Problems");
+		$this->output->set_content_type('application/json')->set_output($data);
+	}
+	/**
+	 * Function to add a response for a problems
+	 */
+	public function submit_response()
+	{
+		if(!$this->input->is_ajax_request())
+			show_404();
+		$assignment_id=$this->user->selected_assignment['id'];
+		if($assignment_id==0)
+			show_404();
+		$username=$this->user->username;;
+		$this->form_validation->set_rules('response','Response','required|greater_than[0]|less_than[5]');
+		$this->form_validation->set_rules('id',"Problem Id",'required');
+		if($this->form_validation->run())
+		{
+			$data=array('assignment'=>$assignment_id,
+				'username'=>$username,
+				'id'=>$this->input->post('id')
+				);
+			$response=$data;		//data with response
+			$response['response']=$this->input->post('response');
+			$update=$this->input->post('update')=="true"?TRUE:FALSE;
+			$this->mcq_model->add_response($data,$response,$update);
+		}else show_404();
+	}
+
 }

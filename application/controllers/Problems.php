@@ -126,44 +126,6 @@ class Problems extends CI_Controller
 			$data['problem']['description'] = file_get_contents($path);
 		$this->twig->display('pages/problems.twig', $data);
 	}
-	/**
-	 * It is used to display summary of the selected assignment
-	 */
-	//---------------------------------------------------------------------------
-/*	public function summary()
-	{
-		// If no assignment is given, use selected assignment
-		$this->load->model('submit_model');
-		if ($assignment_id === NULL)
-			$assignment_id = $this->user->selected_assignment['id'];
-		if ($assignment_id == 0)
-			show_error('No assignment selected.');
-		$assignment = $this->assignment_model->assignment_info($assignment_id);
-		$problems=$this->assignment_model->all_problems($assignment_id);
-		$summ=$this->submit_model->count_all_solved($assignment_id,$this->user->username);
-		//print_r($summ);
-		foreach($problems as $problem)
-		{
-					if(isset($summ[$problem['id']]['avg']))
-					$problems[$problem['id']]['avg']=$summ[$problem['id']]['avg']/10000;
-				else $problems[$problem['id']]['avg']=0;
-				if(isset($summ[$problem['id']]['cnt']))
-					$problems[$problem['id']]['cnt']=$summ[$problem['id']]['cnt'];
-				else $problems[$problem['id']]['cnt']=0;
-				if(isset($summ[$problem['id']]['col']))
-					$problems[$problem['id']]['col']=$summ[$problem['id']]['col']=="SCORE"?"solved":"wrong";
-				else $problems[$problem['id']]['col']='';
-			$problems[$problem['id']]['avg']= sprintf('%0.2f', $problems[$problem['id']]['avg']);
-		}
-		$data = array(
-			'all_assignments' => $this->all_assignments,
-			'problems' => $problems,
-		);
-		$this->twig->display('pages/allproblems.twig', $data);
-	}
-*/
-	// ------------------------------------------------------------------------
-
 
 	/**
 	 * Edit problem description as html/markdown
@@ -225,10 +187,11 @@ class Problems extends CI_Controller
 		$this->twig->display('pages/admin/edit_problem_'.$type.'.twig', $data);
 
 	}
-/*	public function showmcq()
+	public function mcqproblems()
 	{
-		$data=array('all_assignments' => $this->assignment_model->all_assignments());
-		$this->twig->display("pages/showmcq.twig",$data);
-	}*/
+		$data=array('all_assignments'=>$this->assignment_model->all_assignments(),
+			);
+		$this->twig->display("pages/mcqquestion.twig",$data);
+	}
 
 }

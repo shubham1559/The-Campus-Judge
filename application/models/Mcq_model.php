@@ -64,11 +64,28 @@ class Mcq_model extends CI_Model {
 		$data=$this->db->select(array('id','name','score','description','o1','o2','o3','o4','star','correct'))
 							->get_where('mcqproblems',array("assignment"=>$assignment_id))
 							->result_array();
+			$this->load->library('parsedown');
+		foreach ($data as &$element) {
+			$element['description']=$this->parsedown->parse($element['description']);
+			$element['o1']=$this->parsedown->parse($element['o1']);
+			$element['o2']=$this->parsedown->parse($element['o2']);
+			$element['o3']=$this->parsedown->parse($element['o3']);
+			$element['o4']=$this->parsedown->parse($element['o4']);
+			}
 		file_put_contents("$path_to_mcq/mcq_answ.json",json_encode($data));
 		foreach ($data as &$element) {
     	$element = array_slice($element, 0, 9);
 			}
 		file_put_contents("$path_to_mcq/mcq_without_answer.json",json_encode($data));
 	}
-
+	/**
+	 *
+	 */
+	public function add_response($data,$response,$update)
+	{
+		if($update)
+		$this->db->update('mcqresponse',$response,$data);
+		else
+		$this->db->insert('mcqresponse',$response);
+	}
 }

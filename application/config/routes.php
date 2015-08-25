@@ -89,6 +89,7 @@ $route['problems/(:num)/(:num)'] = "problems/index/$1/$2";
 $route['submit/(:num)']="submit/index/$1";
 $route['rejudge/(:num)'] = "rejudge/index/$1";
 $route['assignments/(:num)/problems.json']="mcq/backup/$1";
+$route['assignment.json']="mcq/public_assignments";
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
