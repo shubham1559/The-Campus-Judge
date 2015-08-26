@@ -13,6 +13,7 @@
 <script type='text/javascript' src="{{ base_url('assets/js/tcj_mcq.js') }}"></script>
 <script type="text/javascript">
 	mcq.no=0;
+	mcq.time_refresh=moment("{{shj_now_str()}}");
 </script>
 {% endblock%}
 
@@ -27,7 +28,7 @@
 <input type="hidden" id="assignment_id" value="{{user.selected_assignment.id}}"/>
 <div id="sidebox" class="pull-right">
 <table>
-<col style="width:2px"><col style="width:3px"><col style="width:20px"><col style="width:3px"><col style="width:2px"><col style="width:2px">
+<col style="width:2px"><col style="width:3px"><col style="width:20px"><col style="width:4px"><col style="width:2px"><col style="width:2px">
 	<tbody></tbody>
 </table>
 </div>
@@ -40,16 +41,16 @@
 		<input type="hidden" id="problem_id" value=""/>
 		<table id="opt_table">
 		<tr><td class="option" id="o1">
-		<div class="letter" >A.</div><div class="data">o1</div>
+		<div class="letter" >A.</div><div class="data"></div>
 		</td>
 		<td class="option" id="o2">
-		<div class="letter" >B.</div><div class="data">o2</div>
+		<div class="letter" >B.</div><div class="data"></div>
 		</td></tr>
 		<tr><td class="option" id="o3">
-		<div class="letter" >C.</div><div class="data">o3</div>
+		<div class="letter" >C.</div><div class="data"></div>
 		</td>
 		<td class="option" id="o4">
-		<div class="letter" >D.</div><div class="data">o4</div>
+		<div class="letter" >D.</div><div class="data"></div>
 		</td></tr>
 		</table>
 <div class="buttongroup">

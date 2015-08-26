@@ -36,7 +36,22 @@
  }
  mcq.blocked=function(){
  noty({text: 'The Problem is locked, to change your response; Reset it first', layout: 'bottomRight', type: 'warning', timeout: 2500});
-
+ }
+ mcq.check_refresh=function(){
+	$.ajax({
+		type: 'POST',
+		url:shj.site_url + "mcq/is_update",
+		data:{
+			shj_csrf_token: shj.csrf_token
+		},
+		success: function(response){
+			if(response=="Assignment Finished")
+			{noty({text: 'Assignment finished, Refresh the page for Updates', layout: 'bottomRight', type: 'information', timeout: 2500});
+		}else if(mcq.time_refresh.diff(response)<0)
+		{
+			noty({text: 'Assignment Updated, Refresh to get the updates', layout: 'bottomRight', type: 'information', timeout: 2500});		}
+		}
+	});
  }
  mcq.setdata=function(id)
 {
@@ -99,6 +114,7 @@
 					mcq.filltable();
 					$('#total').text(mcq.total);
 					$('#attempted').text(mcq.attempted);
+					mcq.public=response[2];
 			}
 		});
 		$('#next').click(function(){
@@ -127,7 +143,7 @@
 				},
 				success: function(response){
 					if(response=="Success")
-				{		noty({text: 'Response submitted', layout: 'bottomRight', type: 'success', timeout: 2500});
+					{	noty({text: 'Response submitted', layout: 'bottomRight', type: 'success', timeout: 2500});
 						$('.option').removeClass("selected");
 						$('#'+clicked).addClass("selected");
 						mcq.response[submitid]=clicked_id;
@@ -135,7 +151,7 @@
 						$('#sidebox tr:nth-child('+(mcq.no+1)+') td:nth-child(5)').addClass("color4");
 						mcq.attempted++;
 						$('#attempted').text(mcq.attempted);
-				}
+					}
 					else
 					{
 						noty({text: response, layout: 'bottomRight', type: 'error', timeout: 2500});
@@ -174,4 +190,6 @@
 			$('#flag').toggleClass("flag_r");
 			$('#sidebox tr:nth-child('+(mcq.no+1)+') td:nth-child(6)').toggleClass("color1");
 		});
+		window.setInterval(mcq.check_refresh,(shj.notif_check_delay*1000));
  });
+ 

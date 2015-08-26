@@ -496,7 +496,7 @@ class Assignment_model extends CI_Model
 	 */
 	public function assignment_time($assignment_id)
 	{
-		$query = $this->db->select(array('start_time','finish_time','extra_time','participants'))
+		$query = $this->db->select(array('start_time','finish_time','extra_time','participants','open'))
 		->get_where('assignments', array('id'=>$assignment_id));
 		if ($query->num_rows() != 1)
 			return array(

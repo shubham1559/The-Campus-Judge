@@ -52,6 +52,7 @@ class Mcq_model extends CI_Model {
 	public function drop($assignment_id,$problem_id)
 	{
 		$this->db->delete('mcqproblems', array('id' => $problem_id,'assignment'=>$assignment_id));
+		$this->db->delete('mcqresponse', array('id' => $problem_id,'assignment'=>$assignment_id));
 	}
 	//--------------------------------
 	/**
@@ -74,7 +75,7 @@ class Mcq_model extends CI_Model {
 			}
 		file_put_contents("$path_to_mcq/mcq_answ.json",json_encode($data));
 		foreach ($data as &$element) {
-    	$element = array_slice($element, 0, 9);
+		$element = array_slice($element, 0, 10);
 			}
 		file_put_contents("$path_to_mcq/mcq_without_answer.json",json_encode($data));
 	}

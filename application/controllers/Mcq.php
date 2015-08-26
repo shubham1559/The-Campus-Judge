@@ -171,12 +171,20 @@ class Mcq extends CI_Controller
 		if($assignment['id']==0||! $this->assignment_model->is_participant($assignment['participants'], $this->user->username))
 			show_404();
 		//if assignment not started the donot show any data of the assignment
+		$data[2]="started";
+		if(shj_now() > strtotime($assignment['finish_time'])+$assignment['extra_time'])
+			$data[2]="ended";
+		if($this->user->level == 0 && ! $assignment['open'])
+			$data[2]="close";
 		if(shj_now() < strtotime($assignment['start_time']))
 		{
 			show_404();
 		}
 		elseif($assignment['public'])
-			$filename="mcq_answ.json";
+			{
+				$filename="mcq_answ.json";
+				$data[2]="public";
+			}
 		else
 			$filename="mcq_without_answer.json";
 		$assignments_root = rtrim($this->settings_model->get_setting('assignments_root'), '/');
@@ -205,6 +213,8 @@ class Mcq extends CI_Controller
 			exit("Assignment Finished");
 		if(! $this->assignment_model->is_participant($assignment_info['participants'], $this->user->username))
 			exit("You are not a valid participant");
+		if($this->user->level == 0 && ! $assignment_info['open'])
+			exit("Assignment is closed");
 		$username=$this->user->username;
 		$this->form_validation->set_rules('response','Response','required|greater_than[0]|less_than[5]');
 		$this->form_validation->set_rules('id',"Problem Id",'required');
@@ -237,6 +247,8 @@ class Mcq extends CI_Controller
 			exit("Assignment Finished");
 		if(! $this->assignment_model->is_participant($assignment_info['participants'], $this->user->username))
 			exit("You are not a valid participant");
+		if($this->user->level == 0 && ! $assignment_info['open'])
+			exit("Assignment is closed");
 		$username=$this->user->username;
 		$this->form_validation->set_rules('id',"Problem Id",'required');
 		if($this->form_validation->run())
@@ -248,6 +260,18 @@ class Mcq extends CI_Controller
 			$this->mcq_model->delete_response($data);
 			exit("Success");
 		}else show_404();
+	}
+	public function is_update()
+	{
+		if(!$this->input->is_ajax_request())
+			show_404();
+		$assignment_id=$this->user->selected_assignment['id'];
+		$assignments_root = rtrim($this->settings_model->get_setting('assignments_root'), '/');
+		$assignment_info=$this->assignment_model->assignment_time($assignment_id);
+		if(shj_now() > strtotime($assignment_info['finish_time'])+$assignment_info['extra_time'])
+			exit("Assignment Finished");
+		$filename="$assignments_root/assignment_{$assignment_id}/mcq/mcq_without_answer.json";
+		exit(date("Y m d H:i:s", filemtime($filename)));
 	}
 
 }
