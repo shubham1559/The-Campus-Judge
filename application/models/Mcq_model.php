@@ -41,9 +41,9 @@ class Mcq_model extends CI_Model {
 	public function getallmcq($assignment_id,$bool=TRUE)
 	{
 		if($bool)
-			$data=array('id','name','score','correct','star');
+			$data=array('id','name','score','negative','correct','star');
 		else
-			$data=array('name','score','description','o1','o2','o3','o4','correct','star');
+			$data=array('name','score','negative','description','o1','o2','o3','o4','correct','star');
 		return $this->db->select($data)
 						->get_where('mcqproblems',array("assignment"=>$assignment_id))
 						->result_array();
@@ -61,7 +61,7 @@ class Mcq_model extends CI_Model {
 	public function generate($assignment_id,$path_to_mcq)
 	{
 		array_map('unlink', glob("$path_to_mcq/*"));
-		$data=$this->db->select(array('id','name','score','description','o1','o2','o3','o4','star','correct'))
+		$data=$this->db->select(array('id','name','score','negative','description','o1','o2','o3','o4','star','correct'))
 							->get_where('mcqproblems',array("assignment"=>$assignment_id))
 							->result_array();
 			$this->load->library('parsedown');

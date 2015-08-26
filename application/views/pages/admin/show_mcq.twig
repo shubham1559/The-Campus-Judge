@@ -8,6 +8,7 @@
 {% block icon %}fa-flash{% endblock %}
 {% block title %}View MCQ Problem{% endblock %}
 {% block head_title %}View MCQ Problem{% endblock %}
+{% block other_title%} <base href="{{site_url('assignments/images/'~problem.assignment)}}/" />{% endblock %}
 
 
 {% block title_menu %}
@@ -22,30 +23,25 @@
 <p class="shj_g">{{message}}</p>
 {% endif%}
 <div id="mcq_view">
-			<h2 class="pull-right">{{problem.score}}</h2>
-			<h2 dir="auto">{{problem.star?'<small><i class="fa fa-asterisk fa-lg"></i></small>':""}}  {{problem.name}}
-			<i class="fa fa-flag" title="Click here to flag the question"></i></h2>
+			<h2 class="pull-right" id="score">{{problem.score}}/-{{problem.negative}}</h2>
+			<h2 dir="auto">{{problem.star?'<small><i class="fa fa-asterisk fa-lg"></i></small>':""}}  {{problem.name}}</h2>
 		<div id="desc">
 		{{problem.description|raw}}
 		</div>
 		<table style="width: 100%;table-layout:fixed;">
-		<tr><td class="option selected">
+		<tr><td class="option">
 		<div class="letter" >A.</div><div class="data">{{problem.o1|raw}}</div>
 		</td>
-		<td class="option correct">
+		<td class="option">
 		<div class="letter" >B.</div><div class="data">{{problem.o2|raw}}</div>
 		</td></tr>
-		<tr><td class="option wrong">
+		<tr><td class="option">
 		<div class="letter" >C.</div><div class="data">{{problem.o3|raw}}</div>
 		</td>
-		<td class="option unselected">
+		<td class="option">
 		<div class="letter" >D.</div><div class="data">{{problem.o4|raw}}</div>
 		</td></tr>
 		</table>
-<div class="buttongroup">
-	<input type="button" value="next" class="sharif_input pull-right" />
-	<input type="button" value="prev" class="sharif_input pull-left" />
-</div>
 </div>
 
 {% endblock %}  {# main_content #}

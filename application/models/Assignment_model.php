@@ -491,6 +491,21 @@ class Assignment_model extends CI_Model
 		else 
 			return $query->row()->public;
 	}
+	/**
+	 * Function returns only start time,end time,participants and extra time for assignment
+	 */
+	public function assignment_time($assignment_id)
+	{
+		$query = $this->db->select(array('start_time','finish_time','extra_time','participants'))
+		->get_where('assignments', array('id'=>$assignment_id));
+		if ($query->num_rows() != 1)
+			return array(
+				'finish_time' => 0,
+				'extra_time' => 0,
+				'start_time'=>0,
+			);
+		return $query->row_array();
+	}
 
 
 }

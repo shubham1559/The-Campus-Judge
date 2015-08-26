@@ -627,8 +627,8 @@ class Assignments extends CI_Controller
 		}
 
 		//Upload MCQ problems of assignment
-		$mcqfolder="$assignments_root/assignment_{$the_id}/mcq";
-		$json_file=glob("$assignments_root/assignment_{$the_id}/mcq/*.json");
+		$mcqfolder="$assignments_root/assignment_{$the_id}/mcqupload";
+		$json_file=glob("$assignments_root/assignment_{$the_id}/mcqupload/*.json");
 		if($json_file)$json_path=$json_file[0];
 		if(!file_exists($mcqfolder))
 			mkdir($mcqfolder,0700);
@@ -678,7 +678,11 @@ class Assignments extends CI_Controller
 				'text' => 'Error in json file',
 			);
 			}
+			unlink($json_path);
+			rmdir($mcqfolder);
 			$mcqpath="$assignments_root/assignment_{$the_id}/mcq";
+			if(!file_exists($mcqpath))
+			mkdir($mcqpath,0700);
 			$this->mcq_model->generate($the_id,$mcqpath);
 			
 

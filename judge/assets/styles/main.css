@@ -1459,6 +1459,10 @@ div#mcq_view .buttongroup input{
 width: 24%;
 margin-left: 6px;
 }
+#mcq_view #score{
+	margin-right: 100px;
+	margin-bottom: 0px;
+}
 #sidebox{
 	width:300px;
 	max-height:500px;
@@ -1503,4 +1507,11 @@ margin-left: 6px;
 .flag_r{
 background-color: rgb(255, 77, 77);
 color: #FFF;
+}
+.space-l{
+	margin-left: 40px;
+}
+#loading_icon{
+	margin-top: 15%;
+margin-left: 45%;
 }

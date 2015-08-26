@@ -6,6 +6,7 @@
  mcq={};
  mcq.questions='';
  mcq.total=0;
+ mcq.attempted=0;
  mcq.flag={};
  mcq.loading_start= function()
  {
@@ -21,9 +22,10 @@
 		var star=mcq.questions[i].star=="1"?"*":"-";
 		var name=mcq.questions[i].name.substring(0,27);
 		var score=mcq.questions[i].score;
+		var negative=mcq.questions[i].negative;
 		var dataid=mcq.questions[i].id;
 		var marked=mcq.response[dataid]?"color4":"";
-		var row="<tr><td>"+star+'</td><td>'+(i+1)+'.</td><td>'+name+'</td><td>'+score+'</td><td class="'+marked+'"><i class="fa fa-circle"></i></td><td class=""><i class="fa fa-flag"></i></td></tr>';
+		var row="<tr><td>"+star+'</td><td>'+(i+1)+'.</td><td>'+name+'</td><td>'+score+'/-'+negative+'</td><td class="'+marked+'"><i class="fa fa-circle"></i></td><td class=""><i class="fa fa-flag"></i></td></tr>';
 		$("#sidebox table tbody").append(row);
 		mcq.flag[i]=0;
 	}
@@ -32,11 +34,16 @@
 			mcq.setdata(mcq.no);
 	});
  }
+ mcq.blocked=function(){
+ noty({text: 'The Problem is locked, to change your response; Reset it first', layout: 'bottomRight', type: 'warning', timeout: 2500});
+
+ }
  mcq.setdata=function(id)
 {
  	$("#mcq_view").css("display","block");
- 	$('#pname').text((id+1)+'. '+mcq.questions[id].name);
- 	$('#score').text(mcq.questions[id].score);
+	$('#pname').text((id+1)+'. '+mcq.questions[id].name);
+	var scr=mcq.questions[id].score+'/-'+mcq.questions[id].negative;
+ 	$('#score').text(scr);
  	$('#desc').html(mcq.questions[id].description);
  	$('#o1 .data').html(mcq.questions[id].o1);
  	$('#o2 .data').html(mcq.questions[id].o2);
@@ -56,12 +63,10 @@
 	var dataid=mcq.questions[id].id;
 	if(mcq.response[dataid])
 	{$('#o'+mcq.response[dataid]).addClass("selected");
-	$('#message').css("display","block");
 	$('#reset').prop('disabled',false);
 	}
 	else
 	{
-		$('#message').css("display","none");
 		$('#reset').prop('disabled',true);
 	}
 	if(mcq.flag[id]==1)
@@ -83,15 +88,17 @@
 			},
 			error: shj.loading_error,
 			success: function (response) {
-					noty({text: 'file uploaded', layout: 'bottomRight', type: 'success', timeout: 2500});
 					mcq.questions=JSON.parse(response[0]);
 					mcq.total=mcq.questions.length;
 					mcq.response={};
 					response[1].map(function(key){
 						mcq.response[key.id]=key.response;
 					});
+					mcq.attempted=Object.keys(mcq.response).length;
 					mcq.setdata(mcq.no);
 					mcq.filltable();
+					$('#total').text(mcq.total);
+					$('#attempted').text(mcq.attempted);
 			}
 		});
 		$('#next').click(function(){
@@ -106,7 +113,8 @@
 			var clicked=this.id;
 			var no={"o1":1,"o2":2,"o3":3,"o4":4};
 			var submitid=mcq.questions[mcq.no].id;
-			if(mcq.response[submitid])return;
+			if(mcq.response[submitid]){mcq.blocked();
+				return;}
 			var clicked_id=no[clicked];
 			$.ajax({
 				type:'POST',
@@ -117,14 +125,21 @@
 					'response':clicked_id,
 					shj_csrf_token: shj.csrf_token
 				},
-				success: function(){
-					noty({text: 'Response submitted', layout: 'bottomRight', type: 'success', timeout: 2500});
-					$('.option').removeClass("selected");
-					$('#'+clicked).addClass("selected");
-					mcq.response[submitid]=clicked_id;
-					$('#message').css("display","block");
-					$('#reset').prop('disabled',false);
-					$('#sidebox tr:nth-child('+(mcq.no+1)+') td:nth-child(5)').addClass("color4");
+				success: function(response){
+					if(response=="Success")
+				{		noty({text: 'Response submitted', layout: 'bottomRight', type: 'success', timeout: 2500});
+						$('.option').removeClass("selected");
+						$('#'+clicked).addClass("selected");
+						mcq.response[submitid]=clicked_id;
+						$('#reset').prop('disabled',false);
+						$('#sidebox tr:nth-child('+(mcq.no+1)+') td:nth-child(5)').addClass("color4");
+						mcq.attempted++;
+						$('#attempted').text(mcq.attempted);
+				}
+					else
+					{
+						noty({text: response, layout: 'bottomRight', type: 'error', timeout: 2500});
+					}
 				}
 			});
 		});
@@ -138,13 +153,19 @@
 					'id':submitid,
 					shj_csrf_token: shj.csrf_token
 				},
-				success: function(){
-					noty({text: 'Response Deleted', layout: 'bottomRight', type: 'success', timeout: 2500});
+				success: function(response){
+					if(response=="Success")
+					{noty({text: 'Response Deleted', layout: 'bottomRight', type: 'success', timeout: 2500});
 					$('.option').removeClass("selected");
 					delete mcq.response[submitid];
-					$('#message').css("display","none");
 					$('#reset').prop('disabled',true);
 					$('#sidebox tr:nth-child('+(mcq.no+1)+') td:nth-child(5)').removeClass("color4");
+					mcq.attempted--;
+					$('#attempted').text(mcq.attempted);
+				}
+				else{
+					noty({text: response, layout: 'bottomRight', type: 'error', timeout: 2500});
+				}
 				}
 			})
 		});

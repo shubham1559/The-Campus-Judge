@@ -187,9 +187,12 @@ Violets are blue.
 			<input type="text" name="name" class="long sharif_input" id="name" value="{{ newdata?edit.name:(set_value('name')) }}" required	>
 			<label for="Score">Score:</label>
 			<input type="number" min="1" name="score" id="score" class="sharif_input" value="{{newdata?edit.score:set_value('score')}}" required>
+			<label for="negative">Negative:</label>
+			<input type="number" min="0" name="negative" id="negative" class="sharif_input" value="{{newdata?edit.negative:set_value('negative')}}" required>
 			<br/>
 			{{ form_error('name', '<div class="shj_error">', '</div>') }}
 			{{ form_error('score', '<div class="shj_error">', '</div>') }}
+			{{ form_error('negative', '<div class="shj_error">', '</div>') }}
 		<label for="desc">Description:</label>
 		<table>
 		<tr>

@@ -8,6 +8,7 @@
 {% block icon %}fa-puzzle-piece{% endblock %}
 {% block title %}{{user.selected_assignment.name}}{% endblock %}
 {% block head_title %}{{user.selected_assignment.name}}{% endblock %}
+{% block other_title%} <base href="{{site_url('assignments/images/'~user.selected_assignment.id)}}/" />{% endblock %}
 {% block other_assets %}
 <script type='text/javascript' src="{{ base_url('assets/js/tcj_mcq.js') }}"></script>
 <script type="text/javascript">
@@ -17,6 +18,8 @@
 
 {% block title_menu %}
 <span class="title_menu_item">
+<span class="space-l">Total Problems: </span><span id="total"></span>
+<span class="space-l">Attempted Problems: </span><span id="attempted"></span>
 </span>
 {% endblock %}
 
@@ -28,7 +31,6 @@
 	<tbody></tbody>
 </table>
 </div>
-<div id="message" class="shj_r" style="display:none"><i class="fa fa-warning color1"></i>the Problem is locked. To change your answer; First reset it.</div>
 <img id="loading_icon" src="{{base_url('assets/images/load.gif')}}" alt="Loading icon"/>
 <div id="mcq_view" style="display:none;">
 			<h2 class="pull-right" id="score"></h2> 	
@@ -51,10 +53,10 @@
 		</td></tr>
 		</table>
 <div class="buttongroup">
-	<input type="button" value="prev" id="prev" class="sharif_input" />
-	<input type="button" value="reset" id="reset" class="sharif_input" />
+	<input type="button" value="Prev" id="prev" class="sharif_input" />
+	<input type="button" value="Reset" id="reset" class="sharif_input" />
 	<input type="button" value="Flag" id="flag" class="sharif_input" />
-	<input type="button" value="next" id="next" class="sharif_input" />
+	<input type="button" value="Next" id="next" class="sharif_input" />
 </div>
 </div>
 

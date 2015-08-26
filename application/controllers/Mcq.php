@@ -34,6 +34,7 @@ class Mcq extends CI_Controller
 		$this->form_validation->set_rules("name","Name","required|max_length[98]");
 		$this->form_validation->set_rules("correct","Correct option","required|greater_than[0]|less_than[5]");
 		$this->form_validation->set_rules("score","Score","required|greater_than[0]");
+		$this->form_validation->set_rules("negative","Negative Score","required|greater_than_equal_to[0]");
 		$this->form_validation->set_rules("desc","Description","required");
 		$newdata=FALSE;
 		$message="";
@@ -43,6 +44,7 @@ class Mcq extends CI_Controller
 				'assignment'=>$assignment_id,
 				'name'=>$this->input->post('name'),
 				'score'=>$this->input->post('score'),
+				'negative'=>$this->input->post('negative'),
 				'description'=>$this->input->post('desc'),
 				'o1'=>$this->input->post('o1'),
 				'o2'=>$this->input->post('o2'),
@@ -109,7 +111,7 @@ class Mcq extends CI_Controller
 					$problem['o4']=$this->parsedown->parse($problem['o4']);
 					$data=array('all_assignments'=>$this->assignment_model->all_assignments(),
 							'problem'=>$problem,
-							);
+				);
 					$this->twig->display("pages/admin/show_mcq.twig",$data);
 				}
 			else
@@ -196,7 +198,14 @@ class Mcq extends CI_Controller
 		$assignment_id=$this->user->selected_assignment['id'];
 		if($assignment_id==0)
 			show_404();
-		$username=$this->user->username;;
+		$assignment_info=$this->assignment_model->assignment_time($assignment_id);
+		if(shj_now() < strtotime($assignment_info['start_time']))
+			exit("Assignment Not started yet");
+		if(shj_now() > strtotime($assignment_info['finish_time'])+$assignment_info['extra_time'])
+			exit("Assignment Finished");
+		if(! $this->assignment_model->is_participant($assignment_info['participants'], $this->user->username))
+			exit("You are not a valid participant");
+		$username=$this->user->username;
 		$this->form_validation->set_rules('response','Response','required|greater_than[0]|less_than[5]');
 		$this->form_validation->set_rules('id',"Problem Id",'required');
 		if($this->form_validation->run())
@@ -208,6 +217,7 @@ class Mcq extends CI_Controller
 			$response=$data;		//data with response
 			$response['response']=$this->input->post('response');
 			$this->mcq_model->add_response($data,$response);
+			exit("Success");
 		}else show_404();
 	}
 	/**
@@ -220,7 +230,14 @@ class Mcq extends CI_Controller
 		$assignment_id=$this->user->selected_assignment['id'];
 		if($assignment_id==0)
 			show_404();
-		$username=$this->user->username;;
+		$assignment_info=$this->assignment_model->assignment_time($assignment_id);
+		if(shj_now() < strtotime($assignment_info['start_time']))
+			exit("Assignment Not started yet");
+		if(shj_now() > strtotime($assignment_info['finish_time'])+$assignment_info['extra_time'])
+			exit("Assignment Finished");
+		if(! $this->assignment_model->is_participant($assignment_info['participants'], $this->user->username))
+			exit("You are not a valid participant");
+		$username=$this->user->username;
 		$this->form_validation->set_rules('id',"Problem Id",'required');
 		if($this->form_validation->run())
 		{
@@ -229,6 +246,7 @@ class Mcq extends CI_Controller
 				'id'=>$this->input->post('id')
 				);
 			$this->mcq_model->delete_response($data);
+			exit("Success");
 		}else show_404();
 	}
 

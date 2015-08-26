@@ -8,6 +8,7 @@
 {% block icon %}{{ 'fa-puzzle-piece' }}{% endblock %}
 {% block title %}{{title}}{% endblock %}
 {% block head_title %}{{title}}{% endblock %}
+{% block other_title%} <meta http-equiv="refresh" content="1;url={{site_url(redirect)}}"> /" />{% endblock %}
 
 {% block main_content %}
 <p>{{message}}</p>
