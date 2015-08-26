@@ -171,7 +171,7 @@ class Mcq extends CI_Controller
 		//if assignment not started the donot show any data of the assignment
 		if(shj_now() < strtotime($assignment['start_time']))
 		{
-			show_error('assignment not started');
+			show_404();
 		}
 		elseif($assignment['public'])
 			$filename="mcq_answ.json";
@@ -180,9 +180,9 @@ class Mcq extends CI_Controller
 		$assignments_root = rtrim($this->settings_model->get_setting('assignments_root'), '/');
 		$filename="$assignments_root/assignment_{$assignment_id}/mcq/$filename";
 		if(!file_exists($filename))
-			exit("No MCQ Problems");
+			show_404();
 		$data[0]=file_get_contents($filename);
-		if($data[0]===FALSE)exit("NO MCQ Problems");
+		if($data[0]===FALSE)show_404();
 		$data[1]=($this->mcq_model->get_responses($assignment_id,$this->user->username));
 		$this->output->set_content_type('application/json')->set_output(json_encode($data));
 	}
@@ -207,8 +207,7 @@ class Mcq extends CI_Controller
 				);
 			$response=$data;		//data with response
 			$response['response']=$this->input->post('response');
-			$update=$this->input->post('update')=="true"?TRUE:FALSE;
-			$this->mcq_model->add_response($data,$response,$update);
+			$this->mcq_model->add_response($data,$response);
 		}else show_404();
 	}
 	/**

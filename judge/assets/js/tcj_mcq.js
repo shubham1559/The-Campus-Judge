@@ -6,6 +6,7 @@
  mcq={};
  mcq.questions='';
  mcq.total=0;
+ mcq.flag={};
  mcq.loading_start= function()
  {
  	//alert('started');
@@ -14,10 +15,27 @@
  {
  	$("#loading_icon").css("display","none");
  }
+ mcq.filltable=function(){
+	for(var i=0;i<mcq.total;i++)
+	{
+		var star=mcq.questions[i].star=="1"?"*":"-";
+		var name=mcq.questions[i].name.substring(0,27);
+		var score=mcq.questions[i].score;
+		var dataid=mcq.questions[i].id;
+		var marked=mcq.response[dataid]?"color4":"";
+		var row="<tr><td>"+star+'</td><td>'+(i+1)+'.</td><td>'+name+'</td><td>'+score+'</td><td class="'+marked+'"><i class="fa fa-circle"></i></td><td class=""><i class="fa fa-flag"></i></td></tr>';
+		$("#sidebox table tbody").append(row);
+		mcq.flag[i]=0;
+	}
+		$('#sidebox table ').find('tr').click( function(){
+			mcq.no=$(this).index();
+			mcq.setdata(mcq.no);
+	});
+ }
  mcq.setdata=function(id)
- {
+{
  	$("#mcq_view").css("display","block");
- 	$('#pname').text(mcq.questions[id].name);
+ 	$('#pname').text((id+1)+'. '+mcq.questions[id].name);
  	$('#score').text(mcq.questions[id].score);
  	$('#desc').html(mcq.questions[id].description);
  	$('#o1 .data').html(mcq.questions[id].o1);
@@ -38,11 +56,18 @@
 	var dataid=mcq.questions[id].id;
 	if(mcq.response[dataid])
 	{$('#o'+mcq.response[dataid]).addClass("selected");
-	$('#message').css("display","block");}
+	$('#message').css("display","block");
+	$('#reset').prop('disabled',false);
+	}
 	else
 	{
 		$('#message').css("display","none");
+		$('#reset').prop('disabled',true);
 	}
+	if(mcq.flag[id]==1)
+		$('#flag').addClass("flag_r");
+	else
+		$('#flag').removeClass("flag_r");
  }
  $(document).ready(function(){
  	var assignment=$("#assignment_id").val();
@@ -66,6 +91,7 @@
 						mcq.response[key.id]=key.response;
 					});
 					mcq.setdata(mcq.no);
+					mcq.filltable();
 			}
 		});
 		$('#next').click(function(){
@@ -89,7 +115,6 @@
 				data:{
 					'id':submitid,
 					'response':clicked_id,
-					'update':mcq.response[submitid]?true:false,
 					shj_csrf_token: shj.csrf_token
 				},
 				success: function(){
@@ -98,6 +123,8 @@
 					$('#'+clicked).addClass("selected");
 					mcq.response[submitid]=clicked_id;
 					$('#message').css("display","block");
+					$('#reset').prop('disabled',false);
+					$('#sidebox tr:nth-child('+(mcq.no+1)+') td:nth-child(5)').addClass("color4");
 				}
 			});
 		});
@@ -116,7 +143,14 @@
 					$('.option').removeClass("selected");
 					delete mcq.response[submitid];
 					$('#message').css("display","none");
+					$('#reset').prop('disabled',true);
+					$('#sidebox tr:nth-child('+(mcq.no+1)+') td:nth-child(5)').removeClass("color4");
 				}
 			})
+		});
+		$('#flag').click(function(){
+			mcq.flag[mcq.no]=1-mcq.flag[mcq.no];
+			$('#flag').toggleClass("flag_r");
+			$('#sidebox tr:nth-child('+(mcq.no+1)+') td:nth-child(6)').toggleClass("color1");
 		});
  });

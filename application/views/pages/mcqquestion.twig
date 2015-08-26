@@ -22,15 +22,21 @@
 
 {% block main_content %}
 <input type="hidden" id="assignment_id" value="{{user.selected_assignment.id}}"/>
-<div id="message" class="shj_r"><i class="fa fa-warning color1"></i>the Problem is locked. To change your answer; First reset it.</div>
+<div id="sidebox" class="pull-right">
+<table>
+<col style="width:2px"><col style="width:3px"><col style="width:20px"><col style="width:3px"><col style="width:2px"><col style="width:2px">
+	<tbody></tbody>
+</table>
+</div>
+<div id="message" class="shj_r" style="display:none"><i class="fa fa-warning color1"></i>the Problem is locked. To change your answer; First reset it.</div>
 <img id="loading_icon" src="{{base_url('assets/images/load.gif')}}" alt="Loading icon"/>
 <div id="mcq_view" style="display:none;">
 			<h2 class="pull-right" id="score"></h2> 	
-			<h2 dir="auto"><i id="star" class="fa " title="Star marked question"></i><span id="pname"></span><i class="fa fa-flag" title="Click here to flag the question"></i></h2>
+			<h2 dir="auto"><i id="star" class="fa " title="Star marked question"></i><span id="pname"></span></h2>
 		<div id="desc">
 		</div>
 		<input type="hidden" id="problem_id" value=""/>
-		<table style="width: 100%;table-layout:fixed;" data-i="">
+		<table id="opt_table">
 		<tr><td class="option" id="o1">
 		<div class="letter" >A.</div><div class="data">o1</div>
 		</td>
@@ -45,9 +51,10 @@
 		</td></tr>
 		</table>
 <div class="buttongroup">
-	<input type="button" value="next" id="next" class="sharif_input pull-right" />
+	<input type="button" value="prev" id="prev" class="sharif_input" />
 	<input type="button" value="reset" id="reset" class="sharif_input" />
-	<input type="button" value="prev" id="prev" class="sharif_input pull-left" />
+	<input type="button" value="Flag" id="flag" class="sharif_input" />
+	<input type="button" value="next" id="next" class="sharif_input" />
 </div>
 </div>
 

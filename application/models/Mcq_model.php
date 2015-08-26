@@ -81,11 +81,8 @@ class Mcq_model extends CI_Model {
 	/**
 	 *
 	 */
-	public function add_response($data,$response,$update)
+	public function add_response($data,$response)
 	{
-		if($update)
-		$this->db->update('mcqresponse',$response,$data);
-		else
 		$this->db->insert('mcqresponse',$response);
 	}
 	//------------
