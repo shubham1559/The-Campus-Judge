@@ -7,6 +7,11 @@
  mcq.questions='';
  mcq.total=0;
  mcq.attempted=0;
+ mcq.correct=0;
+ mcq.wrong=0;
+ mcq.score=0;
+ mcq.total_score=0;
+ mcq.starred=0;
  mcq.flag={};
  mcq.loading_start= function()
  {
@@ -15,6 +20,7 @@
  mcq.finish=function()
  {
  	$("#loading_icon").css("display","none");
+ 	 $("#mcq_view").css("display","block");
  }
  mcq.filltable=function(){
 	for(var i=0;i<mcq.total;i++)
@@ -55,7 +61,6 @@
  }
  mcq.setdata=function(id)
 {
- 	$("#mcq_view").css("display","block");
 	$('#pname').text((id+1)+'. '+mcq.questions[id].name);
 	var scr=mcq.questions[id].score+'/-'+mcq.questions[id].negative;
  	$('#score').text(scr);
@@ -74,58 +79,40 @@
 	else $('#prev').prop('disabled',false);
 	if(id==mcq.total-1)$('#next').prop('disabled',true);
 	else $('#next').prop('disabled',false);
-	$('.option').removeClass("selected");
+
+
 	var dataid=mcq.questions[id].id;
 	if(mcq.response[dataid])
-	{$('#o'+mcq.response[dataid]).addClass("selected");
-	$('#reset').prop('disabled',false);
-	}
-	else
 	{
-		$('#reset').prop('disabled',true);
+		if(mcq.status!="public")
+		{
+			$('.selected').removeClass("selected");
+			$('#o'+mcq.response[dataid]).addClass("selected");
+		}
+		else
+		{
+				$('.wrong').removeClass("wrong");
+				$('.correct').removeClass("correct");
+			if(mcq.response[dataid]==mcq.questions[id].correct)
+				$('#o'+mcq.response[dataid]).addClass("correct");
+			else
+			{
+				$('#o'+mcq.response[dataid]).addClass("wrong");
+				$('#o'+mcq.questions[id].correct).addClass("correct");
+			}
+		}
 	}
+
+	if(mcq.response[dataid]&&mcq.allowed_submit)
+		$('#reset').prop('disabled',false);
+	else
+		$('#reset').prop('disabled',true);
 	if(mcq.flag[id]==1)
 		$('#flag').addClass("flag_r");
 	else
 		$('#flag').removeClass("flag_r");
  }
- $(document).ready(function(){
- 	var assignment=$("#assignment_id").val();
-		$.ajax({
-			dataType:'json',
-			type: 'POST',
-			url: shj.site_url + 'assignment.json',
-			beforeSend: mcq.loading_start,
-			complete:mcq.finish,
-			data: {
-				"assignment":assignment,
-				shj_csrf_token: shj.csrf_token
-			},
-			error: shj.loading_error,
-			success: function (response) {
-					mcq.questions=JSON.parse(response[0]);
-					mcq.total=mcq.questions.length;
-					mcq.response={};
-					response[1].map(function(key){
-						mcq.response[key.id]=key.response;
-					});
-					mcq.attempted=Object.keys(mcq.response).length;
-					mcq.setdata(mcq.no);
-					mcq.filltable();
-					$('#total').text(mcq.total);
-					$('#attempted').text(mcq.attempted);
-					mcq.public=response[2];
-			}
-		});
-		$('#next').click(function(){
-			mcq.no++;
-			mcq.setdata(mcq.no);
-		});
-		$('#prev').click(function(){
-			mcq.no--;
-			mcq.setdata(mcq.no);
-		});
-		$(".option").click(function(){
+ mcq.set_response=function(){
 			var clicked=this.id;
 			var no={"o1":1,"o2":2,"o3":3,"o4":4};
 			var submitid=mcq.questions[mcq.no].id;
@@ -158,9 +145,9 @@
 					}
 				}
 			});
-		});
-		$('#reset').click(function(){
-		var submitid=mcq.questions[mcq.no].id;
+		}
+mcq.remove_response=function(){
+			var submitid=mcq.questions[mcq.no].id;
 			$.ajax({
 				type:'POST',
 				url:shj.site_url + "mcq/delete_response",
@@ -183,13 +170,89 @@
 					noty({text: response, layout: 'bottomRight', type: 'error', timeout: 2500});
 				}
 				}
-			})
+			});
+}
+ $(document).ready(function(){
+	var assignment=$("#assignment_id").val();
+		$.ajax({
+			dataType:'json',
+			type: 'POST',
+			url: shj.site_url + 'assignment.json',
+			beforeSend: mcq.loading_start,
+			complete:mcq.finish,
+			data: {
+				"assignment":assignment,
+				shj_csrf_token: shj.csrf_token
+			},
+			error: shj.loading_error,
+			success: function (response) {
+					mcq.questions=JSON.parse(response[0]);
+					mcq.total=mcq.questions.length;
+					mcq.response={};
+					response[1].map(function(key){
+						mcq.response[key.id]=key.response;
+					});
+					mcq.status=response[2];
+					mcq.questions.map(function(key){
+						mcq.total_score+=parseInt(key.score);
+					})
+					$('span .public').css("display","none");
+					if(mcq.status=="started")
+					{
+						$(".option").on("click",mcq.set_response);
+						$("#reset").on("click",mcq.remove_response);
+						mcq.allowed_submit=true;
+						window.setInterval(mcq.check_refresh,(shj.notif_check_delay*1000));
+					}else if(mcq.status=="public")
+					{
+						mcq.allowed_submit=false;
+						noty({text: "You can see the solutions now", layout: 'bottomRight', type: 'information', timeout: 2500});
+						mcq.questions.map(function(key){
+							if(mcq.response[key.id])
+							{
+								if(mcq.response[key.id]==key.correct)
+								{	mcq.correct++;
+									mcq.score+=parseInt(key.score);
+									if(key.star=="1")
+										mcq.starred++;
+								}
+								else
+								{
+									mcq.wrong++;
+									mcq.score-=parseInt(key.negative);
+								}
+							}
+							$('span .public').css("display","inline-block");
+							$('span#correct').text(mcq.correct);
+							$('span#incorrect').text(mcq.wrong);
+							$('span#final_score').text(mcq.score);
+							$('span#total_star').text(mcq.starred);
+						});
+					}
+					else{
+						mcq.allowed_submit=false;
+						noty({text: "You are not allowed to submit Now", layout: 'bottomRight', type: 'information', timeout: 2500});
+					}
+					mcq.attempted=Object.keys(mcq.response).length;
+					mcq.setdata(mcq.no);
+					mcq.filltable();
+					$('#total').text(mcq.total);
+					$('#attempted').text(mcq.attempted);
+					$('#total_score').text(mcq.total_score);
+			}
+		});
+		$('#next').click(function(){
+			mcq.no++;
+			mcq.setdata(mcq.no);
+		});
+		$('#prev').click(function(){
+			mcq.no--;
+			mcq.setdata(mcq.no);
 		});
 		$('#flag').click(function(){
 			mcq.flag[mcq.no]=1-mcq.flag[mcq.no];
 			$('#flag').toggleClass("flag_r");
 			$('#sidebox tr:nth-child('+(mcq.no+1)+') td:nth-child(6)').toggleClass("color1");
 		});
-		window.setInterval(mcq.check_refresh,(shj.notif_check_delay*1000));
+
  });
- 

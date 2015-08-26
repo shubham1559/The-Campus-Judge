@@ -22,7 +22,9 @@
 	<script type='text/javascript' src="{{ base_url("assets/js/shj_submissions.js") }}"></script>
 	<script type='text/javascript' src="{{ base_url("assets/js/jquery.dataTables.min.js") }}"></script>
 {% endblock %}
-
+{% block title_menu %}
+<a href="{{site_url('problems/mcqproblems')}}" class="space-l">MCQ Problems</a>
+{% endblock %}
 {% block main_content %}
 
 <p>{{ view|title }} Problems of <span dir="auto">{{ user.selected_assignment.name }}</span></p>
