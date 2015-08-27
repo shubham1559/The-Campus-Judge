@@ -502,6 +502,20 @@ class Assignment_model extends CI_Model
 			);
 		return $query->row_array();
 	}
-
+	/**
+	 * returns types of problems available
+	 * @param  [type] $assignment_id [description]
+	 * @return [type]                [description]
+	 */
+	public function problem_types($assignment_id)
+	{
+		$query1=$this->db->where(array('assignment'=>$assignment_id))
+					->count_all_results('problems');
+		$query2=$this->db->where(array('assignment'=>$assignment_id))
+					->count_all_results('mcqproblems');
+		$ret[0]=($query1>0);
+		$ret[1]=($query2>0);
+		return $ret;
+	}
 
 }

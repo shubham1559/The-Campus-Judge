@@ -70,6 +70,9 @@ class Problems extends CI_Controller
 			//if no problem given show the summary of assignment
 			if($problem_id==NULL)
 			{
+				$problem_types=$this->assignment_model->problem_types($assignment_id);
+				if(!$problem_types[0]&&$problem_types[1])redirect('problems/mcqproblems');	//no coding problems
+				if(!$problem_types[0]&&!$problem_types[1])show_error("No Problems Found");	//NO problems in assignment
 				$this->load->model('submit_model');
 				$problems=$this->assignment_model->all_problems($assignment_id);
 				$summ=$this->submit_model->count_all_solved($assignment_id,$this->user->username);
@@ -102,6 +105,8 @@ class Problems extends CI_Controller
 				$data = array(
 					'all_assignments' => $this->all_assignments,
 					'problems' => $problems,
+					'mcqproblems'=>$problem_types[1],
+					'assignment'=>$assignment_id,
 				);
 				$this->twig->display('pages/allproblems.twig', $data);
 				return;

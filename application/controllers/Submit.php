@@ -165,6 +165,8 @@ class Submit extends CI_Controller
 			$this->data['error'] = 'Selected assignment has finished.';
 		elseif ( ! $this->assignment_model->is_participant($this->user->selected_assignment['participants'],$this->user->username) )
 			$this->data['error'] = 'You are not registered for submitting.';
+		elseif(!$this->problems)
+			$this->data['error']="No Problems found";
 		else
 			$this->data['error'] = 'none';
 		$this->data['probid']=$probid;

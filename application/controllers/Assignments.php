@@ -403,22 +403,24 @@ class Assignments extends CI_Controller
 
 		if ($this->user->level <= 1) // permission denied
 			show_404();
-
+		/**
+		 * coding Problem are not complusory, assignment may have some mcq problems
+		 */
 		$this->form_validation->set_rules('assignment_name', 'assignment name', 'required|max_length[50]');
 		$this->form_validation->set_rules('start_time', 'start time', 'required');
 		$this->form_validation->set_rules('finish_time', 'finish time', 'required');
 		$this->form_validation->set_rules('extra_time', 'extra time', 'required');
 		$this->form_validation->set_rules('participants', 'participants', '');
 		$this->form_validation->set_rules('late_rule', 'coefficient rule', 'required');
-		$this->form_validation->set_rules('name[]', 'problem name', 'required|max_length[50]');
-		$this->form_validation->set_rules('score[]', 'problem score', 'required|integer');
-		$this->form_validation->set_rules('c_time_limit[]', 'C/C++ time limit', 'required|integer');
-		$this->form_validation->set_rules('python_time_limit[]', 'python time limit', 'required|integer');
-		$this->form_validation->set_rules('java_time_limit[]', 'java time limit', 'required|integer');
-		$this->form_validation->set_rules('memory_limit[]', 'memory limit', 'required|integer');
-		$this->form_validation->set_rules('languages[]', 'languages', 'required');
+		$this->form_validation->set_rules('name[]', 'problem name', 'max_length[50]');
+		$this->form_validation->set_rules('score[]', 'problem score', 'integer');
+		$this->form_validation->set_rules('c_time_limit[]', 'C/C++ time limit', 'integer');
+		$this->form_validation->set_rules('python_time_limit[]', 'python time limit', 'integer');
+		$this->form_validation->set_rules('java_time_limit[]', 'java time limit', 'integer');
+		$this->form_validation->set_rules('memory_limit[]', 'memory limit', 'integer');
+/*		$this->form_validation->set_rules('languages[]', 'languages', 'required');
 		$this->form_validation->set_rules('diff_cmd[]', 'diff command', 'required');
-		$this->form_validation->set_rules('diff_arg[]', 'diff argument', 'required');
+		$this->form_validation->set_rules('diff_arg[]', 'diff argument', 'required');*/
 
 		// Validate input data
 

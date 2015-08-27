@@ -23,7 +23,9 @@
 	<script type='text/javascript' src="{{ base_url("assets/js/jquery.dataTables.min.js") }}"></script>
 {% endblock %}
 {% block title_menu %}
-<a href="{{site_url('problems/mcqproblems')}}" class="space-l">MCQ Problems</a>
+{% if mcqproblems %}
+<a href="{{site_url('problems/mcqproblems/'~assignment)}}" class="space-l">MCQ Problems</a>
+{% endif %}
 {% endblock %}
 {% block main_content %}
 

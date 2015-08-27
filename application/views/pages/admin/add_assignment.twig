@@ -40,7 +40,6 @@
 			$('#nop').attr('value', shj.num_of_problems);
 		});
 		$(document).on('click', '.delete_problem', function(){
-			if (shj.num_of_problems==1) return;
 			var row = $(this).parents('tr');
 			row.remove();
 			var i = 0;
