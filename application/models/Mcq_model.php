@@ -61,6 +61,8 @@ class Mcq_model extends CI_Model {
 	 */
 	public function generate($assignment_id,$path_to_mcq)
 	{
+		if(!file_exists($path_to_mcq))
+			mkdir($path_to_mcq,0700);
 		array_map('unlink', glob("$path_to_mcq/*"));
 		$data=$this->db->select(array('id','name','score','negative','description','o1','o2','o3','o4','star','correct'))
 							->get_where('mcqproblems',array("assignment"=>$assignment_id))

@@ -53,20 +53,22 @@ class Mcq extends CI_Controller
 				'correct'=>$this->input->post('correct'),
 				'star'=>$this->input->post('star')?1:0
 				);
-			if(($this->input->post('id'))===NULL)
+			if(($this->input->post('id'))==NULL)			//problems added
 			{
 				$this->mcq_model->add($data);
 				$newdata=TRUE;
 				$message="Problem Added Successfully, Add next problem here";
+				$this->mcq_edit['negative']=$data['negative'];		//cache current score and negative score
+				$this->mcq_edit['score']=$data['score'];			//If called from $this->edit function $newdata will be false
 			}
 			else
 			{
 				$problem_id=$this->input->post('id');
-					$this->mcq_model->edit($assignment_id,$problem_id,$data);
-					redirect("mcq/view/$assignment_id/$problem_id");
+				$this->mcq_model->edit($assignment_id,$problem_id,$data);
+				redirect("mcq/view/$assignment_id/$problem_id");
 			}
 		}
-		if($this->mcq_edit)
+		if($this->mcq_edit&&!$newdata)			//If called from $this->edit function 
 		{
 			$this->mcq_edit=$this->mcq_model->getproblem($assignment_id,$this->mcq_edit);
 			if($this->mcq_edit)

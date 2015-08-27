@@ -803,7 +803,7 @@ select.sharif_time {
 	text-shadow: 0 1px 0 rgba(255, 255, 255, .5);
 }
 
-.sharif_table td:first-child, .sharif_table th:first-child {
+/* .sharif_table td:first-child, .sharif_table th:first-child {
 	border-left: none;
 }
 
@@ -835,7 +835,7 @@ select.sharif_time {
 	-moz-border-radius: 0 0 6px 0;
 	-webkit-border-radius: 0 0 6px 0;
 	border-radius: 0 0 6px 0;
-}
+} */
 
 .sharif_table th.score {
 	border-radius: 0;

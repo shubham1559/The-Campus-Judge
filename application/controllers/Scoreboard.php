@@ -36,5 +36,12 @@ class Scoreboard extends CI_Controller
 		$this->twig->display('pages/scoreboard.twig', $data);
 	}
 
+	//-----------------------------
+	public function useless($assignment_id)
+	{
+		$this->load->model('scoreboard_model');
+		$this->scoreboard_model->update_scoreboard($assignment_id);
+	}
+
 
 }

@@ -41,6 +41,7 @@ class Assignments extends CI_Controller
 
 		foreach ($data['all_assignments'] as &$item)
 		{
+			$ret=$this->assignment_model->problem_types($item['id']);
 			$extra_time = $item['extra_time'];
 			$delay = shj_now()-strtotime($item['finish_time']);;
 			ob_start();
@@ -53,6 +54,7 @@ class Assignments extends CI_Controller
 			$item['finished'] = ($delay > $extra_time);
 			$item['started']=(shj_now()>strtotime($item['start_time']));
 			$item['public']=$item['public']&&$item['finished'];
+			$item['total_problems']=$ret[0]+$ret[1];
 		}
 		$this->twig->display('pages/assignments.twig', $data);
 

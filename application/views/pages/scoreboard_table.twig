@@ -8,19 +8,29 @@
 
 <thead>
 	<tr>
-		<th>#</th>
-		<th>Username</th>
+		<th rowspan="2">#</th>
+		<th rowspan="2">Username</th>
 		{% for problem in problems %}
-			<th>
+			<th rowspan="2">
 				<a dir="auto" href="{{ site_url("problems/#{assignment_id}/#{problem.id}") }}">{{ problem.name }}</a><br>
 				<span class="tiny_text_b">{{ problem.score }}</span>
 			</th>
 		{% endfor %}
-		<th>
+		{% if mcq_judge %}
+		<th colspan="4">
+		<a dir="auto" href="{{ site_url("problems/mcqproblems/#{assignment_id}") }}">MCQ Problems</a><br>
+		</th>
+		{% endif %}
+		<th rowspan="2" >
 			Total<br>
 			<span class="tiny_text_b">{{ total_score }}</span>
 		</th>
 	</tr>
+	{% if mcq_judge %}
+		<tr>
+		<th>Score</th><th>Star</th><th>Correct</th><th>Incorrect</th>
+		</tr>
+	{% endif %}
 </thead>
 
 {% for sc_username in scoreboard.username %}
@@ -37,6 +47,9 @@
 		{% endif %}
 	</td>
 	{% endfor %}
+	{% if mcq_judge %}
+	<td>{{scoreboard['mcq_score'][loop.index0]}}</td><td>{{scoreboard['star'][loop.index0]}}</td><td>{{scoreboard['correct'][loop.index0]}}</td><td>{{scoreboard['incorrect'][loop.index0]}}</td>
+	{% endif %}
 	<td>
 	<span style="font-weight: bold;">{{ scoreboard['score'][loop.index0] }}</span>
 	<br>

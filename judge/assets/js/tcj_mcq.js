@@ -102,7 +102,8 @@
 				$('#o'+mcq.questions[id].correct).addClass("correct");
 			}
 		}
-	}
+	}else if(mcq.status=="public")
+	$('#o'+mcq.questions[id].correct).addClass("correct");
 
 	if(mcq.response[dataid]&&mcq.allowed_submit)
 		$('#reset').prop('disabled',false);

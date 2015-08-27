@@ -487,7 +487,7 @@ class Assignment_model extends CI_Model
 		return($assignment['public']&& shj_now()>strtotime($assignment['finish_time'])+$assignment['extra_time']);
 	}
 	/**
-	 * Function returns only start time,end time,participants and extra time for assignment
+	 * Function returns data for access control
 	 */
 	public function assignment_time($assignment_id)
 	{
@@ -513,8 +513,8 @@ class Assignment_model extends CI_Model
 					->count_all_results('problems');
 		$query2=$this->db->where(array('assignment'=>$assignment_id))
 					->count_all_results('mcqproblems');
-		$ret[0]=($query1>0);
-		$ret[1]=($query2>0);
+		$ret[0]=($query1);
+		$ret[1]=($query2);
 		return $ret;
 	}
 
