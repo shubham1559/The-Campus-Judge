@@ -60,9 +60,6 @@
 {% block main_content %}
 
 <p>{{ view|title }} Submissions of <span dir="auto">{{ user.selected_assignment.name }}</span></p>
-{%  if view == 'all' %}
-<p><i class="fa fa-warning color3"></i> You cannot change your final submissions after assignment finishes.</p>
-{% endif %}
 <table class="sharif_table">
 	<thead>
 		<tr>

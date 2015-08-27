@@ -35,12 +35,23 @@ class Scoreboard extends CI_Controller
 
 		$this->twig->display('pages/scoreboard.twig', $data);
 	}
-
-	//-----------------------------
-	public function useless($assignment_id)
+	//-----------------------
+	public function scoreboard_helper()
 	{
-		$this->load->model('scoreboard_model');
-		$this->scoreboard_model->update_scoreboard($assignment_id);
+		if($this->user->level<=1)
+			show_404();
+		$data = array(
+			'all_assignments' => $this->assignment_model->all_assignments(),
+		);
+		$this->form_validation->set_rules('assignment_id', 'Assignment id', 'required|integer');
+		if($this->form_validation->run())
+		{
+			$assignment_id=$this->input->post('assignment_id');
+			$this->load->model('scoreboard_model');
+			$this->scoreboard_model->update_scoreboard($assignment_id);
+			$data['msg'][]="Scoreboard Updated for Assignment: $assignment_id";
+		}
+		$this->twig->display("pages/admin/generate_scoreboard.twig",$data);
 	}
 
 

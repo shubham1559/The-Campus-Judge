@@ -279,7 +279,35 @@ class Install extends CI_Controller
 			$this->dbforge->add_key('id', TRUE); // PRIMARY KEY
 			if ( ! $this->dbforge->create_table('query', TRUE))
 				show_error("Error creating database table ".$this->db->dbprefix('query'));
-
+			//create table mcqproblems
+			$fields=array(
+				'assignment' 	=> array('type' => 'INT','constraint' => 4),
+				'id'            => array('type' => 'INT', 'constraint' => 11, 'unsigned' => TRUE, 'auto_increment' => TRUE),
+				'name'         => array('type' => 'VARCHAR', 'constraint' => 100, 'default' => ''),
+				'score' 		=> array('type' => 'INT','constraint' => 4),
+				'negative'	 	=> array('type' => 'INT','constraint' => 4),
+				'description'	    => array('type' => 'TEXT', 'default' => ''),
+				'o1'	    => array('type' => 'TEXT', 'default' => ''),
+				'o2'	    => array('type' => 'TEXT', 'default' => ''),
+				'o3'	    => array('type' => 'TEXT', 'default' => ''),
+				'o4'	    => array('type' => 'TEXT', 'default' => ''),
+				'correct'	 	=> array('type' => 'INT','constraint' => 4),
+				'star'    => array('type' => 'TINYINT', 'constraint' => 1, 'default' => '0')
+				);
+			$this->dbforge->add_field($fields);
+			$this->dbforge->add_key('id', TRUE); // PRIMARY KEY
+			if ( ! $this->dbforge->create_table('mcqproblems', TRUE))
+				show_error("Error creating database table ".$this->db->dbprefix('mcqproblems'));
+			//create table mcqresponse
+			$fields=array(
+				'assignment' 	=> array('type' => 'INT','constraint' => 4),
+				'id' 	=> array('type' => 'INT','constraint' => 11),
+				'username'            => array('type' => 'VARCHAR', 'constraint' => 20),
+				'response' 	=> array('type' => 'INT','constraint' =>4),
+				);
+			$this->dbforge->add_field($fields);
+			if ( ! $this->dbforge->create_table('mcqresponse', TRUE))
+				show_error("Error creating database table ".$this->db->dbprefix('mcqresponse'));
 
 			// add admin user
 			$this->user_model->add_user(

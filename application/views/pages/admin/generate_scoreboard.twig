@@ -1,0 +1,27 @@
+ {#
+ # The Campus Judge
+ # file: generate_scoreboard.twig
+ # author: Shubham vishwakarma <shubhamvishwakarma987@gmail.com>
+ #}
+{% set selected = 'assignments' %}
+{% extends 'templates/base.twig' %}
+{% block icon %}fa-wrench{% endblock %}
+{% block title %}Generate Scoreboard{% endblock %}
+{% block head_title %}Generate Scoreboard{% endblock %}
+
+
+{% block main_content %}
+<p>
+	If you click on an assignment then the scoreboard will be regenerated;<br/> if the assignment has ended then MCQ problems will be included in the scoreboard too.
+</p>
+{% for assignment in all_assignments %}
+	{{ form_open('judge_mcq') }}
+		<input type="hidden" name="assignment_id" value="{{ assignment.id }}"/>
+		<input type="submit" class="sharif_input" value="Generate scoreboard for {{assignment.id}} {{assignment.name}}"/>
+	</form>
+{% endfor %}
+
+{% for message in msg %}
+	<p class="shj_ok">{{ message }}</p>
+{% endfor %}
+{% endblock %}  {# main_content #}

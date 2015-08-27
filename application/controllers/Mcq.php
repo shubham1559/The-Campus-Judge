@@ -269,6 +269,10 @@ class Mcq extends CI_Controller
 			exit("Success");
 		}else show_404();
 	}
+	/**
+	 * The function is polled for new updates aboud the assignment.
+	 * @return boolean [description]
+	 */
 	public function is_update()
 	{
 		if(!$this->input->is_ajax_request())
@@ -283,5 +287,4 @@ class Mcq extends CI_Controller
 		$filename="$assignments_root/assignment_{$assignment_id}/mcq/mcq_without_answer.json";
 		exit(date("Y m d H:i:s", filemtime($filename)));
 	}
-
 }
