@@ -100,4 +100,13 @@ class Mcq_model extends CI_Model {
 	{
 		$this->db->delete('mcqresponse',$data);
 	}
+	//------------------
+	public function getstats($assignment_id)
+	{
+		return $this->db->select(array('id','response','count(*) as cnt'))
+						->where(array('assignment'=>$assignment_id))
+						->group_by(array('id','response'))
+						->get('mcqresponse')
+						->result_array();
+	}
 }

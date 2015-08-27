@@ -48,7 +48,7 @@
 	</td>
 	{% endfor %}
 	{% if mcq_judge %}
-	<td>{{scoreboard['mcq_score'][loop.index0]}}</td><td>{{scoreboard['star'][loop.index0]}}</td><td>{{scoreboard['correct'][loop.index0]}}</td><td>{{scoreboard['incorrect'][loop.index0]}}</td>
+	<td title="click here to see the details"><a href="{{site_url('mcq/showstats/'~assignment_id~'/'~sc_username)}}">{{scoreboard['mcq_score'][loop.index0]}}</a></td><td>{{scoreboard['star'][loop.index0]}}</td><td>{{scoreboard['correct'][loop.index0]}}</td><td>{{scoreboard['incorrect'][loop.index0]}}</td>
 	{% endif %}
 	<td>
 	<span style="font-weight: bold;">{{ scoreboard['score'][loop.index0] }}</span>

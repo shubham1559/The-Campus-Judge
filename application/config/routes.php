@@ -76,6 +76,7 @@
 $route['default_controller'] = 'dashboard';
 $route['register'] = "login/register";
 $route['logout'] = "login/logout";
+$route['submissions/mcq']="mcq/showstats";
 $route['submissions/final']="submissions/the_final";
 $route['submissions/final/(.*)']="submissions/the_final/$1";
 $route['docs/img/(.*)']="docs/img/$1";

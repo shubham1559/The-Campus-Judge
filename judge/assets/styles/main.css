@@ -419,6 +419,7 @@ div#extra_time i {
 .color-docs {border-color: #991B4A!important;}
 .color-final_submissions {border-color: #2196F3!important;}
 .color-assignments {border-color: #449D44 !important;}
+.color-mcq_submissions{border-color:#666699 !important;}
 
 .color-dashboard.selected i {background-color: #C52E26!important;border-color: #C52E26!important;}
 .color-settings.selected i {background-color: #EE3A23!important;border-color: #EE3A23!important;}
@@ -432,6 +433,7 @@ div#extra_time i {
 .color-docs.selected i {background-color: #991B4A!important;border-color: #991B4A!important;}
 .color-final_submissions.selected i {background-color: #2196F3!important;border-color: #2196F3!important;}
 .color-assignments.selected i {background-color: #449D44!important;border-color: #449D44!important;}
+.color-mcq_submissions.selected i {background-color: #666699!important;border-color: #666699!important;}
 
 div#side_bar {
 	color:#595959;
@@ -1435,13 +1437,13 @@ background-color: rgba(250, 250, 0, 0.5);}
 div#mcq_view .selected:hover{
 background-color: rgba(250, 250, 0, 0.7);
 }
-div#mcq_view .correct{
+div#mcq_view .correct,.sharif_table .correct{
 background-color: rgba(0, 255, 50, 0.5);}
 
 div#mcq_view .correct:hover{
 background-color: rgba(0, 255, 50, 0.7);
 }
-div#mcq_view .wrong{
+div#mcq_view .wrong,.sharif_table .wrong{
 background-color: rgba(255, 0, 0, 0.3);}
 
 div#mcq_view .wrong:hover{

@@ -287,4 +287,72 @@ class Mcq extends CI_Controller
 		$filename="$assignments_root/assignment_{$assignment_id}/mcq/mcq_without_answer.json";
 		exit(date("Y m d H:i:s", filemtime($filename)));
 	}
+	public function showstats($assignment_id=NULL,$username=NULL)
+	{
+		if($this->user->level<=1) //permission denied
+		show_404();
+		if ($assignment_id === NULL)
+			$assignment_id = $this->user->selected_assignment['id'];
+		if ($assignment_id == 0)
+			show_error('No assignment selected.');
+		$mcqproblems=$this->mcq_model->getallmcq($assignment_id);
+		if(!$mcqproblems)show_404();
+		$data = array(
+			'all_assignments' => $this->assignment_model->all_assignments(),
+			'mcqproblems'=>$mcqproblems,
+		);
+		if($username==NULL)
+		{
+			$query=$this->mcq_model->getstats($assignment_id);
+			$stats=[];
+			foreach ($query as $key) {
+				$stats[$key['id']][$key['response']]=$key['cnt'];
+			}
+			$data['stats']=$stats;
+			$data['username']=NULL;
+		}
+		else{
+			$query=$this->mcq_model->get_responses($assignment_id,$username);
+			$stats=[];
+			foreach ($query as $key) {
+				$stats[$key['id']]=$key['response'];
+			}
+			$data['username']=$username;
+			$data['stats']=$stats;
+		}
+		$data['total_problems']=0;;
+		$data['total_score']=0;
+		$data['correct']=0;
+		$data['incorrect']=0;
+		$data['stars']=0;
+		$data['final_score']=0;
+		foreach ($mcqproblems as $key) {
+			$data['color'][$key['id']]=array('','','','','');
+			if($data['username']&&isset($stats[$key['id']]))
+			$data['color'][$key['id']][$stats[$key['id']]]="wrong";
+			$data['color'][$key['id']][$key['correct']]="correct";
+			$data['total_problems']++;
+			$data['total_score']+=$key['score'];
+			if($data['username'])
+			{
+				if(isset($stats[$key['id']]))
+				{
+					if($key['correct']==$stats[$key['id']])
+					{
+						$data['correct']++;
+						$data['final_score']+=$key['score'];
+						$data['score'][$key['id']]=$key['score'];
+						$data['stars']+=$key['star'];
+					}
+					else{
+						$data['incorrect']++;
+						$data['final_score']-=$key['negative'];
+						$data['score'][$key['id']]=-$key['negative'];
+					}
+				}else
+				$data['score'][$key['id']]=0;
+			}
+		}
+		$this->twig->display('pages/admin/mcqstats.twig', $data);
+	}
 }

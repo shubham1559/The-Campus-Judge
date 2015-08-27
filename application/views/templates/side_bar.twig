@@ -69,6 +69,14 @@
 				<span class="sidebar_text">All Submissions</span>
 			</a>
 		</li>
+		{% if user.level>=2%}
+		<li class="color-mcq_submissions{{ selected=='mcq_submissions' ? ' selected' }}">
+			<a href="{{ site_url('submissions/mcq') }}">
+				<i class="fa fa-tasks fa-lg"></i>
+				<span class="sidebar_text">MCQ Submissions</span>
+			</a>
+		</li>
+		{% endif %}
 		<li class="color-scoreboard{{ selected=='scoreboard' ? ' selected' }}">
 			<a href="{{ site_url('scoreboard') }}">
 				<i class="fa fa-star fa-lg"></i>

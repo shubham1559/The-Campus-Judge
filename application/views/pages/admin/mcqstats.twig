@@ -1,0 +1,63 @@
+{#
+ # The Campus Judge
+ # file: mcqstats.twig
+ # author: Shubham vishwakarma <shubhamvishwakarma987@gmail.com>
+ #}
+{% set selected='mcq_submissions' %}
+{% extends 'templates/base.twig' %}
+{% block icon %}fa-tasks{% endblock %}
+{% block title %}{{ view|title }} MCQ Stats{% endblock %}
+{% block head_title %}{{ view|title }} MCQ Stats{% endblock %}
+{% block title_menu %}
+{% if username %}
+<span class="title_menu_item">
+<span class="space-l">Total Problems: </span><span id="total">{{total_problems}}</span>
+<span class="space-l">Total Score: </span><span id="total_score">{{total_score}}</span>
+<span class="space-l">Attempted Problems: </span><span id="attempted">{{correct+incorrect}}</span>
+<span class="space-l public">Correct: </span><span id="correct">{{correct}}</span>
+<span class="space-l public">Incorrect: </span><span id="incorrect">{{incorrect}}</span>
+<span class="space-l public">Score: </span><span id="final_score">{{final_score}}</span>
+<span class="space-l public">Stars: </span><span id="total_star">{{stars}}</span>
+</span>
+{% endif %}
+{% endblock %}
+{% block main_content %}
+{% if username %}
+<p>Showing submission for user {{username}}</p>
+{% else %}
+<p>Showing stats for whole assignment</p>
+{% endif %}
+<table class="sharif_table">
+	<thead>
+		<tr>
+				<th width="1%" rowspan="2">Star</th>
+				<th width="15%" rowspan="2">Name</th>
+				<th width="3%" rowspan="2">Score</th>
+				<th width="8%" rowspan="2">A.</th>
+				<th width="8%" rowspan="2">B.</th>
+				<th width="8%" rowspan="2">C.</th>
+				<th width="8%" rowspan="2">D.</th>
+			</tr>
+	</thead>
+	{% for mcq in mcqproblems %}
+	<tr>
+	<td><i class="fa fa-{{mcq.star?'asterisk':'minus'}} fa-lg"></i></td>
+	<td>{{mcq.name}}</td>
+	{% if username %}
+	<td>{{score[mcq.id]}}</td>
+	{% else %}
+	<td>{{mcq.score}}/-{{mcq.negative}}</td>
+	{% endif %}
+	<td class="{{color[mcq.id][1]}}">{{stats[mcq.id][1]?stats[mcq.id][1]:'-'}}</td>
+	<td class="{{color[mcq.id][2]}}">{{stats[mcq.id][2]?stats[mcq.id][2]:'-'}}</td>
+	<td class="{{color[mcq.id][3]}}">{{stats[mcq.id][3]?stats[mcq.id][3]:'-'}}</td>
+	<td class="{{color[mcq.id][4]}}">{{stats[mcq.id][4]?stats[mcq.id][4]:'-'}}</td>
+	</tr>
+	{% endfor %}
+</table>
+
+<p>
+{{ pagination|raw }}
+</p>
+
+{% endblock %}  {# main_content #}

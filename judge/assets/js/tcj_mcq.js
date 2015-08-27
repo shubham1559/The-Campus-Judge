@@ -83,7 +83,7 @@
 
 
 	var dataid=mcq.questions[id].id;
-	$('.selected').removeClass("selected");
+	$('.option').removeClass("selected");
 	$('.wrong').removeClass("wrong");
 	$('.correct').removeClass("correct");
 	if(mcq.response[dataid])
