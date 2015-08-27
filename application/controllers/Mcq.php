@@ -168,19 +168,25 @@ class Mcq extends CI_Controller
 		if($assignment_id==NULL)
 			show_404();
 		$assignment = $this->assignment_model->assignment_info($assignment_id);
-		if($assignment['id']==0||! $this->assignment_model->is_participant($assignment['participants'], $this->user->username))
+		if($assignment['id']==0)
 			show_404();
 		//if assignment not started the donot show any data of the assignment
 		$data[2]="started";
+		if(shj_now()<strtotime($assignment['start_time']))
+			$data[2]="Yet to start";
 		if(shj_now() > strtotime($assignment['finish_time'])+$assignment['extra_time'])
 			$data[2]="ended";
 		if($this->user->level == 0 && ! $assignment['open'])
 			$data[2]="close";
-		if(shj_now() < strtotime($assignment['start_time']))
+		if(!$this->assignment_model->is_participant($assignment['participants'], $this->user->username))
+		{
+			$data[2]="not valid";
+		}
+		if($this->user->level==0&&shj_now() < strtotime($assignment['start_time']))
 		{
 			show_404();
 		}
-		elseif($assignment['public'])
+		elseif($assignment['public']&& shj_now()>strtotime($assignment['finish_time'])+$assignment['extra_time'])
 			{
 				$filename="mcq_answ.json";
 				$data[2]="public";
@@ -203,7 +209,7 @@ class Mcq extends CI_Controller
 	{
 		if(!$this->input->is_ajax_request())
 			show_404();
-		$assignment_id=$this->user->selected_assignment['id'];
+		$assignment_id=$this->input->post('assignment');
 		if($assignment_id==0)
 			show_404();
 		$assignment_info=$this->assignment_model->assignment_time($assignment_id);
@@ -237,7 +243,7 @@ class Mcq extends CI_Controller
 	{
 		if(!$this->input->is_ajax_request())
 			show_404();
-		$assignment_id=$this->user->selected_assignment['id'];
+		$assignment_id=$this->input->post('assignment');
 		if($assignment_id==0)
 			show_404();
 		$assignment_info=$this->assignment_model->assignment_time($assignment_id);
@@ -265,7 +271,9 @@ class Mcq extends CI_Controller
 	{
 		if(!$this->input->is_ajax_request())
 			show_404();
-		$assignment_id=$this->user->selected_assignment['id'];
+		$assignment_id=$this->input->post('assignment');
+		if($assignment_id==0)
+			show_404();
 		$assignments_root = rtrim($this->settings_model->get_setting('assignments_root'), '/');
 		$assignment_info=$this->assignment_model->assignment_time($assignment_id);
 		if(shj_now() > strtotime($assignment_info['finish_time'])+$assignment_info['extra_time'])

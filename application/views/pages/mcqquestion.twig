@@ -14,6 +14,7 @@
 <script type="text/javascript">
 	mcq.no=0;
 	mcq.time_refresh=moment("{{shj_now_str()}}");
+	mcq.assignment="{{assignment}}";
 </script>
 {% endblock%}
 
@@ -30,7 +31,6 @@
 {% endblock %}
 
 {% block main_content %}
-<input type="hidden" id="assignment_id" value="{{user.selected_assignment.id}}"/>
 <div id="sidebox" class="pull-right">
 <table>
 <col style="width:2px"><col style="width:3px"><col style="width:20px"><col style="width:4px"><col style="width:2px"><col style="width:2px">

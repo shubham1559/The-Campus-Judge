@@ -52,6 +52,7 @@ class Assignments extends CI_Controller
 			$item['coefficient'] = $coefficient;
 			$item['finished'] = ($delay > $extra_time);
 			$item['started']=(shj_now()>strtotime($item['start_time']));
+			$item['public']=$item['public']&&$item['finished'];
 		}
 		$this->twig->display('pages/assignments.twig', $data);
 
@@ -133,9 +134,8 @@ class Assignments extends CI_Controller
 		// Find zip file and download
 		if($assignment_id==NULL) show_404();
 		$this->load->model("assignment_model");
-		if($this->assignment_model->is_public($assignment_id)!=1)
-			show_404();
-		else{
+		if($this->assignment_model->is_public($assignment_id))
+		{
 			$pattern = rtrim($this->settings_model->get_setting('assignments_root'),'/')."/assignment_{$assignment_id}/solution/*.zip";
 			$zip_files = glob($pattern);
 			if ( ! $zip_files )
@@ -146,6 +146,7 @@ class Assignments extends CI_Controller
 			//force_download($filename, file_get_contents(zip_files[0]), TRUE);
 			force_download($zip_files[0],NULL,TRUE);
 		}
+		else show_404();
 	}
 
 

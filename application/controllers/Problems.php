@@ -187,9 +187,26 @@ class Problems extends CI_Controller
 		$this->twig->display('pages/admin/edit_problem_'.$type.'.twig', $data);
 
 	}
-	public function mcqproblems()
+	public function mcqproblems($assignment_id=NULL)
 	{
+		// If no assignment is given, use selected assignment
+		if ($assignment_id === NULL)
+			$assignment_id = $this->user->selected_assignment['id'];
+		if ($assignment_id == 0)
+			show_error('No assignment selected.');
+		$assignment=$this->assignment_model->assignment_time($assignment_id);
+		//if assignment not started the donot show any data of the assignment
+			if($this->user->level==0&&shj_now() < strtotime($assignment['start_time']))
+			{
+				$this->twig->display('pages/notstarted.twig',array('all_assignments'=>$this->all_assignments));
+				return; 
+			}
+		$assignments_root = rtrim($this->settings_model->get_setting('assignments_root'), '/');
+		$filename="$assignments_root/assignment_{$assignment_id}/mcq/mcq_without_answer.json";
+		if(!file_exists($filename))
+			show_404();
 		$data=array('all_assignments'=>$this->assignment_model->all_assignments(),
+			'assignment'=>$assignment_id,
 			);
 		$this->twig->display("pages/mcqquestion.twig",$data);
 	}

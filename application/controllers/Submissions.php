@@ -14,6 +14,7 @@ class Submissions extends CI_Controller
 	private $filter_user;
 	private $filter_problem;
 	private $page_number;
+	private $is_public;
 
 	// ------------------------------------------------------------------------
 
@@ -27,7 +28,7 @@ class Submissions extends CI_Controller
 			show_error('No assignment selected.');
 		$this->load->model('submit_model');
 		$this->problems = $this->assignment_model->all_problems($this->user->selected_assignment['id']);
-
+		$this->is_public=$this->assignment_model->is_public($this->user->selected_assignment['id']);
 		$input = $this->uri->uri_to_assoc();
 		$this->filter_user = $this->filter_problem = NULL;
 		$this->page_number = 1;
@@ -261,7 +262,6 @@ class Submissions extends CI_Controller
 
 		if ($this->page_number<1)
 			show_404();
-
 		$config = array(
 			'base_url' => site_url('submissions/final'.($this->filter_user?'/user/'.$this->filter_user:'').($this->filter_problem?'/problem/'.$this->filter_problem:'')),
 			'cur_page' => $this->page_number,
@@ -275,7 +275,7 @@ class Submissions extends CI_Controller
 			$config['per_page'] = $config['total_rows'];
 		$this->load->library('shj_pagination', $config);
 
-		$submissions = $this->submit_model->get_final_submissions($this->user->selected_assignment['id'], $this->user->level, $this->user->username, $this->page_number, $this->filter_user, $this->filter_problem,$this->user->selected_assignment['public']);
+		$submissions = $this->submit_model->get_final_submissions($this->user->selected_assignment['id'], $this->user->level, $this->user->username, $this->page_number, $this->filter_user, $this->filter_problem,$this->is_public);
 
 		$names = $this->user_model->get_names();
 
@@ -319,7 +319,6 @@ class Submissions extends CI_Controller
 
 	public function all()
 	{
-
 		if ( ! is_numeric($this->page_number))
 			show_404();
 
@@ -339,7 +338,7 @@ class Submissions extends CI_Controller
 			$config['per_page'] = $config['total_rows'];
 		$this->load->library('shj_pagination', $config);
 
-		$submissions = $this->submit_model->get_all_submissions($this->user->selected_assignment['id'], $this->user->level, $this->user->username, $this->page_number, $this->filter_user, $this->filter_problem,$this->user->selected_assignment['public']);
+		$submissions = $this->submit_model->get_all_submissions($this->user->selected_assignment['id'], $this->user->level, $this->user->username, $this->page_number, $this->filter_user, $this->filter_problem,$this->is_public);
 
 		$names = $this->user_model->get_names();
 
@@ -474,7 +473,7 @@ class Submissions extends CI_Controller
 			if ($this->user->level === 0 && $type === 'log')
 				show_404();
 
-			if ($this->user->level === 0 && $this->user->username != $submission['username']&& $this->user->selected_assignment['public']==0)
+			if ($this->user->level === 0 && $this->user->username != $submission['username']&& !$this->is_public)
 				exit('Don\'t try to see submitted codes :)');
 
 			if ($type === 'result')

@@ -48,6 +48,7 @@
 		type: 'POST',
 		url:shj.site_url + "mcq/is_update",
 		data:{
+			'assignment':mcq.assignment,
 			shj_csrf_token: shj.csrf_token
 		},
 		success: function(response){
@@ -82,17 +83,17 @@
 
 
 	var dataid=mcq.questions[id].id;
+	$('.selected').removeClass("selected");
+	$('.wrong').removeClass("wrong");
+	$('.correct').removeClass("correct");
 	if(mcq.response[dataid])
 	{
 		if(mcq.status!="public")
 		{
-			$('.selected').removeClass("selected");
 			$('#o'+mcq.response[dataid]).addClass("selected");
 		}
 		else
 		{
-				$('.wrong').removeClass("wrong");
-				$('.correct').removeClass("correct");
 			if(mcq.response[dataid]==mcq.questions[id].correct)
 				$('#o'+mcq.response[dataid]).addClass("correct");
 			else
@@ -126,6 +127,7 @@
 				data:{
 					'id':submitid,
 					'response':clicked_id,
+					'assignment':mcq.assignment,
 					shj_csrf_token: shj.csrf_token
 				},
 				success: function(response){
@@ -154,6 +156,7 @@ mcq.remove_response=function(){
 				error:shj.loading_error,
 				data:{
 					'id':submitid,
+					'assignment':mcq.assignment,
 					shj_csrf_token: shj.csrf_token
 				},
 				success: function(response){
@@ -173,7 +176,6 @@ mcq.remove_response=function(){
 			});
 }
  $(document).ready(function(){
-	var assignment=$("#assignment_id").val();
 		$.ajax({
 			dataType:'json',
 			type: 'POST',
@@ -181,7 +183,7 @@ mcq.remove_response=function(){
 			beforeSend: mcq.loading_start,
 			complete:mcq.finish,
 			data: {
-				"assignment":assignment,
+				"assignment":mcq.assignment,
 				shj_csrf_token: shj.csrf_token
 			},
 			error: shj.loading_error,

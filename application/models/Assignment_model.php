@@ -483,26 +483,22 @@ class Assignment_model extends CI_Model
 	}
 	public function is_public($assignment_id)
 	{
-		$query=$this->db->select('public')
-						->where(array('id'=>$assignment_id))
-						->get("assignments");
-		if($query->num_rows()!=1)
-			return FALSE;
-		else 
-			return $query->row()->public;
+		$assignment=$this->assignment_time($assignment_id);
+		return($assignment['public']&& shj_now()>strtotime($assignment['finish_time'])+$assignment['extra_time']);
 	}
 	/**
 	 * Function returns only start time,end time,participants and extra time for assignment
 	 */
 	public function assignment_time($assignment_id)
 	{
-		$query = $this->db->select(array('start_time','finish_time','extra_time','participants','open'))
+		$query = $this->db->select(array('start_time','finish_time','extra_time','participants','open','public'))
 		->get_where('assignments', array('id'=>$assignment_id));
 		if ($query->num_rows() != 1)
 			return array(
 				'finish_time' => 0,
 				'extra_time' => 0,
 				'start_time'=>0,
+				'public'=>0,
 			);
 		return $query->row_array();
 	}
