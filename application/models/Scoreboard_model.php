@@ -87,6 +87,7 @@ class Scoreboard_model extends CI_Model
 				'username' => array(),
 				'score' => array(),
 				'submit_penalty' => array(),
+				'mcq_score' =>array(),
 				'star'=>array(),
 				'correct'=>array(),
 				'incorrect'=>array(),
@@ -116,6 +117,7 @@ class Scoreboard_model extends CI_Model
 					$scoreboard['star'],SORT_NUMERIC,SORT_DESC,
 					$scoreboard['correct'],SORT_NUMERIC,SORT_DESC,
 					$scoreboard['incorrect'],SORT_NUMERIC,SORT_ASC,
+					$scoreboard['mcq_score'],
 					$scoreboard['username']
 				);
 				return array($scores, $scoreboard);

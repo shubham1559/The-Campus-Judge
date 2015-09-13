@@ -1,0 +1,51 @@
+{#
+ # The Campus Judge
+ # file: mcqstats.twig
+ # author: Shubham vishwakarma <shubhamvishwakarma987@gmail.com>
+ #}
+{% set selected='mcq_submissions' %}
+{% extends 'templates/base.twig' %}
+{% block icon %}fa-tasks{% endblock %}
+{% block title %}{{ view|title }} MCQ Stats{% endblock %}
+{% block head_title %}{{ view|title }} MCQ Stats{% endblock %}
+{% block main_content %}
+<a href="{{site_url('submissions/mcq')}}">Click here to see problems wise stats</a>
+<p>Showing stats for whole assignment</p>
+<table class="sharif_table">
+	<thead>
+		<tr>
+				<th width="1%" rowspan="2">#</th>
+				<th width="10%" rowspan="2">Username</th>
+				{% for mcq in stats%}
+				<th>{{mcq.star?'*':'-'}} {{mcq.name}} |{{mcq.score}}/-{{mcq.negative}}</th>
+				{% endfor %}
+				<th width="3%" rowspan="2">Score</th>
+				<th width="3%" rowspan="2">Star</th>
+				<th width="3%" rowspan="2">Correct</th>
+				<th width="3%" rowspan="2">Incorrect</th>
+		</tr>
+	</thead>
+	{% for response in userstats %}
+	<tr>
+	<td>{{loop.index}}</td>
+	<td><a href="{{site_url('mcq/showstats/'~assignment~'/'~response.username)}}">{{response.username}}</a></td>
+	{% for mcq in stats %}
+	{% if response[mcq.id].class %}
+	<td class={{response[mcq.id].class}}></td>
+	{% else %}
+	<td></td>
+	{%endif%}
+	{% endfor %}
+	<td>{{response.score}}</td>
+	<td>{{response.star}}</td>
+	<td>{{response.correct}}</td>
+	<td>{{response.incorrect}}</td>
+	</tr>
+	{% endfor %}
+</table>
+
+<p>
+{{ pagination|raw }}
+</p>
+
+{% endblock %}  {# main_content #}

@@ -287,6 +287,59 @@ class Mcq extends CI_Controller
 		$filename="$assignments_root/assignment_{$assignment_id}/mcq/mcq_without_answer.json";
 		exit(date("Y m d H:i:s", filemtime($filename)));
 	}
+	public function usermcq($assignment_id=NULL)
+	{
+		if($this->user->level<=1) //permission denied
+		show_404();
+		if ($assignment_id === NULL)
+			$assignment_id = $this->user->selected_assignment['id'];
+		if ($assignment_id == 0)
+			show_error('No assignment selected.');
+		$mcqproblems=$this->mcq_model->getallmcq($assignment_id);
+		if(!$mcqproblems)show_404();
+		$data = array(
+			'all_assignments' => $this->assignment_model->all_assignments(),
+			'mcqproblems'=>$mcqproblems,
+			'assignment'=>$assignment_id,
+		);
+		$query=$this->mcq_model->get_responses($assignment_id);
+			$data['stats']=[];
+			foreach ($mcqproblems as $key) {
+				$data['stats'][$key['id']]=$key;
+			}
+			$data['userstats']=[];
+			foreach ($query as $key) {
+				$data['userstats'][$key['username']][$key['id']]['response']=$key['response'];
+				$data['userstats'][$key['username']]['username']=$key['username'];
+			}
+			foreach ($data['userstats'] as &$response) {
+				$response['correct']=0;
+				$response['score']=0;
+				$response['star']=0;
+				$response['incorrect']=0;
+				foreach ($data['stats'] as $key) {
+					if(isset($response[$key['id']]))
+						{
+							if($key['correct']==$response[$key['id']]['response'])
+								{
+									$response[$key['id']]['class']="correct";
+									$response['correct']++;
+									$response['score']+=$key['score'];
+									$response['star']+=$key['star'];
+								}
+							else
+								{
+									$response[$key['id']]['class']="wrong";
+									$response['incorrect']++;
+									$response['score']-=$key['negative'];
+								}
+						}
+						else $response[$key['id']]['class']="";
+				}
+			}
+			//print_r($data['userstats'])	;
+			$this->twig->display('pages/admin/mcquserstats.twig', $data);
+	}
 	public function showstats($assignment_id=NULL,$username=NULL)
 	{
 		if($this->user->level<=1) //permission denied
@@ -313,6 +366,7 @@ class Mcq extends CI_Controller
 		}
 		else{
 			$query=$this->mcq_model->get_responses($assignment_id,$username);
+			if(!$query)show_404();
 			$stats=[];
 			foreach ($query as $key) {
 				$stats[$key['id']]=$key['response'];
@@ -330,6 +384,7 @@ class Mcq extends CI_Controller
 			$data['color'][$key['id']]=array('','','','','');
 			if($data['username']&&isset($stats[$key['id']]))
 			$data['color'][$key['id']][$stats[$key['id']]]="wrong";
+			if(!$data['username']||(isset($stats[$key['id']])&&$key['correct']==$stats[$key['id']]))
 			$data['color'][$key['id']][$key['correct']]="correct";
 			$data['total_problems']++;
 			$data['total_score']+=$key['score'];

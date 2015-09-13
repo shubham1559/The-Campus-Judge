@@ -22,8 +22,9 @@
 {% endif %}
 {% endblock %}
 {% block main_content %}
+<a href="{{site_url('submissions/usermcq')}}">Click here to see User wise stats</a>
 {% if username %}
-<p>Showing submission for user {{username}}</p>
+<p>Showing submission for user <a href="{{site_url('profile/'~username)}}">{{username}}</a></p>
 {% else %}
 <p>Showing stats for whole assignment</p>
 {% endif %}

@@ -89,10 +89,14 @@ class Mcq_model extends CI_Model {
 		$this->db->insert('mcqresponse',$response);
 	}
 	//------------
-	public function get_responses($assignment_id,$username)
+	public function get_responses($assignment_id,$username=NULL)
 	{
-		return $this->db->select(array('id','response'))
-		->get_where('mcqresponse',array('assignment'=>$assignment_id,'username'=>$username))
+		if($username==NULL)
+			$where=array('assignment'=>$assignment_id);
+		else
+			$where=array('assignment'=>$assignment_id,'username'=>$username);
+		return $this->db->select(array('id','response','username'))
+		->get_where('mcqresponse',$where)
 		->result_array();
 	}
 	//------------------------
