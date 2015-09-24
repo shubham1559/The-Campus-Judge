@@ -3,6 +3,9 @@
 .git
 .idea
 
+#ignore this file
+.gitignore
+
 # Ignore Twig Cache Files
 application/cache/Twig/*/
 
@@ -24,3 +27,10 @@ application/config/*
 
 #ignore index file configurations
 judge/index.php
+
+#ignore files for eclipse ide
+.buildpath
+.project
+.settings/
+
+
