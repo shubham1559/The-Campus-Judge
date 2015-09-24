@@ -5,7 +5,7 @@
  #}
 <div id="top_bar" class="color-{{ selected }}">
 	<div class="top_object shj_menu" id="user_top">
-		<a href="{{ site_url('profile') }}" id="profile_link"><i class="fa fa-user"></i></a>
+		<a href="{{ site_url('profile') }}" id="profile_link" class="topname"><i class="fa fa-user"></i> {{user.username}}</a>
 		<div class="top_menu user-menu">
 			<div class="name"><i class="fa fa-user"></i> {{ user.username }}</div>
 			<div class="menu-controls">

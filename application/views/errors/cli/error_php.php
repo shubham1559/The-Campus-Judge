@@ -24,7 +24,7 @@
  * @since		Version 3.0
  * @filesource
  */
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined ( 'BASEPATH' ) or exit ( 'No direct script access allowed' );
 ?>
 
 A PHP Error was encountered

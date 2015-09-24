@@ -120,7 +120,7 @@ class User_model extends CI_Model
 	 */
 	public function add_user($username, $email, $password, $role)
 	{
-		if ( ! $this->form_validation->alpha_numeric($username) )
+		if ( ! $this->form_validation->alpha_dash($username) )
 			return 'Username may only contain alpha-numeric characters.';
 		if (strlen($username) < 3 OR strlen($username) > 20 OR strlen($password) < 6 OR strlen($password) > 200)
 			return 'Username or password length error.';
